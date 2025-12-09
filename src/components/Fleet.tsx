@@ -4,23 +4,21 @@ import { IMAGES, FLEET_FEATURES, LOTTIE_URLS } from '../constants';
 
 const Fleet: React.FC = () => {
   return (
-    <section id="fleet" className="py-24 bg-white overflow-hidden">
+    <section id="fleet" className="py-24 overflow-hidden relative" style={{
+      backgroundColor: '#f8fafc',
+      backgroundImage: `repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(30, 58, 138, 0.03) 10px,
+        rgba(30, 58, 138, 0.03) 20px
+      )`
+    }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center gap-16">
           
           {/* Content Side */}
           <div className="w-full lg:w-1/2 order-2 lg:order-1 relative">
-            
-            {/* Lottie Animation Floating */}
-            <div className="absolute -top-20 -left-10 w-32 h-32 opacity-80 pointer-events-none hidden lg:block">
-               <Player
-                  autoplay
-                  loop
-                  src={LOTTIE_URLS.deliveryTruck}
-                  style={{ height: '140px', width: '140px' }}
-               />
-            </div>
-
             <div className="relative z-10">
               <span className="text-power-red font-bold uppercase tracking-wider text-sm">Corporate Partners</span>
               <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mt-2 mb-6">
@@ -54,7 +52,7 @@ const Fleet: React.FC = () => {
                   href="#contact" 
                   className="bg-power-blue text-white px-8 py-3.5 rounded-lg font-bold hover:bg-blue-900 transition-colors inline-flex items-center shadow-lg"
                 >
-                  Open a Fleet Account
+                  Ask us About Fleet Services
                 </a>
               </div>
             </div>
@@ -64,9 +62,9 @@ const Fleet: React.FC = () => {
           <div className="w-full lg:w-1/2 order-1 lg:order-2">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl group">
               <div className="absolute inset-0 bg-power-blue/10 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
-              <img 
-                src={IMAGES.fleet} 
-                alt="Fleet Maintenance Service Dubai" 
+              <img
+                src="/inspect2.jpg"
+                alt="Fleet Maintenance Service Dubai"
                 className="w-full h-auto transform group-hover:scale-105 transition-transform duration-700"
               />
               {/* Partner Badge Overlay */}

@@ -45,7 +45,7 @@ const Hero: React.FC = () => {
       {/* Static Overlay for Text Legibility */}
       <div className="absolute inset-0 bg-gradient-to-r from-power-blue/95 via-power-blue/75 to-transparent z-10"></div>
 
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-16">
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-40">
         <div className="max-w-2xl">
           {/* Trust Badge */}
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6 animate-fade-in-up">
@@ -55,7 +55,7 @@ const Hero: React.FC = () => {
             <span className="text-white text-xs font-medium tracking-wide">Rated 5 Stars on Google</span>
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6 min-h-[140px] md:min-h-[160px] flex flex-col justify-center">
+          <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-none mb-6 min-h-[140px] md:min-h-[160px] flex flex-col justify-center">
             <span key={`primary-${currentHeadline}`} className="block animate-fade-in-up">
                 {headlineData.primary}
             </span>

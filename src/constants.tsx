@@ -17,12 +17,9 @@ import {
 } from 'lucide-react';
 import { ServiceItem, Testimonial, NavItem, BrandItem, BlogPost } from './types';
 
-// Placeholder images - REPLACE THESE URLS WITH THE ACTUAL ASSETS
+// Images - using local assets from public folder
 export const IMAGES = {
-  // Use the uploaded logo image here. 
-  // If you are running this locally, import the image file or put it in the public folder.
-  // For this demo, I am using a placeholder that represents where the logo goes.
-  logo: "https://placehold.co/400x150/ffffff/1e3a8a?text=POWERWORKS+LOGO&font=montserrat",
+  logo: "/full_logo.png",
   
   owner: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800", 
   hero: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&q=80&w=2000",
@@ -41,10 +38,10 @@ export const LOTTIE_URLS = {
 };
 
 export const HERO_SLIDES = [
-  "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&q=80&w=2000", // Mechanic working
-  "https://images.unsplash.com/photo-1505798577917-36e1183590f2?auto=format&fit=crop&q=80&w=2000", // Garage interior
-  "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=2000", // Engine closeup
-  "https://images.unsplash.com/photo-1530046339160-ce3e41600f2e?auto=format&fit=crop&q=80&w=2000"  // Car on lift
+  "/pwg_slide1.jpg", // Technician with diagnostic equipment
+  "/pwg_slide2.jpg", // Powerworks branding wall
+  "/pwg_slide3.jpg", // Blue Porsche in workshop
+  "/pwg_slide4.jpg"  // Glenn - owner
 ];
 
 export const HERO_HEADLINES = [
@@ -63,16 +60,15 @@ export const HERO_HEADLINES = [
 ];
 
 export const BRANDS: BrandItem[] = [
-  { name: "Land Rover", logo: "https://upload.wikimedia.org/wikipedia/en/9/9f/Land_Rover_logo_black.svg", url: "#land-rover" },
-  { name: "Jaguar", logo: "https://upload.wikimedia.org/wikipedia/en/9/97/Jaguar_Cars_logo_2012.svg", url: "#jaguar" },
-  { name: "Range Rover", logo: "https://upload.wikimedia.org/wikipedia/commons/f/fd/Range_Rover_Logo.svg", url: "#range-rover" },
-  { name: "Mini", logo: "https://upload.wikimedia.org/wikipedia/commons/e/e9/Mini_logo.svg", url: "#mini" },
-  { name: "BMW", logo: "https://upload.wikimedia.org/wikipedia/commons/4/44/BMW.svg", url: "#bmw" },
-  { name: "Mercedes-Benz", logo: "https://upload.wikimedia.org/wikipedia/commons/9/90/Mercedes-Benz_logo.svg", url: "#mercedes" },
-  { name: "Audi", logo: "https://upload.wikimedia.org/wikipedia/commons/9/92/Audi-Logo_2016.svg", url: "#audi" },
-  { name: "Porsche", logo: "https://upload.wikimedia.org/wikipedia/en/d/dc/Porsche_Wappen.svg", url: "#porsche" },
-  { name: "Bentley", logo: "https://upload.wikimedia.org/wikipedia/en/b/b5/Bentley_logo.svg", url: "#bentley" },
-  { name: "Aston Martin", logo: "https://upload.wikimedia.org/wikipedia/en/b/bd/Aston_Martin_Lagonda_brand_logo.svg", url: "#aston-martin" },
+  { name: "Land Rover", logo: "https://www.carlogos.org/car-logos/land-rover-logo.png", url: "#land-rover" },
+  { name: "Jaguar", logo: "https://www.carlogos.org/car-logos/jaguar-logo.png", url: "#jaguar" },
+  { name: "Mini", logo: "https://www.carlogos.org/car-logos/mini-logo.png", url: "#mini" },
+  { name: "BMW", logo: "https://www.carlogos.org/car-logos/bmw-logo.png", url: "#bmw" },
+  { name: "Mercedes-Benz", logo: "https://www.carlogos.org/car-logos/mercedes-benz-logo.png", url: "#mercedes" },
+  { name: "Audi", logo: "https://www.carlogos.org/car-logos/audi-logo.png", url: "#audi" },
+  { name: "Porsche", logo: "https://www.carlogos.org/car-logos/porsche-logo.png", url: "#porsche" },
+  { name: "Bentley", logo: "https://www.carlogos.org/car-logos/bentley-logo.png", url: "#bentley" },
+  { name: "Aston Martin", logo: "https://www.carlogos.org/car-logos/aston-martin-logo.png", url: "#aston-martin" },
 ];
 
 export const SERVICES: ServiceItem[] = [
@@ -159,7 +155,7 @@ export const REVIEWS: Testimonial[] = [
 
 export const NAV_ITEMS: NavItem[] = [
   { label: "Home", href: "#home" },
-  { label: "About Glenn", href: "#owner" },
+  { label: "About Us", href: "#owner" },
   { label: "Services", href: "#services" },
   { label: "Fleet", href: "#fleet" },
   { label: "Ask Glenn", href: "#ask-glenn" },

@@ -12,14 +12,14 @@ const AboutOwner: React.FC = () => {
           <div className="w-full lg:w-1/2 relative">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/5] lg:aspect-square max-w-md mx-auto">
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-              <img 
-                src={IMAGES.owner} 
-                alt="Glenn - Owner of Powerworks Garage" 
+              <img
+                src="/team-gp.jpg"
+                alt="Glenn Power - Owner of Powerworks Garage"
                 className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute bottom-0 left-0 p-8 z-20">
-                <p className="text-white font-bold text-2xl">Glenn</p>
-                <p className="text-gray-300 font-medium">Owner & Lead Mechanic</p>
+                <p className="text-white font-bold text-2xl">Glenn Power</p>
+                <p className="text-gray-300 font-medium">Owner and Lead Mechanic</p>
               </div>
             </div>
             {/* Decor elements */}
