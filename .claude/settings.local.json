@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm:*)",
+      "Bash(Invoke-WebRequest -Uri \"https://raw.githubusercontent.com/anthropics/claude-code/main/plugins/frontend-design/skills/frontend-design/SKILL.md\" -OutFile \".claude/skills/frontend-design/SKILL.md\" -UseBasicParsing)",
+      "Bash(New-Item -ItemType Directory -Force -Path \".claude/skills/frontend-design\")",
+      "Bash(Out-Null)",
+      "Bash(cat:*)"
+    ]
+  }
+}
