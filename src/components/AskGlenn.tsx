@@ -15,28 +15,48 @@ const AskGlenn: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Header */}
-        <div className="flex flex-col items-center text-center mb-16">
-          <div className="relative mb-6">
-            <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-xl relative z-10">
-              <img src={IMAGES.owner} alt="Glenn" className="w-full h-full object-cover" />
+        {/* Header - Redesigned with avatar on left */}
+        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 mb-16">
+          {/* Large Avatar */}
+          <div className="relative flex-shrink-0">
+            <div className="w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-2xl overflow-hidden shadow-2xl ring-4 ring-white">
+              <img
+                src="/its-glenn.jpg"
+                alt="Glenn Power - Owner of Powerworks Garage"
+                className="w-full h-full object-cover object-top"
+              />
             </div>
             {/* Lottie Animation */}
-            <div className="absolute -top-8 -right-8 w-20 h-20 z-20 pointer-events-none">
+            <div className="absolute -top-4 -right-4 md:-top-6 md:-right-6 w-16 h-16 md:w-20 md:h-20 z-20 pointer-events-none">
                <Player
                   autoplay
                   loop
                   src={LOTTIE_URLS.chat}
-                  style={{ height: '80px', width: '80px' }}
+                  style={{ height: '100%', width: '100%' }}
                />
             </div>
+            {/* Decorative accent */}
+            <div className="absolute -bottom-3 -left-3 w-full h-full bg-power-blue/10 rounded-2xl -z-10"></div>
           </div>
-          
-          <span className="text-power-blue font-bold uppercase tracking-wider text-sm mb-2">The Knowledge Hub</span>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">Ask Glenn</h2>
-          <p className="text-lg text-gray-600 max-w-2xl">
-            Driving in the UAE presents unique challenges. Here are my top tips and honest advice for keeping your car running perfectly in the desert heat.
-          </p>
+
+          {/* Text Content */}
+          <div className="text-center md:text-left">
+            <span className="text-power-blue font-bold uppercase tracking-wider text-sm mb-3 block">The Knowledge Hub</span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-4">Ask Glenn</h2>
+            <p className="text-lg md:text-xl text-gray-600 max-w-xl leading-relaxed mb-6">
+              Driving in the UAE presents unique challenges. Here are my top tips and honest advice for keeping your car running perfectly in the desert heat.
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center md:justify-start text-sm">
+              <span className="inline-flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full text-gray-600">
+                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                15+ Years Experience
+              </span>
+              <span className="inline-flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full text-gray-600">
+                <span className="w-2 h-2 bg-power-blue rounded-full"></span>
+                UK Certified
+              </span>
+            </div>
+          </div>
         </div>
 
         {/* Blog Grid */}
@@ -89,7 +109,7 @@ const AskGlenn: React.FC = () => {
             <div className="relative z-10 p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
                 
                 <div className="max-w-2xl">
-                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                    <h3 className="text-2xl md:text-3xl font-bold mb-3 text-white">
                         Still unsure about that engine noise?
                     </h3>
                     <p className="text-blue-100 text-lg leading-relaxed">
@@ -98,8 +118,8 @@ const AskGlenn: React.FC = () => {
                 </div>
 
                 <div className="flex-shrink-0">
-                    <a 
-                        href="https://wa.me/971501234567" 
+                    <a
+                        href="https://wa.me/971521217425"
                         target="_blank"
                         rel="noreferrer"
                         className="group inline-flex items-center justify-center bg-[#25D366] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#20bd5a] transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-green-900/30"

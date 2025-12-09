@@ -12,7 +12,7 @@ const Testimonials: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
           <div>
             <span className="text-power-red font-bold uppercase tracking-wider text-sm">Testimonials</span>
-            <h2 className="text-3xl md:text-5xl font-extrabold mt-2">What Our Customers Say</h2>
+            <h2 className="text-3xl md:text-5xl font-extrabold mt-2 text-white">What Our Customers Say</h2>
           </div>
           <div className="flex flex-col items-start md:items-end">
              <div className="flex items-center gap-2 mb-1">

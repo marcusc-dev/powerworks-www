@@ -1,28 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { Star, ShieldCheck } from 'lucide-react';
 import { Player } from '@lottiefiles/react-lottie-player';
-import { IMAGES, HERO_SLIDES, LOTTIE_URLS, HERO_HEADLINES } from '../constants';
+import { IMAGES, HERO_SLIDES, LOTTIE_URLS } from '../constants';
+import BackgroundPaths from './BackgroundPaths';
+import TypeWriter from './TypeWriter';
+
+// Headlines for typewriter effect - pairs that display together
+const HERO_HEADLINES = [
+  { line1: "British Precision.", line2: "Dubai Hospitality." },
+  { line1: "Dealer Standards.", line2: "Honest Pricing." },
+  { line1: "Your Car.", line2: "Our Priority." },
+];
 
 const Hero: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [currentHeadline, setCurrentHeadline] = useState(0);
 
   useEffect(() => {
     const slideTimer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
     }, 5000); // Change image every 5 seconds
 
-    const headlineTimer = setInterval(() => {
-      setCurrentHeadline((prev) => (prev + 1) % HERO_HEADLINES.length);
-    }, 4000); // Change text every 4 seconds
-
     return () => {
         clearInterval(slideTimer);
-        clearInterval(headlineTimer);
     };
   }, []);
-
-  const headlineData = HERO_HEADLINES[currentHeadline];
 
   return (
     <div id="home" className="relative h-[500px] md:h-[600px] flex items-center justify-center overflow-hidden bg-gray-900">
@@ -45,7 +46,11 @@ const Hero: React.FC = () => {
       {/* Static Overlay for Text Legibility */}
       <div className="absolute inset-0 bg-gradient-to-r from-power-blue/95 via-power-blue/75 to-transparent z-10"></div>
 
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-40">
+      {/* Animated Background Paths */}
+      <BackgroundPaths className="z-[15]" />
+
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-40 h-full">
+        <div className="flex items-center justify-between h-full">
         <div className="max-w-2xl">
           {/* Trust Badge */}
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6 animate-fade-in-up">
@@ -55,12 +60,24 @@ const Hero: React.FC = () => {
             <span className="text-white text-xs font-medium tracking-wide">Rated 5 Stars on Google</span>
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-none mb-6 min-h-[140px] md:min-h-[160px] flex flex-col justify-center">
-            <span key={`primary-${currentHeadline}`} className="block animate-fade-in-up">
-                {headlineData.primary}
+          <h1 className="text-4xl md:text-6xl font-extrabold leading-none mb-6 min-h-[140px] md:min-h-[160px] flex flex-col justify-center">
+            <span className="block text-white">
+              <TypeWriter
+                words={HERO_HEADLINES.map(h => h.line1)}
+                typingSpeed={80}
+                deletingSpeed={40}
+                delayBetweenWords={2500}
+                cursorClassName="bg-white"
+              />
             </span>
-            <span key={`secondary-${currentHeadline}`} className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-300 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-                {headlineData.secondary}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-300">
+              <TypeWriter
+                words={HERO_HEADLINES.map(h => h.line2)}
+                typingSpeed={80}
+                deletingSpeed={40}
+                delayBetweenWords={2500}
+                cursorClassName="bg-red-400"
+              />
             </span>
           </h1>
           
@@ -94,6 +111,20 @@ const Hero: React.FC = () => {
                 <span>British Owned & Managed</span>
              </div>
           </div>
+        </div>
+
+        {/* Glenn Cutout Image - Full height, boxed horizontally */}
+        <div className="hidden lg:block absolute right-0 bottom-0 h-full">
+          <img
+            src="/glenn.jpg"
+            alt="Glenn - Your Trusted Mechanic"
+            className="h-full w-auto object-cover object-top"
+            style={{
+              maskImage: 'linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%)',
+            }}
+          />
+        </div>
         </div>
       </div>
 
