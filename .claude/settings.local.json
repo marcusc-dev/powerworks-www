@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(npm run build:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: Add animated hero with TypeWriter, morphic navbar, and Glenn cutout\n\n- Add TypeWriter component for animated headline text cycling\n- Add BackgroundPaths component with animated SVG paths\n- Implement morphic navbar with animated sliding indicator\n- Add Glenn cutout image to hero with transparent fade effect\n- Fix text color issues on dark backgrounds (Testimonials, AskGlenn)\n- Redesign AskGlenn section with larger avatar on left\n- Add section separator between Brands and WhyChoose\n- Update Footer to use dark logo variant\n- Install framer-motion for animations\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(rm:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: Migrate from Vite to Next.js 15 with UI refinements\n\n- Migrate from Vite/React to Next.js 15 App Router\n- Add dynamic imports for Lottie components (SSR fix)\n- Fix hydration errors with suppressHydrationWarning and isMounted pattern\n- Update AskGlenn section: compact layout, new heading \"Help and Advice from Powerworks\"\n- Add subtle section separator between AboutOwner and Services\n- Update hero headline text for better fit\n- Remove decorative icons from Services section header\n- Add SEO Machine skill for content creation workflows\n- Update dependencies for Next.js compatibility\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")"
     ]
   }
 }

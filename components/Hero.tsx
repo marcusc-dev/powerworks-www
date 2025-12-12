@@ -1,21 +1,36 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { Star, ShieldCheck } from 'lucide-react';
-import { Player } from '@lottiefiles/react-lottie-player';
-import { IMAGES, HERO_SLIDES, LOTTIE_URLS } from '../constants';
+import dynamic from 'next/dynamic';
+import { IMAGES, HERO_SLIDES, LOTTIE_URLS } from '@/lib/constants';
 import BackgroundPaths from './BackgroundPaths';
-import TypeWriter from './TypeWriter';
+import { motion, AnimatePresence } from 'framer-motion';
 
-// Headlines for typewriter effect - pairs that display together
+const Player = dynamic(
+  () => import('@lottiefiles/react-lottie-player').then((mod) => mod.Player),
+  { ssr: false }
+);
+
+// Headlines - each as a complete message
 const HERO_HEADLINES = [
-  { line1: "British Precision.", line2: "Dubai Hospitality." },
-  { line1: "Dealer Standards.", line2: "Honest Pricing." },
   { line1: "Your Car.", line2: "Our Priority." },
+  { line1: "British Standards.", line2: "At Great Rates." },
+  { line1: "More Care & Attention.", line2: "Than the Main Dealer." },
+  { line1: "Honest Workmanship.", line2: "Care & Attention." },
 ];
 
 const Hero: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentHeadline, setCurrentHeadline] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
     const slideTimer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
     }, 5000); // Change image every 5 seconds
@@ -23,7 +38,18 @@ const Hero: React.FC = () => {
     return () => {
         clearInterval(slideTimer);
     };
-  }, []);
+  }, [isMounted]);
+
+  useEffect(() => {
+    if (!isMounted) return;
+    const headlineTimer = setInterval(() => {
+      setCurrentHeadline((prev) => (prev + 1) % HERO_HEADLINES.length);
+    }, 4000); // Change headline every 4 seconds
+
+    return () => {
+        clearInterval(headlineTimer);
+    };
+  }, [isMounted]);
 
   return (
     <div id="home" className="relative h-[500px] md:h-[600px] flex items-center justify-center overflow-hidden bg-gray-900">
@@ -60,40 +86,50 @@ const Hero: React.FC = () => {
             <span className="text-white text-xs font-medium tracking-wide">Rated 5 Stars on Google</span>
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-extrabold leading-none mb-6 min-h-[140px] md:min-h-[160px] flex flex-col justify-center">
-            <span className="block text-white">
-              <TypeWriter
-                words={HERO_HEADLINES.map(h => h.line1)}
-                typingSpeed={80}
-                deletingSpeed={40}
-                delayBetweenWords={2500}
-                cursorClassName="bg-white"
-              />
-            </span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-300">
-              <TypeWriter
-                words={HERO_HEADLINES.map(h => h.line2)}
-                typingSpeed={80}
-                deletingSpeed={40}
-                delayBetweenWords={2500}
-                cursorClassName="bg-red-400"
-              />
-            </span>
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6 min-h-[80px] md:min-h-[140px]">
+            {isMounted ? (
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentHeadline}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.5 }}
+                  className="flex flex-col"
+                >
+                  <span className="text-white whitespace-nowrap">
+                    {HERO_HEADLINES[currentHeadline].line1}
+                  </span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-300 whitespace-nowrap">
+                    {HERO_HEADLINES[currentHeadline].line2}
+                  </span>
+                </motion.div>
+              </AnimatePresence>
+            ) : (
+              <div className="flex flex-col">
+                <span className="text-white whitespace-nowrap">
+                  {HERO_HEADLINES[0].line1}
+                </span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-300 whitespace-nowrap">
+                  {HERO_HEADLINES[0].line2}
+                </span>
+              </div>
+            )}
           </h1>
-          
+
           <p className="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed max-w-lg">
             Your trusted British-owned garage in Dubai. From routine service to complex engine work, we treat every car as if it were our own.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <a 
-              href="#contact" 
+            <a
+              href="#contact"
               className="bg-power-red text-white px-8 py-3.5 rounded-lg font-bold text-lg hover:bg-red-700 transition-all shadow-lg hover:shadow-red-900/50 flex justify-center items-center"
             >
               Get a Quote
             </a>
-            <a 
-              href="#services" 
+            <a
+              href="#services"
               className="bg-white/10 text-white border border-white/30 backdrop-blur-sm px-8 py-3.5 rounded-lg font-bold text-lg hover:bg-white hover:text-power-blue transition-all flex justify-center items-center"
             >
               View Services
@@ -142,7 +178,7 @@ const Hero: React.FC = () => {
                 />
             ))}
         </div>
-        
+
         {/* Lottie Scroll Indicator */}
         <div className="hidden md:block opacity-70">
            <Player

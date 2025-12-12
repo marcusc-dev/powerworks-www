@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { Phone, Mail, MapPin, Clock, Instagram, Facebook, MessageCircle, Send, CheckCircle } from 'lucide-react';
 
@@ -109,7 +111,7 @@ const Footer: React.FC = () => {
             <div className="lg:col-span-3">
               <div className="bg-white rounded-2xl p-8 shadow-2xl">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Book Your Service</h3>
-                <p className="text-gray-500 mb-6">Fill out the form and we'll get back to you within 2 hours.</p>
+                <p className="text-gray-500 mb-6">Fill out the form and we&apos;ll get back to you within 2 hours.</p>
 
                 {submitted ? (
                   <div className="flex flex-col items-center justify-center py-12 text-center">
@@ -117,7 +119,7 @@ const Footer: React.FC = () => {
                       <CheckCircle className="w-8 h-8 text-emerald-600" />
                     </div>
                     <h4 className="text-xl font-bold text-gray-900 mb-2">Message Sent!</h4>
-                    <p className="text-gray-500">We'll be in touch shortly.</p>
+                    <p className="text-gray-500">We&apos;ll be in touch shortly.</p>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-4">
@@ -253,7 +255,7 @@ const Footer: React.FC = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
               <div className="flex items-center gap-2">
-                <span>&copy; {new Date().getFullYear()} Powerworks Garage Dubai.</span>
+                <span>&copy; 2025 Powerworks Garage Dubai.</span>
                 <span className="hidden md:inline">|</span>
                 <span className="hidden md:inline">British Precision. Dubai Hospitality.</span>
               </div>

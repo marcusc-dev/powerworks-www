@@ -1,12 +1,9 @@
+'use client';
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, Phone, Clock, MessageCircle, ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { NAV_ITEMS, IMAGES, SERVICES } from '../constants';
-
-interface NavItem {
-  label: string;
-  href: string;
-}
+import { NAV_ITEMS, IMAGES, SERVICES } from '@/lib/constants';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);

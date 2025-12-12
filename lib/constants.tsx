@@ -1,33 +1,33 @@
-import { 
-  Wrench, 
-  ThermometerSnowflake, 
-  Droplet, 
-  Zap, 
-  Disc, 
-  Activity, 
-  Cog, 
-  CarFront, 
-  Battery, 
-  CircleDot, 
+import {
+  Wrench,
+  ThermometerSnowflake,
+  Droplet,
+  Zap,
+  Disc,
+  Activity,
+  Cog,
+  CarFront,
+  Battery,
+  CircleDot,
   ClipboardCheck,
   Truck,
   Clock,
   ShieldCheck,
   Users
 } from 'lucide-react';
-import { ServiceItem, Testimonial, NavItem, BrandItem, BlogPost } from './types';
+import { ServiceItem, Testimonial, NavItem, BrandItem, BlogPost, FleetFeature } from './types';
 
 // Images - using local assets from public folder
 export const IMAGES = {
   logo: "/full_logo.png",
-  
-  owner: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800", 
+
+  owner: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800",
   hero: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&q=80&w=2000",
   shopInterior: "https://images.unsplash.com/photo-1505798577917-36e1183590f2?auto=format&fit=crop&q=80&w=1200",
   logoUnionJack: "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg",
-  
+
   // Fleet/Partner Image - Replace with specific 'We Will Fix It' van image if available
-  fleet: "https://images.unsplash.com/photo-1616401784845-180886ba9bb1?auto=format&fit=crop&q=80&w=1200" 
+  fleet: "https://images.unsplash.com/photo-1616401784845-180886ba9bb1?auto=format&fit=crop&q=80&w=1200"
 };
 
 export const LOTTIE_URLS = {
@@ -60,15 +60,11 @@ export const HERO_HEADLINES = [
 ];
 
 export const BRANDS: BrandItem[] = [
-  { name: "Land Rover", logo: "https://www.carlogos.org/car-logos/land-rover-logo.png", url: "#land-rover" },
-  { name: "Jaguar", logo: "https://www.carlogos.org/car-logos/jaguar-logo.png", url: "#jaguar" },
-  { name: "Mini", logo: "https://www.carlogos.org/car-logos/mini-logo.png", url: "#mini" },
-  { name: "BMW", logo: "https://www.carlogos.org/car-logos/bmw-logo.png", url: "#bmw" },
-  { name: "Mercedes-Benz", logo: "https://www.carlogos.org/car-logos/mercedes-benz-logo.png", url: "#mercedes" },
-  { name: "Audi", logo: "https://www.carlogos.org/car-logos/audi-logo.png", url: "#audi" },
-  { name: "Porsche", logo: "https://www.carlogos.org/car-logos/porsche-logo.png", url: "#porsche" },
-  { name: "Bentley", logo: "https://www.carlogos.org/car-logos/bentley-logo.png", url: "#bentley" },
-  { name: "Aston Martin", logo: "https://www.carlogos.org/car-logos/aston-martin-logo.png", url: "#aston-martin" },
+  { name: "Land Rover", logo: "/landrover.png", url: "/service/land-rover-dubai", slug: "land-rover-dubai" },
+  { name: "Audi", logo: "/audi.png", url: "/service/audi-dubai", slug: "audi-dubai" },
+  { name: "Porsche", logo: "/porsche.png", url: "/service/porsche-dubai", slug: "porsche-dubai" },
+  { name: "Bentley", logo: "/bentley.png", url: "/service/bentley-dubai", slug: "bentley-dubai" },
+  { name: "Volkswagen", logo: "/vw.png", url: "/service/volkswagen-dubai", slug: "volkswagen-dubai" },
 ];
 
 export const SERVICES: ServiceItem[] = [
@@ -85,26 +81,26 @@ export const SERVICES: ServiceItem[] = [
   { title: "Pre-Purchase Inspection", description: "Buy with confidence. Detailed reports on used cars.", icon: ClipboardCheck },
 ];
 
-export const FLEET_FEATURES = [
-  { 
-    title: "Free Pickup & Dropoff", 
+export const FLEET_FEATURES: FleetFeature[] = [
+  {
+    title: "Free Pickup & Dropoff",
     description: "We collect your fleet vehicles and return them to your HQ, saving your team valuable time.",
-    icon: Truck 
+    icon: Truck
   },
-  { 
-    title: "100% Uptime Focus", 
+  {
+    title: "100% Uptime Focus",
     description: "Preventative maintenance schedules designed to keep your business moving without interruption.",
-    icon: Clock 
+    icon: Clock
   },
-  { 
-    title: "Expert & Reliable", 
+  {
+    title: "Expert & Reliable",
     description: "British-standard mechanical work you can trust, ensuring the longevity of your assets.",
-    icon: ShieldCheck 
+    icon: ShieldCheck
   },
-  { 
-    title: "Priority Service", 
+  {
+    title: "Priority Service",
     description: "Dedicated account management and fast-track booking for all corporate partners.",
-    icon: Users 
+    icon: Users
   }
 ];
 
@@ -114,21 +110,21 @@ export const BLOG_POSTS: BlogPost[] = [
     excerpt: "Heat is the #1 enemy of your battery. Learn why they fail so often here and how to spot the warning signs before you get stranded.",
     category: "Maintenance",
     date: "Oct 12, 2023",
-    image: "https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&q=80&w=800"
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=800"
   },
   {
     title: "AC Blowing Warm? It's Not Always Gas",
     excerpt: "Before you pay for a regas, read this. The most common AC issues in the UAE are often related to compressors and condensers.",
     category: "AC Repair",
     date: "Sep 28, 2023",
-    image: "https://images.unsplash.com/photo-1626075982260-3cb837072935?auto=format&fit=crop&q=80&w=800"
+    image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=800"
   },
   {
     title: "The Truth About 'Lifetime' Transmission Fluid",
     excerpt: "Manufacturers say it lasts forever. Mechanics know it doesn't. Here is the recommended interval for changing gearbox oil in this climate.",
     category: "Expert Advice",
     date: "Sep 15, 2023",
-    image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&q=80&w=800"
+    image: "https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?auto=format&fit=crop&q=80&w=800"
   }
 ];
 

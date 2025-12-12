@@ -1,6 +1,7 @@
+'use client';
+
 import React from 'react';
-import { Player } from '@lottiefiles/react-lottie-player';
-import { IMAGES, FLEET_FEATURES, LOTTIE_URLS } from '../constants';
+import { FLEET_FEATURES } from '@/lib/constants';
 
 const Fleet: React.FC = () => {
   return (
@@ -16,7 +17,7 @@ const Fleet: React.FC = () => {
     }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center gap-16">
-          
+
           {/* Content Side */}
           <div className="w-full lg:w-1/2 order-2 lg:order-1 relative">
             <div className="relative z-10">
@@ -25,7 +26,7 @@ const Fleet: React.FC = () => {
                 Keep Your Fleet Moving
               </h2>
               <p className="text-gray-600 text-lg mb-10 leading-relaxed">
-                We understand that every minute your vehicle is off the road costs you money. That's why we offer specialized fleet maintenance programs designed for 100% uptime and operational efficiency.
+                We understand that every minute your vehicle is off the road costs you money. That&apos;s why we offer specialized fleet maintenance programs designed for 100% uptime and operational efficiency.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
@@ -48,8 +49,8 @@ const Fleet: React.FC = () => {
               </div>
 
               <div className="mt-10">
-                <a 
-                  href="#contact" 
+                <a
+                  href="#contact"
                   className="bg-power-blue text-white px-8 py-3.5 rounded-lg font-bold hover:bg-blue-900 transition-colors inline-flex items-center shadow-lg"
                 >
                   Ask us About Fleet Services
@@ -70,7 +71,7 @@ const Fleet: React.FC = () => {
               {/* Partner Badge Overlay */}
               <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm p-4 rounded-lg shadow-lg z-20 max-w-xs border-l-4 border-power-red">
                 <p className="text-xs text-gray-500 uppercase font-bold mb-1">Trusted By Industry Leaders</p>
-                <p className="font-bold text-gray-900">Partnered with "We Will Fix It"</p>
+                <p className="font-bold text-gray-900">Partnered with &ldquo;We Will Fix It&rdquo;</p>
               </div>
             </div>
           </div>

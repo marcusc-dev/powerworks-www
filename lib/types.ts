@@ -22,6 +22,7 @@ export interface BrandItem {
   name: string;
   logo: string;
   url: string;
+  slug?: string;
 }
 
 export interface BlogPost {
@@ -30,4 +31,10 @@ export interface BlogPost {
   category: string;
   date: string;
   image: string;
+}
+
+export interface FleetFeature {
+  title: string;
+  description: string;
+  icon: LucideIcon;
 }

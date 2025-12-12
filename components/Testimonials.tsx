@@ -1,6 +1,8 @@
+'use client';
+
 import React from 'react';
 import { Star } from 'lucide-react';
-import { REVIEWS } from '../constants';
+import { REVIEWS } from '@/lib/constants';
 
 const Testimonials: React.FC = () => {
   return (
@@ -33,7 +35,7 @@ const Testimonials: React.FC = () => {
                   <Star key={i} size={16} className="text-yellow-400 fill-current" />
                 ))}
               </div>
-              <p className="text-gray-300 italic mb-6 leading-relaxed">"{review.text}"</p>
+              <p className="text-gray-300 italic mb-6 leading-relaxed">&ldquo;{review.text}&rdquo;</p>
               <div className="flex justify-between items-center mt-auto border-t border-gray-700 pt-4">
                 <span className="font-bold text-white">{review.name}</span>
                 <span className="text-xs text-gray-500">{review.date}</span>
@@ -41,11 +43,11 @@ const Testimonials: React.FC = () => {
             </div>
           ))}
         </div>
-        
+
         <div className="mt-12 text-center">
-             <a 
-                href="https://google.com" 
-                target="_blank" 
+             <a
+                href="https://google.com"
+                target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center text-white border-b border-power-red pb-1 hover:text-power-red transition-colors"
              >

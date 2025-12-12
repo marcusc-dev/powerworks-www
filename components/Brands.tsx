@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react';
-import { BRANDS } from '../constants';
+import { BRANDS } from '@/lib/constants';
 
 const Brands: React.FC = () => {
   return (
