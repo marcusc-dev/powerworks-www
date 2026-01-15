@@ -52,7 +52,7 @@ const Hero: React.FC = () => {
   }, [isMounted]);
 
   return (
-    <div id="home" className="relative h-[500px] md:h-[600px] flex items-center justify-center overflow-hidden bg-gray-900">
+    <div id="home" className="relative h-[620px] md:h-[600px] flex items-center justify-center overflow-hidden bg-gray-900">
       {/* Slideshow Background */}
       {HERO_SLIDES.map((slide, index) => (
         <div
@@ -79,14 +79,14 @@ const Hero: React.FC = () => {
         <div className="flex items-center justify-between h-full">
         <div className="max-w-2xl">
           {/* Trust Badge - positioned to the right to avoid logo overlap */}
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6 animate-fade-in-up ml-40 lg:ml-48">
+          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-4 md:mb-6 animate-fade-in-up ml-48 sm:ml-40 lg:ml-48">
             <div className="flex text-yellow-400">
               {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="currentColor" />)}
             </div>
             <span className="text-white text-xs font-medium tracking-wide">Rated 5 Stars on Google</span>
           </div>
 
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6 min-h-[80px] md:min-h-[140px]">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 md:mb-6 min-h-[70px] md:min-h-[140px]">
             {isMounted ? (
               <AnimatePresence mode="wait">
                 <motion.div
@@ -117,7 +117,7 @@ const Hero: React.FC = () => {
             )}
           </h1>
 
-          <p className="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed max-w-lg">
+          <p className="text-base md:text-xl text-gray-200 mb-6 md:mb-8 leading-relaxed max-w-lg">
             Your trusted British-owned garage in Dubai. From routine service to complex engine work, we treat every car as if it were our own.
           </p>
 
