@@ -1,0 +1,21 @@
+name: competitor-intel
+description: >
+  Crawl and analyze competitor websites for SEO, AEO (LLM visibility), IA, UX/conversion.
+  Outputs actionable Next.js 16 implementation backlog + component specs.
+version: 1.0.0
+
+# If your Claude Code skill system supports "entrypoint" or "prompt_file", keep this.
+prompt_file: prompt.md
+
+# Optional: if your system supports passing a JSON inputs file
+inputs_file: inputs.json
+
+# Optional: if your system supports output validation
+output_schema_file: output-schema.json
+
+tags:
+  - seo
+  - aeo
+  - competitor-analysis
+  - nextjs
+  - local-seo

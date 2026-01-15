@@ -1,0 +1,44 @@
+{
+  "type": "object",
+  "required": ["scorecard", "patternsToCopy", "advantagePlan", "backlog", "components"],
+  "properties": {
+    "scorecard": { "type": "string" },
+    "patternsToCopy": { "type": "string" },
+    "advantagePlan": { "type": "string" },
+    "backlog": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "category", "impact", "effort", "priority", "owner", "acceptanceCriteria"],
+        "properties": {
+          "title": { "type": "string" },
+          "category": { "type": "string", "enum": ["SEO", "AEO", "UX", "Design", "Content", "Tech", "Schema", "Internal Linking"] },
+          "impact": { "type": "string", "enum": ["H", "M", "L"] },
+          "effort": { "type": "string", "enum": ["S", "M", "L"] },
+          "priority": { "type": "string", "enum": ["P0", "P1", "P2"] },
+          "owner": { "type": "string", "enum": ["Dev", "Design", "Content"] },
+          "acceptanceCriteria": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "components": {
+      "type": "object",
+      "required": [
+        "servicePageSpec",
+        "locationPageSpec",
+        "problemPageSpec",
+        "faqPricingBlockSpec",
+        "trustStackSpec",
+        "whatsAppBookingFlowSpec"
+      ],
+      "properties": {
+        "servicePageSpec": { "type": "string" },
+        "locationPageSpec": { "type": "string" },
+        "problemPageSpec": { "type": "string" },
+        "faqPricingBlockSpec": { "type": "string" },
+        "trustStackSpec": { "type": "string" },
+        "whatsAppBookingFlowSpec": { "type": "string" }
+      }
+    }
+  }
+}
