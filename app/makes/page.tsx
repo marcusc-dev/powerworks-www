@@ -19,8 +19,17 @@ export default function MakesPage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="pt-32 pb-20 md:pt-40 md:pb-28 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section
+        className="pt-32 pb-20 md:pt-40 md:pb-28 relative bg-gray-900"
+        style={{
+          backgroundImage: 'url(/makes-header.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-black/60" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
             <span className="text-power-red font-bold uppercase tracking-wider text-sm">All Makes Welcome</span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mt-2 mb-6">
@@ -30,6 +39,21 @@ export default function MakesPage() {
               From luxury European marques to reliable Japanese workhorses, our technicians have the expertise and equipment for your vehicle.
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* Intro Section */}
+      <section className="py-12 md:py-16 bg-white border-b border-gray-100">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+            Any Make. Any Model. Any Year.
+          </h2>
+          <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+            At Powerworks, we believe great service shouldn&apos;t be limited by badge or brand. Our team of experienced technicians are equipped with the latest diagnostic tools and genuine expertise to work on virtually any vehicle that comes through our doors—whether it&apos;s a classic European sports car, a robust American pickup, a reliable Japanese saloon, or the latest Korean SUV.
+          </p>
+          <p className="text-gray-600 leading-relaxed">
+            From routine maintenance to complex repairs, we&apos;ve got the skills, equipment, and parts network to keep your car running at its best. No need to visit multiple specialists—Powerworks is your one-stop garage for all makes and models.
+          </p>
         </div>
       </section>
 
@@ -50,15 +74,15 @@ export default function MakesPage() {
                 >
                   <div className="flex items-center gap-4 mb-4">
                     {make.logo ? (
-                      <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center p-2 shadow-sm">
+                      <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center p-2 shadow-sm group-hover:shadow-md transition-all duration-300">
                         <img
                           src={make.logo}
                           alt={make.name}
-                          className="max-w-full max-h-full object-contain"
+                          className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-300"
                         />
                       </div>
                     ) : (
-                      <div className="w-16 h-16 bg-power-blue rounded-xl flex items-center justify-center text-white font-bold text-lg">
+                      <div className="w-16 h-16 bg-power-blue rounded-xl flex items-center justify-center text-white font-bold text-lg group-hover:scale-105 transition-transform duration-300">
                         {make.shortName.substring(0, 2)}
                       </div>
                     )}
@@ -106,15 +130,15 @@ export default function MakesPage() {
                 >
                   <div className="flex items-center gap-4 mb-4">
                     {make.logo ? (
-                      <div className="w-16 h-16 bg-gray-50 rounded-xl flex items-center justify-center p-2">
+                      <div className="w-16 h-16 bg-gray-50 rounded-xl flex items-center justify-center p-2 group-hover:bg-white group-hover:shadow-md transition-all duration-300">
                         <img
                           src={make.logo}
                           alt={make.name}
-                          className="max-w-full max-h-full object-contain"
+                          className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-300"
                         />
                       </div>
                     ) : (
-                      <div className="w-16 h-16 bg-power-blue rounded-xl flex items-center justify-center text-white font-bold text-lg">
+                      <div className="w-16 h-16 bg-power-blue rounded-xl flex items-center justify-center text-white font-bold text-lg group-hover:scale-105 transition-transform duration-300">
                         {make.shortName.substring(0, 2)}
                       </div>
                     )}
@@ -162,15 +186,15 @@ export default function MakesPage() {
                 >
                   <div className="flex items-center gap-4 mb-4">
                     {make.logo ? (
-                      <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center p-2">
+                      <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center p-2 group-hover:shadow-md transition-all duration-300">
                         <img
                           src={make.logo}
                           alt={make.name}
-                          className="max-w-full max-h-full object-contain"
+                          className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-300"
                         />
                       </div>
                     ) : (
-                      <div className="w-16 h-16 bg-power-blue rounded-xl flex items-center justify-center text-white font-bold text-lg">
+                      <div className="w-16 h-16 bg-power-blue rounded-xl flex items-center justify-center text-white font-bold text-lg group-hover:scale-105 transition-transform duration-300">
                         {make.shortName.substring(0, 2)}
                       </div>
                     )}

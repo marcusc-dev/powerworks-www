@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { SERVICES_DATA, getServiceBySlug, getRelatedServices } from '@/lib/services-data';
+import { getReviewsByTags } from '@/lib/reviews-data';
+import { VEHICLE_MAKES } from '@/lib/vehicle-makes-data';
 import ServicePageClient from './ServicePageClient';
 
 interface PageProps {
@@ -43,6 +45,7 @@ export default async function ServicePage({ params }: PageProps) {
   }
 
   const relatedServices = getRelatedServices(service.relatedServices);
+  const serviceReviews = service.reviewTags ? getReviewsByTags(service.reviewTags) : [];
 
-  return <ServicePageClient service={service} relatedServices={relatedServices} />;
+  return <ServicePageClient service={service} relatedServices={relatedServices} reviews={serviceReviews} vehicleMakes={VEHICLE_MAKES} />;
 }

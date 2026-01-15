@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Star, Quote, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface FeaturedReview {
@@ -46,7 +46,7 @@ const FeaturedReviewsSlider: React.FC = () => {
     const timer = setInterval(() => {
       setDirection(1);
       setCurrentIndex((prev) => (prev + 1) % FEATURED_REVIEWS.length);
-    }, 8000);
+    }, 6000);
 
     return () => clearInterval(timer);
   }, []);
@@ -68,111 +68,151 @@ const FeaturedReviewsSlider: React.FC = () => {
 
   const currentReview = FEATURED_REVIEWS[currentIndex];
 
-  const slideVariants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 300 : -300,
-      opacity: 0,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-    },
-    exit: (direction: number) => ({
-      x: direction < 0 ? 300 : -300,
-      opacity: 0,
-    }),
-  };
-
   return (
-    <div className="relative bg-white rounded-3xl shadow-2xl overflow-hidden">
-      <div className="flex flex-col lg:flex-row">
-        {/* Text Content */}
-        <div className="p-8 md:p-12 lg:p-16 lg:w-1/2 flex flex-col justify-center order-2 lg:order-1 relative min-h-[400px] lg:min-h-[500px]">
-          {/* Stars */}
-          <div className="flex items-center gap-1 mb-6">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-8 h-8 text-yellow-400 fill-current" />
-            ))}
+    <div className="relative">
+      {/* Section Header */}
+      <div className="text-center mb-8">
+        <span className="text-power-red font-bold uppercase tracking-wider text-sm">Featured Stories</span>
+        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mt-2">Happy Customers</h2>
+      </div>
+
+      {/* Main Slider Card */}
+      <div className="relative bg-gradient-to-br from-power-blue via-power-blue to-blue-900 rounded-2xl overflow-hidden shadow-2xl">
+        {/* Decorative Pattern Overlay */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,white_1px,transparent_1px)] [background-size:24px_24px]"></div>
+        </div>
+
+        {/* Diagonal Accent */}
+        <div className="absolute -right-20 -top-20 w-80 h-80 bg-power-red/20 rounded-full blur-3xl"></div>
+        <div className="absolute -left-20 -bottom-20 w-60 h-60 bg-yellow-400/10 rounded-full blur-3xl"></div>
+
+        <div className="relative z-10 flex flex-col md:flex-row items-stretch">
+          {/* Image Section - Left side with creative clipping */}
+          <div className="md:w-2/5 relative">
+            <div className="relative h-64 md:h-80 overflow-hidden">
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={currentIndex}
+                  initial={{ opacity: 0, scale: 1.1 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.5, ease: 'easeOut' }}
+                  className="absolute inset-0"
+                >
+                  <img
+                    src={currentReview.image}
+                    alt={`${currentReview.name}'s ${currentReview.carDescription.replace(' Owner', '')}`}
+                    className="w-full h-full object-cover"
+                  />
+                  {/* Gradient overlay for blend */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-power-blue md:block hidden"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-power-blue via-transparent to-transparent md:hidden"></div>
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Car badge floating on image */}
+              <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg">
+                <span className="text-xs font-bold text-power-blue">{currentReview.carDescription.replace(' Owner', '')}</span>
+              </div>
+            </div>
           </div>
 
-          {/* Animated Quote */}
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.div
-              key={currentIndex}
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.4, ease: 'easeInOut' }}
-            >
-              <blockquote className="text-xl md:text-2xl lg:text-[1.65rem] leading-relaxed text-gray-800 font-medium mb-8">
-                &ldquo;{currentReview.quote}&rdquo;
-              </blockquote>
+          {/* Content Section - Right side */}
+          <div className="md:w-3/5 p-6 md:p-8 flex flex-col justify-center">
+            {/* Quote Icon */}
+            <Quote className="w-10 h-10 text-power-red/60 mb-3 -scale-x-100" fill="currentColor" />
 
-              {/* Author */}
-              <div className="border-t border-gray-200 pt-6">
-                <div className="text-2xl font-bold text-gray-900">{currentReview.name}</div>
-                <div className="text-gray-500 text-lg">{currentReview.carDescription}</div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+            {/* Animated Quote */}
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={currentIndex}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4, ease: 'easeInOut' }}
+              >
+                <blockquote className="text-lg md:text-xl text-white/95 font-medium leading-relaxed mb-6 line-clamp-4">
+                  {currentReview.quote}
+                </blockquote>
 
-          {/* Navigation */}
-          <div className="flex items-center gap-4 mt-8">
-            {/* Dots */}
-            <div className="flex gap-2">
-              {FEATURED_REVIEWS.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => goToSlide(index)}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    index === currentIndex
-                      ? 'bg-power-blue w-8'
-                      : 'bg-gray-300 w-2 hover:bg-gray-400'
-                  }`}
-                  aria-label={`Go to review ${index + 1}`}
-                />
-              ))}
-            </div>
+                {/* Author with Stars */}
+                <div className="flex items-center gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                      ))}
+                    </div>
+                    <div className="text-xl font-bold text-white">{currentReview.name}</div>
+                    <div className="text-white/60 text-sm">{currentReview.carDescription}</div>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
 
-            {/* Arrows */}
-            <div className="flex gap-2 ml-auto">
+            {/* Navigation - Compact inline */}
+            <div className="flex items-center gap-3 mt-6 pt-4 border-t border-white/10">
+              {/* Arrows */}
               <button
                 onClick={goToPrevious}
-                className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
                 aria-label="Previous review"
               >
-                <ChevronLeft size={20} className="text-gray-600" />
+                <ChevronLeft size={18} className="text-white" />
               </button>
               <button
                 onClick={goToNext}
-                className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
                 aria-label="Next review"
               >
-                <ChevronRight size={20} className="text-gray-600" />
+                <ChevronRight size={18} className="text-white" />
               </button>
+
+              {/* Progress Dots */}
+              <div className="flex gap-1.5 ml-auto">
+                {FEATURED_REVIEWS.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      index === currentIndex
+                        ? 'bg-power-red w-6'
+                        : 'bg-white/30 w-1.5 hover:bg-white/50'
+                    }`}
+                    aria-label={`Go to review ${index + 1}`}
+                  />
+                ))}
+              </div>
+
+              {/* Counter */}
+              <div className="text-white/40 text-sm font-mono">
+                {String(currentIndex + 1).padStart(2, '0')}/{String(FEATURED_REVIEWS.length).padStart(2, '0')}
+              </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Image */}
-        <div className="lg:w-1/2 order-1 lg:order-2 bg-white flex items-center overflow-hidden">
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.img
-              key={currentIndex}
-              src={currentReview.image}
-              alt={`${currentReview.name} with their ${currentReview.carDescription.replace(' Owner', '')}`}
-              className="w-full h-auto object-contain"
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.4, ease: 'easeInOut' }}
+      {/* Thumbnail Preview Strip */}
+      <div className="flex justify-center gap-3 mt-6">
+        {FEATURED_REVIEWS.map((review, index) => (
+          <button
+            key={index}
+            onClick={() => goToSlide(index)}
+            className={`relative overflow-hidden rounded-lg transition-all duration-300 ${
+              index === currentIndex
+                ? 'ring-2 ring-power-red ring-offset-2 scale-105'
+                : 'opacity-60 hover:opacity-100 grayscale hover:grayscale-0'
+            }`}
+          >
+            <img
+              src={review.image}
+              alt={review.name}
+              className="w-16 h-12 md:w-20 md:h-14 object-cover"
             />
-          </AnimatePresence>
-        </div>
+          </button>
+        ))}
       </div>
     </div>
   );
