@@ -51,7 +51,7 @@ export default function ServicesPage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+      <section className="relative pt-40 pb-20 md:pt-48 md:pb-28 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <img
@@ -102,46 +102,61 @@ export default function ServicesPage() {
         </div>
 
         {/* Decorative bottom edge */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-50 to-transparent"></div>
       </section>
 
       {/* Services Grid */}
-      <section className="py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <section className="py-16 md:py-24 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* SEO Intro Text */}
+          <div className="max-w-3xl mx-auto text-center mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+              Car Services in Dubai
+            </h2>
+            <p className="text-gray-600 leading-relaxed">
+              Browse our complete range of car servicing and repair options below. Whether you need a routine oil change, AC repair for Dubai&apos;s summer heat, brake service, or full engine diagnostics, our British-trained technicians deliver dealer-quality work at independent garage prices. All services include transparent pricing, genuine parts options, and same-day availability at our Dubai Investment Park workshop.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {SERVICES_DATA.map((service) => {
               const Icon = iconMap[service.iconName];
               return (
                 <Link
                   key={service.slug}
                   href={`/car-servicing-dubai/${service.slug}`}
-                  className="group relative bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl hover:border-power-blue/30 transition-all duration-300"
+                  className="group flex bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-gray-200 transition-all duration-200"
                 >
-                  {/* Top accent */}
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-power-blue via-power-red to-power-blue opacity-0 group-hover:opacity-100 transition-opacity rounded-t-2xl"></div>
-
-                  {/* Icon */}
-                  <div className="w-14 h-14 bg-power-blue/10 rounded-xl flex items-center justify-center text-power-blue mb-6 group-hover:bg-power-blue group-hover:text-white transition-all duration-300">
-                    <Icon size={28} />
+                  {/* Left: Large Service Icon */}
+                  <div className="w-28 flex-shrink-0 flex items-center justify-center py-4">
+                    {service.serviceImage ? (
+                      <img
+                        src={service.serviceImage}
+                        alt={service.shortTitle}
+                        className="w-20 h-20 object-contain"
+                      />
+                    ) : (
+                      <Icon size={64} strokeWidth={1.5} className="text-gray-700" />
+                    )}
                   </div>
 
-                  {/* Content */}
-                  <h2 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-power-blue transition-colors">
-                    {service.shortTitle}
-                  </h2>
-                  <p className="text-gray-600 mb-4 line-clamp-2">
-                    {service.description}
-                  </p>
-
-                  {/* Price */}
-                  <div className="flex items-center justify-between">
-                    <span className="text-power-red font-bold">From {service.priceFrom}</span>
-                    <span className="text-power-blue font-semibold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
-                      Learn More
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </span>
+                  {/* Right: Content */}
+                  <div className="flex-1 py-4 pr-4 flex flex-col justify-center min-w-0">
+                    <h3 className="!text-lg font-semibold text-gray-900 mb-1 group-hover:text-power-blue transition-colors">
+                      {service.shortTitle}
+                    </h3>
+                    <p className="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-3">
+                      {service.description}
+                    </p>
+                    <div className="flex items-center">
+                      <span className="text-power-red font-semibold">{service.priceFrom}</span>
+                      <span className="text-gray-400 text-sm ml-auto inline-flex items-center gap-1 group-hover:text-power-blue transition-colors">
+                        Learn More
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </span>
+                    </div>
                   </div>
                 </Link>
               );
@@ -244,7 +259,7 @@ export default function ServicesPage() {
                     Looking for a dedicated fleet maintenance partner?
                   </p>
                   <Link
-                    href="/#fleet"
+                    href="/fleet-service-dubai"
                     className="inline-flex items-center gap-2 text-power-blue font-bold hover:text-power-red transition-colors"
                   >
                     Explore Fleet Services

@@ -12,6 +12,11 @@ export interface Testimonial {
   rating: number;
   text: string;
   date: string;
+  // SEO tags for filtering
+  carMakes?: string[];
+  carModels?: string[];
+  services?: string[];
+  source?: 'google' | 'facebook' | '2gis' | 'website';
 }
 
 export interface NavItem {

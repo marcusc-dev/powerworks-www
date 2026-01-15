@@ -11,6 +11,7 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const navRef = useRef<HTMLDivElement>(null);
@@ -265,15 +266,53 @@ const Navbar: React.FC = () => {
                 >
                   {item.label}
                 </Link>
-                {/* Add Services link after About Us */}
+                {/* Add expandable Services section after About Us */}
                 {item.label === 'About Us' && (
-                  <Link
-                    href="/car-servicing-dubai"
-                    onClick={() => setIsOpen(false)}
-                    className={className}
-                  >
-                    Services
-                  </Link>
+                  <div>
+                    <button
+                      onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                      className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-700 hover:text-power-blue hover:bg-power-blue/5 transition-colors"
+                    >
+                      <span>Services</span>
+                      <ChevronDown
+                        size={18}
+                        className={`transition-transform duration-200 ${mobileServicesOpen ? 'rotate-180' : ''}`}
+                      />
+                    </button>
+                    <motion.div
+                      initial={false}
+                      animate={{
+                        height: mobileServicesOpen ? 'auto' : 0,
+                        opacity: mobileServicesOpen ? 1 : 0,
+                      }}
+                      transition={{ duration: 0.2 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="pl-4 py-2 space-y-1">
+                        {SERVICES.map((service, idx) => {
+                          const Icon = service.icon;
+                          return (
+                            <Link
+                              key={idx}
+                              href={`/car-servicing-dubai/${service.slug}`}
+                              onClick={() => setIsOpen(false)}
+                              className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-power-blue hover:bg-power-blue/5 transition-colors"
+                            >
+                              <Icon size={16} className="text-power-blue" />
+                              {service.title}
+                            </Link>
+                          );
+                        })}
+                        <Link
+                          href="/car-servicing-dubai"
+                          onClick={() => setIsOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-bold text-power-blue hover:bg-power-blue/5 transition-colors"
+                        >
+                          View All Services →
+                        </Link>
+                      </div>
+                    </motion.div>
+                  </div>
                 )}
               </React.Fragment>
             );

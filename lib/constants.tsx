@@ -157,7 +157,7 @@ export const REVIEWS: Testimonial[] = [
 export const NAV_ITEMS: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
-  { label: "Fleet", href: "/fleet" },
+  { label: "Fleet Services", href: "/fleet-service-dubai" },
   { label: "Ask Glenn", href: "/ask-glenn" },
   { label: "Reviews", href: "/reviews" },
 ];

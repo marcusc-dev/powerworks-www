@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { SERVICES, LOTTIE_URLS } from '@/lib/constants';
 import { motion } from 'framer-motion';
@@ -104,54 +105,55 @@ const Services: React.FC = () => {
           {SERVICES.map((service, index) => {
             const Icon = service.icon;
             return (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="group relative bg-gradient-to-br from-white to-gray-50 rounded-xl p-8 shadow-sm hover:shadow-2xl transition-all duration-300 border border-gray-200 hover:border-power-blue/30 hover:-translate-y-2 overflow-hidden"
-              >
-                {/* Corner Accent - Hexagon Pattern */}
-                <div className="absolute -top-8 -right-8 w-24 h-24 opacity-0 group-hover:opacity-[0.05] transition-opacity duration-500">
-                  <img
-                    src="https://pixabay.com/get/g09a0e3c8e5baffaafd6e6807333c8bca3f1beb8726cf7c80ad6a43034a63a91fca442a83c6f5e0ab0e1f5c2d18f52f90.svg"
-                    alt="Honeycomb pattern"
-                    className="w-full h-full"
-                  />
-                </div>
+              <Link key={index} href={`/car-servicing-dubai/${service.slug}`}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                  className="group relative bg-gradient-to-br from-white to-gray-50 rounded-xl p-8 shadow-sm hover:shadow-2xl transition-all duration-300 border border-gray-200 hover:border-power-blue/30 hover:-translate-y-2 overflow-hidden cursor-pointer h-full"
+                >
+                  {/* Corner Accent - Hexagon Pattern */}
+                  <div className="absolute -top-8 -right-8 w-24 h-24 opacity-0 group-hover:opacity-[0.05] transition-opacity duration-500">
+                    <img
+                      src="https://pixabay.com/get/g09a0e3c8e5baffaafd6e6807333c8bca3f1beb8726cf7c80ad6a43034a63a91fca442a83c6f5e0ab0e1f5c2d18f52f90.svg"
+                      alt="Honeycomb pattern"
+                      className="w-full h-full"
+                    />
+                  </div>
 
-                {/* Tool Silhouette Background */}
-                <div className="absolute bottom-0 right-0 w-20 h-20 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500">
-                  <img
-                    src="https://pixabay.com/get/g1c143ae009a4d73778637f7301eea16e81f21b165bdebc69c23a1ab1bf93adbb4cfceff9e4eb7d4e9005f220532a8eab.svg"
-                    alt="Wrench"
-                    className="w-full h-full"
-                  />
-                </div>
+                  {/* Tool Silhouette Background */}
+                  <div className="absolute bottom-0 right-0 w-20 h-20 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500">
+                    <img
+                      src="https://pixabay.com/get/g1c143ae009a4d73778637f7301eea16e81f21b165bdebc69c23a1ab1bf93adbb4cfceff9e4eb7d4e9005f220532a8eab.svg"
+                      alt="Wrench"
+                      className="w-full h-full"
+                    />
+                  </div>
 
-                {/* Top accent line */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-power-red to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  {/* Top accent line */}
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-power-red to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                {/* Icon with metallic workshop effect */}
-                <div className="relative w-14 h-14 bg-gradient-to-br from-power-blue to-blue-900 rounded-lg flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 mb-6 shadow-lg group-hover:shadow-xl">
-                  <Icon size={28} strokeWidth={2} />
+                  {/* Icon with metallic workshop effect */}
+                  <div className="relative w-14 h-14 bg-gradient-to-br from-power-blue to-blue-900 rounded-lg flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 mb-6 shadow-lg group-hover:shadow-xl">
+                    <Icon size={28} strokeWidth={2} />
 
-                  {/* Shine effect */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
-                </div>
+                    {/* Shine effect */}
+                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+                  </div>
 
-                {/* Content */}
-                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-power-blue transition-colors relative z-10">
-                  {service.title}
-                </h3>
-                <p className="text-gray-500 leading-relaxed text-sm relative z-10 group-hover:text-gray-700 transition-colors">
-                  {service.description}
-                </p>
+                  {/* Content */}
+                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-power-blue transition-colors relative z-10">
+                    {service.title}
+                  </h3>
+                  <p className="text-gray-500 leading-relaxed text-sm relative z-10 group-hover:text-gray-700 transition-colors">
+                    {service.description}
+                  </p>
 
-                {/* Bottom corner indicator */}
-                <div className="absolute bottom-0 left-0 w-0 h-0 border-l-[20px] border-l-transparent border-b-[20px] border-b-power-red/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-bl-xl"></div>
-              </motion.div>
+                  {/* Bottom corner indicator */}
+                  <div className="absolute bottom-0 left-0 w-0 h-0 border-l-[20px] border-l-transparent border-b-[20px] border-b-power-red/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-bl-xl"></div>
+                </motion.div>
+              </Link>
             );
           })}
         </div>
