@@ -15,11 +15,14 @@ export default function FleetPage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 md:pt-40 md:pb-28 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-power-blue rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-power-red rounded-full blur-3xl"></div>
-        </div>
+      <section className="pt-32 pb-20 md:pt-40 md:pb-28 relative overflow-hidden">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/banner-1.jpg')" }}
+        />
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-gray-900/75" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
             <span className="text-power-red font-bold uppercase tracking-wider text-sm">Corporate Partners</span>
