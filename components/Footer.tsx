@@ -1,7 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { Phone, Mail, MapPin, Clock, Instagram, Facebook, MessageCircle, Send, CheckCircle } from 'lucide-react';
+import { BRANDS } from '@/lib/constants';
 
 const Footer: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -65,13 +67,13 @@ const Footer: React.FC = () => {
                   </div>
                 </a>
 
-                <a href="mailto:info@powerworksgarage.ae" className="flex items-center gap-4 group">
+                <a href="mailto:help@powerworksgarage.com" className="flex items-center gap-4 group">
                   <div className="w-12 h-12 bg-gray-800 rounded-xl flex items-center justify-center text-power-blue group-hover:bg-power-blue group-hover:text-white transition-all">
                     <Mail size={20} />
                   </div>
                   <div>
                     <p className="text-xs text-gray-500 uppercase font-bold tracking-wider">Email</p>
-                    <p className="text-lg font-semibold text-white group-hover:text-power-blue transition-colors">info@powerworksgarage.ae</p>
+                    <p className="text-lg font-semibold text-white group-hover:text-power-blue transition-colors">help@powerworksgarage.com</p>
                   </div>
                 </a>
 
@@ -98,10 +100,10 @@ const Footer: React.FC = () => {
 
               {/* Social Links */}
               <div className="flex gap-3 mt-8">
-                <a href="#" className="w-11 h-11 rounded-xl bg-gray-800 flex items-center justify-center hover:bg-gradient-to-br hover:from-purple-600 hover:to-pink-500 transition-all hover:scale-110">
+                <a href="https://www.instagram.com/powerworksgarage/?hl=en-gb" target="_blank" rel="noreferrer" className="w-11 h-11 rounded-xl bg-gray-800 flex items-center justify-center hover:bg-gradient-to-br hover:from-purple-600 hover:to-pink-500 transition-all hover:scale-110">
                   <Instagram size={18} />
                 </a>
-                <a href="#" className="w-11 h-11 rounded-xl bg-gray-800 flex items-center justify-center hover:bg-[#1877F2] transition-all hover:scale-110">
+                <a href="https://www.facebook.com/powerworksdxb/?locale=en_GB" target="_blank" rel="noreferrer" className="w-11 h-11 rounded-xl bg-gray-800 flex items-center justify-center hover:bg-[#1877F2] transition-all hover:scale-110">
                   <Facebook size={18} />
                 </a>
               </div>
@@ -232,6 +234,37 @@ const Footer: React.FC = () => {
                   </form>
                 )}
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Brands We Service Section */}
+        <div className="border-t border-gray-800">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="text-center mb-4">
+              <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider">Brands We Service</h3>
+            </div>
+            <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2">
+              {BRANDS.map((brand, index) => (
+                <span key={brand.slug} className="flex items-center">
+                  <Link
+                    href={brand.url}
+                    className="text-sm text-gray-500 hover:text-white transition-colors"
+                  >
+                    {brand.name}
+                  </Link>
+                  {index < BRANDS.length - 1 && <span className="text-gray-700 ml-6">•</span>}
+                </span>
+              ))}
+              <span className="flex items-center">
+                <span className="text-gray-700">•</span>
+                <Link
+                  href="/makes"
+                  className="text-sm text-power-blue hover:text-white transition-colors ml-6"
+                >
+                  All Brands →
+                </Link>
+              </span>
             </div>
           </div>
         </div>

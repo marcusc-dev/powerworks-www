@@ -60,25 +60,30 @@ export const HERO_HEADLINES = [
 ];
 
 export const BRANDS: BrandItem[] = [
-  { name: "Land Rover", logo: "/landrover.png", url: "/service/land-rover-dubai", slug: "land-rover-dubai" },
-  { name: "Audi", logo: "/audi.png", url: "/service/audi-dubai", slug: "audi-dubai" },
-  { name: "Porsche", logo: "/porsche.png", url: "/service/porsche-dubai", slug: "porsche-dubai" },
-  { name: "Bentley", logo: "/bentley.png", url: "/service/bentley-dubai", slug: "bentley-dubai" },
-  { name: "Volkswagen", logo: "/vw.png", url: "/service/volkswagen-dubai", slug: "volkswagen-dubai" },
+  { name: "Land Rover", logo: "/landrover.png", url: "/makes/land-rover", slug: "land-rover", vehicleImage: "/vehicles/land-rover.jpg" },
+  { name: "Range Rover", logo: "/logos/rangerover.png", url: "/makes/range-rover", slug: "range-rover", vehicleImage: "/vehicles/range-rover.jpg" },
+  { name: "Porsche", logo: "/porsche.png", url: "/makes/porsche", slug: "porsche", vehicleImage: "/vehicles/porsche.jpg" },
+  { name: "Bentley", logo: "/bentley.png", url: "/makes/bentley", slug: "bentley", vehicleImage: "/vehicles/bentley.jpg" },
+  { name: "Mercedes-Benz", logo: "/logos/mercedes.png", url: "/makes/mercedes", slug: "mercedes", vehicleImage: "/vehicles/mercedes.jpg" },
+  { name: "Rolls-Royce", logo: "/logos/rollsroyce.png", url: "/makes/rolls-royce", slug: "rolls-royce", vehicleImage: "/vehicles/rolls-royce.jpg" },
+  { name: "Volkswagen", logo: "/vw.png", url: "/makes/volkswagen", slug: "volkswagen", vehicleImage: "/vehicles/volkswagen.jpg" },
+  { name: "Jaguar", logo: "/logos/jaguar.png", url: "/makes/jaguar", slug: "jaguar", vehicleImage: "/vehicles/jaguar.jpg" },
+  { name: "Aston Martin", logo: "/logos/astonmartin.png", url: "/makes/aston-martin", slug: "aston-martin", vehicleImage: "/vehicles/aston-martin.jpg" },
+  { name: "Audi", logo: "/audi.png", url: "/makes/audi", slug: "audi" },
 ];
 
 export const SERVICES: ServiceItem[] = [
-  { title: "Car Service", description: "Comprehensive maintenance for all makes and models.", icon: CarFront },
-  { title: "AC Repair", description: "Keep your cool in the Dubai heat with expert AC diagnostics.", icon: ThermometerSnowflake },
-  { title: "Oil Change", description: "Premium oils and filters to protect your engine's longevity.", icon: Droplet },
-  { title: "Electrical Diagnostics", description: "Advanced troubleshooting for modern vehicle electronics.", icon: Zap },
-  { title: "Brake Service", description: "Safety first with high-quality brake pads and rotor services.", icon: Disc },
-  { title: "Suspension", description: "Smooth ride guarantee with shock and strut replacement.", icon: Activity },
-  { title: "Transmission Repair", description: "Expert gearbox maintenance and fluid changes.", icon: Cog },
-  { title: "Engine Work", description: "From tune-ups to complete overhauls by certified pros.", icon: Wrench },
-  { title: "Battery Replacement", description: "High-performance batteries for reliable starting.", icon: Battery },
-  { title: "Tyre Replacement", description: "Top brands fitted and balanced perfectly.", icon: CircleDot },
-  { title: "Pre-Purchase Inspection", description: "Buy with confidence. Detailed reports on used cars.", icon: ClipboardCheck },
+  { title: "Car Service", description: "Comprehensive maintenance for all makes and models.", icon: CarFront, slug: "car-service-dubai" },
+  { title: "AC Repair", description: "Keep your cool in the Dubai heat with expert AC diagnostics.", icon: ThermometerSnowflake, slug: "ac-repair-dubai" },
+  { title: "Oil Change", description: "Premium oils and filters to protect your engine's longevity.", icon: Droplet, slug: "oil-change-dubai" },
+  { title: "Electrical Diagnostics", description: "Advanced troubleshooting for modern vehicle electronics.", icon: Zap, slug: "electrical-diagnostics-dubai" },
+  { title: "Brake Service", description: "Safety first with high-quality brake pads and rotor services.", icon: Disc, slug: "brake-service-dubai" },
+  { title: "Suspension", description: "Smooth ride guarantee with shock and strut replacement.", icon: Activity, slug: "suspension-repair-dubai" },
+  { title: "Transmission Repair", description: "Expert gearbox maintenance and fluid changes.", icon: Cog, slug: "transmission-repair-dubai" },
+  { title: "Engine Work", description: "From tune-ups to complete overhauls by certified pros.", icon: Wrench, slug: "engine-repair-dubai" },
+  { title: "Battery Replacement", description: "High-performance batteries for reliable starting.", icon: Battery, slug: "battery-replacement-dubai" },
+  { title: "Tyre Replacement", description: "Top brands fitted and balanced perfectly.", icon: CircleDot, slug: "tyre-replacement-dubai" },
+  { title: "Pre-Purchase Inspection", description: "Buy with confidence. Detailed reports on used cars.", icon: ClipboardCheck, slug: "pre-purchase-inspection-dubai" },
 ];
 
 export const FLEET_FEATURES: FleetFeature[] = [
@@ -130,31 +135,31 @@ export const BLOG_POSTS: BlogPost[] = [
 
 export const REVIEWS: Testimonial[] = [
   {
-    name: "James Anderson",
+    name: "John Mayes",
     rating: 5,
-    text: "Finally a garage in Dubai I can trust. Glenn and the team explained everything clearly and the pricing was transparent. Felt just like my local back in the UK.",
-    date: "2 weeks ago"
+    text: "Glenn and his team are brilliant. Service is quick and thorough, quality is excellent and competitively priced (brilliant value for money for the trust and integrity). They always go out of their way to help.",
+    date: "Google Review"
   },
   {
-    name: "Sarah Jenkins",
+    name: "Laura",
     rating: 5,
-    text: "Top notch service! My AC died in July and they fixed it same day. The customer lounge is comfortable and the staff are incredibly polite. Highly recommended.",
-    date: "1 month ago"
+    text: "Great service from Justin from start to finish, I needed a part replacing urgently and the team got it done within an hour!",
+    date: "Google Review"
   },
   {
-    name: "Mohammed Al-Fayed",
+    name: "Mizia Buzaladze",
     rating: 5,
-    text: "Excellent diagnostic skills. The dealer wanted to replace the whole engine, but Powerworks found the specific sensor issue saving me thousands. 5 stars!",
-    date: "3 months ago"
+    text: "I had an excellent experience at Power Works Garage! Everything was handled very professionally and on time. The team is extremely skilled, friendly, and approachable. I really appreciate their dedication and great customer service.",
+    date: "Google Review"
   }
 ];
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: "Home", href: "#home" },
-  { label: "About Us", href: "#owner" },
-  { label: "Services", href: "#services" },
-  { label: "Fleet", href: "#fleet" },
-  { label: "Ask Glenn", href: "#ask-glenn" },
-  { label: "Reviews", href: "#reviews" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/" },
+  { label: "About Us", href: "/about" },
+  { label: "Fleet", href: "/fleet" },
+  { label: "Ask Glenn", href: "/ask-glenn" },
+  { label: "Reviews", href: "/reviews" },
 ];
+
+// Contact is handled separately in Navbar as a CTA button

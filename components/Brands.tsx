@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { BRANDS } from '@/lib/constants';
 
 const Brands: React.FC = () => {
@@ -20,23 +21,23 @@ const Brands: React.FC = () => {
 
         {/* Brand Logos Grid */}
         <div className="relative">
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+          <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-2 md:gap-x-12">
             {BRANDS.map((brand) => (
-              <a
+              <Link
                 key={brand.name}
                 href={brand.url}
                 title={`${brand.name} Service & Repair Dubai`}
-                className="group flex flex-col justify-center items-center h-32 w-32 md:w-40 transition-all duration-300 hover:scale-110"
+                className="group flex flex-col justify-center items-center h-28 w-36 md:w-44 transition-all duration-300 hover:scale-110"
               >
                 <img
                   src={brand.logo}
                   alt={`${brand.name} Service Dubai - Powerworks Garage`}
-                  className="w-auto h-14 md:h-16 object-contain filter grayscale group-hover:grayscale-0 opacity-60 group-hover:opacity-100 transition-all duration-300"
+                  className="w-auto h-20 md:h-24 object-contain filter grayscale group-hover:grayscale-0 opacity-60 group-hover:opacity-100 transition-all duration-300"
                 />
-                <span className="text-xs font-semibold text-gray-400 mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                <span className="text-xs font-semibold text-gray-400 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   {brand.name}
                 </span>
-              </a>
+              </Link>
             ))}
           </div>
         </div>
@@ -45,9 +46,9 @@ const Brands: React.FC = () => {
         <div className="text-center mt-12">
           <p className="text-gray-400 text-sm">
             Plus Toyota, Nissan, Honda, and other major manufacturers.{' '}
-            <a href="#contact" className="text-power-blue hover:text-power-red font-medium transition-colors">
-              Contact us for your brand →
-            </a>
+            <Link href="/makes" className="text-power-blue hover:text-power-red font-medium transition-colors">
+              View all brands we service →
+            </Link>
           </p>
         </div>
       </div>

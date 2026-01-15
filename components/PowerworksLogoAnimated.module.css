@@ -1,0 +1,124 @@
+.logo {
+  display: inline-block;
+  position: relative;
+  padding: 12px 16px;
+  border-radius: 16px;
+
+  /* Solid white background for raised card effect */
+  background: #ffffff;
+
+  /* Enhanced shadow for raised/floating effect */
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.06);
+
+  /* Subtle border */
+  border: 1px solid rgba(0, 0, 0, 0.06);
+
+  /* Smooth transition for hover effects */
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.3s ease;
+}
+
+/* Hover lift effect - more pronounced shadow */
+.logo:hover {
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.15),
+    0 6px 16px rgba(0, 0, 0, 0.1),
+    0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* When scrolled - remove card styling for seamless header integration */
+.logoScrolled {
+  padding: 4px;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+}
+
+.logoScrolled:hover {
+  box-shadow: none;
+}
+
+.logo svg {
+  display: block;
+  width: 100%;
+  height: auto;
+
+  /* Smooth rotation on hover */
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Rock the entire logo side to side on hover */
+.logo:hover svg {
+  animation: logoRock 0.6s ease-in-out infinite;
+}
+
+@keyframes logoRock {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-4deg);
+  }
+  75% {
+    transform: rotate(4deg);
+  }
+}
+
+/* Set transform-box for proper transform-origin calculation */
+.piston,
+.wheel {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Piston pump animation on hover */
+.logo:hover .piston {
+  animation: pistonPump 650ms ease-in-out infinite;
+}
+
+/* Wheel rotation animation on hover - continuous spin */
+.logo:hover .wheel {
+  animation: wheelRotate 2s linear infinite;
+}
+
+/* Piston pump keyframes - more dramatic up/down motion */
+@keyframes pistonPump {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-35px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Full wheel rotation for visibility */
+@keyframes wheelRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Respect user preferences for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .logo,
+  .logo svg {
+    transition: none !important;
+  }
+
+  .logo:hover svg,
+  .logo:hover .piston,
+  .logo:hover .wheel {
+    animation: none !important;
+    transform: none !important;
+  }
+}

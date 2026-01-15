@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { FLEET_FEATURES } from '@/lib/constants';
 
 const Fleet: React.FC = () => {
@@ -49,12 +50,12 @@ const Fleet: React.FC = () => {
               </div>
 
               <div className="mt-10">
-                <a
-                  href="#contact"
+                <Link
+                  href="/fleet"
                   className="bg-power-blue text-white px-8 py-3.5 rounded-lg font-bold hover:bg-blue-900 transition-colors inline-flex items-center shadow-lg"
                 >
                   Ask us About Fleet Services
-                </a>
+                </Link>
               </div>
             </div>
           </div>

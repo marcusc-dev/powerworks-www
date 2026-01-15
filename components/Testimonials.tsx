@@ -46,7 +46,7 @@ const Testimonials: React.FC = () => {
 
         <div className="mt-12 text-center">
              <a
-                href="https://google.com"
+                href="https://g.page/r/CaXX8WWhIsOLEAE/review"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center text-white border-b border-power-red pb-1 hover:text-power-red transition-colors"

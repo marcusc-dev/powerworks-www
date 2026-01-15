@@ -1,0 +1,67 @@
+{
+  "project": {
+    "name": "Powerworks Garage",
+    "stack": "Next.js 16",
+    "goals": [
+      "Rank in Google for service + location intent (Dubai)",
+      "Become highly quotable by LLMs (AEO) for problems, costs, and steps",
+      "Maximise conversions via WhatsApp + booking CTAs"
+    ],
+    "positioning": [
+      "British-owned / British-trained",
+      "High trust, transparent, specialist-level workmanship",
+      "Dubai-specific expertise (heat, traffic, sand, AC load)"
+    ]
+  },
+  "competitors": [
+    "https://royaltechautos.com/",
+    "https://autopro.ae/",
+    "https://swissauto.ae/",
+    "https://www.carcility.com/",
+    "https://www.pitstoparabia.com/",
+    "https://autofix.ae/home",
+    "https://munichmotorworks.ae/"
+  ],
+  "crawl": {
+    "maxPagesPerDomain": 40,
+    "maxDepth": 3,
+    "focus": [
+      "service pages",
+      "brand pages (BMW/Audi/RR/Mercedes etc.)",
+      "booking/quote flows",
+      "location targeting pages",
+      "FAQs/pricing blocks",
+      "review/trust signals",
+      "schema markup"
+    ]
+  },
+  "powerworksBlueprint": {
+    "pageTypesToBuild": [
+      "Service pages",
+      "Location / neighborhood pages",
+      "Problem/Symptom pages",
+      "Brand authority pages (make/model specialist)"
+    ],
+    "mustHaveSections": [
+      "Trust stack",
+      "Symptoms checklist",
+      "When it’s safe/unsafe to drive",
+      "Step-by-step process",
+      "Pricing ranges + cost factors",
+      "FAQ block (with schema)",
+      "Internal links to related services/problems/locations",
+      "Dubai-specific notes (heat/traffic/sand)"
+    ],
+    "targetLocations": [
+      "Al Quoz",
+      "Dubai Marina",
+      "Jumeirah",
+      "Downtown Dubai",
+      "JLT",
+      "Business Bay",
+      "Palm Jumeirah",
+      "The Springs",
+      "Arabian Ranches"
+    ]
+  }
+}

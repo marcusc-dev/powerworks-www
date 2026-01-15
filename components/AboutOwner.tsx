@@ -39,6 +39,15 @@ const AboutOwner: React.FC = () => {
                   </div>
                   <p className="text-white font-bold text-2xl">Glenn Power</p>
                   <p className="text-gray-300 font-medium">Founder & Lead Technician</p>
+                  {/* Glenn's Signature */}
+                  <img
+                    src="/signature-gp.png"
+                    alt="Glenn Power Signature"
+                    className="mt-4 w-44 opacity-90"
+                    style={{
+                      filter: 'brightness(0) invert(1)',
+                    }}
+                  />
                 </div>
               </div>
 

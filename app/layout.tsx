@@ -18,6 +18,13 @@ export const metadata: Metadata = {
   title: 'Powerworks Garage | British-Owned Car Repair Specialists in Dubai',
   description: 'British-owned car repair and service centre in Dubai. 20+ years experience, honest diagnostics, transparent pricing. Specialists in European and Japanese vehicles.',
   keywords: 'car repair dubai, car service dubai, british garage dubai, land rover service dubai, bmw repair dubai, mercedes service dubai, auto repair al quoz',
+  icons: {
+    icon: [
+      { url: '/Icons/favicon.ico' },
+      { url: '/Icons/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/Icons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+  },
   openGraph: {
     title: 'Powerworks Garage | British-Owned Car Repair Specialists in Dubai',
     description: 'British precision meets Dubai hospitality. Your trusted car repair and service centre with 20+ years experience.',

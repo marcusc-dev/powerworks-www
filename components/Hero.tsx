@@ -78,8 +78,8 @@ const Hero: React.FC = () => {
       <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-40 h-full">
         <div className="flex items-center justify-between h-full">
         <div className="max-w-2xl">
-          {/* Trust Badge */}
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6 animate-fade-in-up">
+          {/* Trust Badge - positioned to the right to avoid logo overlap */}
+          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6 animate-fade-in-up ml-40 lg:ml-48">
             <div className="flex text-yellow-400">
               {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="currentColor" />)}
             </div>
@@ -158,6 +158,15 @@ const Hero: React.FC = () => {
             style={{
               maskImage: 'linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%)',
               WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%)',
+            }}
+          />
+          {/* Glenn's Signature */}
+          <img
+            src="/signature-gp.png"
+            alt="Glenn Power Signature"
+            className="absolute bottom-8 right-8 w-56 opacity-90 drop-shadow-lg"
+            style={{
+              filter: 'brightness(0) invert(1)',
             }}
           />
         </div>

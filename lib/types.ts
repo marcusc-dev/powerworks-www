@@ -4,6 +4,7 @@ export interface ServiceItem {
   title: string;
   description: string;
   icon: LucideIcon;
+  slug: string;
 }
 
 export interface Testimonial {
@@ -22,7 +23,8 @@ export interface BrandItem {
   name: string;
   logo: string;
   url: string;
-  slug?: string;
+  slug: string;
+  vehicleImage?: string;
 }
 
 export interface BlogPost {
