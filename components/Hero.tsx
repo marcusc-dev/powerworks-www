@@ -79,14 +79,14 @@ const Hero: React.FC = () => {
         <div className="flex items-center justify-between h-full">
         <div className="max-w-2xl">
           {/* Trust Badge - positioned to the right to avoid logo overlap */}
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-4 md:mb-6 animate-fade-in-up ml-48 sm:ml-40 lg:ml-48">
+          <div className="inline-flex flex-col md:flex-row items-center gap-1 md:gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl md:rounded-full px-4 py-2 md:py-1.5 mb-4 md:mb-6 animate-fade-in-up ml-48 sm:ml-40 lg:ml-48">
             <div className="flex text-yellow-400">
               {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="currentColor" />)}
             </div>
             <span className="text-white text-xs font-medium tracking-wide">Rated 5 Stars on Google</span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 md:mb-6 min-h-[70px] md:min-h-[140px]">
+          <h1 className="text-[1.4rem] sm:text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 md:mb-6 min-h-[90px] md:min-h-[140px]">
             {isMounted ? (
               <AnimatePresence mode="wait">
                 <motion.div
@@ -97,20 +97,20 @@ const Hero: React.FC = () => {
                   transition={{ duration: 0.5 }}
                   className="flex flex-col"
                 >
-                  <span className="text-white whitespace-nowrap">
+                  <span className="text-white">
                     {HERO_HEADLINES[currentHeadline].line1}
                   </span>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-300 whitespace-nowrap">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-300">
                     {HERO_HEADLINES[currentHeadline].line2}
                   </span>
                 </motion.div>
               </AnimatePresence>
             ) : (
               <div className="flex flex-col">
-                <span className="text-white whitespace-nowrap">
+                <span className="text-white">
                   {HERO_HEADLINES[0].line1}
                 </span>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-300 whitespace-nowrap">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-300">
                   {HERO_HEADLINES[0].line2}
                 </span>
               </div>
