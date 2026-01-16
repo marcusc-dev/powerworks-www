@@ -241,7 +241,7 @@ export default function MakeServicePageClient({ service, vehicleMake }: MakeServ
               <div className="flex items-start gap-4 mb-6">
                 <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-power-red flex-shrink-0">
                   <img
-                    src="/glenn.jpg"
+                    src="/glenn-power.png"
                     alt="Glenn - Powerworks Founder"
                     className="w-full h-full object-cover"
                   />
@@ -458,7 +458,7 @@ export default function MakeServicePageClient({ service, vehicleMake }: MakeServ
                     <div className="flex gap-4 pl-14">
                       <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-power-red flex-shrink-0">
                         <img
-                          src="/glenn.jpg"
+                          src="/glenn-power.png"
                           alt="Glenn"
                           className="w-full h-full object-cover"
                         />

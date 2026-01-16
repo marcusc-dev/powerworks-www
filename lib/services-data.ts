@@ -191,7 +191,7 @@ export const SERVICES_DATA: ServiceData[] = [
       { step: 2, title: 'Code Scanning', description: 'Using dealer-level tools, we read all stored and pending fault codes from every module.' },
       { step: 3, title: 'Live Data Analysis', description: 'We monitor sensor readings in real-time to identify anomalies.' },
       { step: 4, title: 'Component Testing', description: 'Suspected components are tested individually to confirm the root cause.' },
-      { step: 5, title: 'Report & Recommendation', description: 'You receive a clear explanation of the problem and repair options.' }
+      { step: 5, title: 'Report & Advice', description: 'You receive a clear explanation of the problem and repair options.' }
     ],
     priceFrom: 'AED 150',
     faqs: [

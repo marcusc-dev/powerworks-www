@@ -303,10 +303,10 @@ export default function ServicePageClient({ service, relatedServices, reviews = 
                   >
                     {step.step}
                   </motion.div>
-                  <h3 className="text-base font-bold text-gray-900 mb-2 transition-colors duration-300 group-hover:text-power-blue">
+                  <h3 className="text-sm font-bold text-gray-900 mb-2 transition-colors duration-300 group-hover:text-power-blue">
                     {step.title}
                   </h3>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-gray-600 text-xs">
                     {step.description}
                   </p>
                 </div>
