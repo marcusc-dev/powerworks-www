@@ -5,6 +5,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { SERVICES, LOTTIE_URLS } from '@/lib/constants';
 import { motion } from 'framer-motion';
+import { Wrench } from 'lucide-react';
 
 const Player = dynamic(
   () => import('@lottiefiles/react-lottie-player').then((mod) => mod.Player),
@@ -14,48 +15,14 @@ const Player = dynamic(
 const Services: React.FC = () => {
   return (
     <section id="services" className="py-24 bg-white relative overflow-hidden">
-      {/* Workshop-themed Background Elements */}
-      <div className="absolute inset-0 opacity-[0.02]">
-        {/* Honeycomb technical pattern */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url("https://pixabay.com/get/g09a0e3c8e5baffaafd6e6807333c8bca3f1beb8726cf7c80ad6a43034a63a91fca442a83c6f5e0ab0e1f5c2d18f52f90.svg")`,
-            backgroundSize: '120px 120px',
-            backgroundRepeat: 'repeat'
-          }}
-        />
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 opacity-[0.03]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_25%,#1e3a5f_1px,transparent_1px)] [background-size:40px_40px]"></div>
       </div>
 
-      {/* Decorative Tool Icons */}
-      <div className="absolute top-20 left-10 w-24 h-24 opacity-[0.03] rotate-12">
-        <img
-          src="https://pixabay.com/get/g1c143ae009a4d73778637f7301eea16e81f21b165bdebc69c23a1ab1bf93adbb4cfceff9e4eb7d4e9005f220532a8eab.svg"
-          alt="Wrench decoration"
-          className="w-full h-full"
-        />
-      </div>
-
-      <div className="absolute bottom-32 right-16 w-20 h-20 opacity-[0.03] -rotate-45">
-        <img
-          src="https://pixabay.com/get/g21b4a8da76888fbac11976f519bc830fcc2e59b1f698368734af73d14f68b753b71af9fc14b62bc266f1f096bd057191.svg"
-          alt="Toolbox decoration"
-          className="w-full h-full"
-        />
-      </div>
-
-      {/* Animated Gear */}
-      <motion.div
-        className="absolute top-1/2 right-8 w-32 h-32 opacity-[0.02]"
-        animate={{ rotate: 360 }}
-        transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-      >
-        <img
-          src="https://pixabay.com/get/g297a83aad3174853ab2e76a10afd78fd0a41510b1b31f217bb64b14e536f8b4d1c35265e55d73e623b060b4df3cf4b68.svg"
-          alt="Gear decoration"
-          className="w-full h-full"
-        />
-      </motion.div>
+      {/* Decorative gradient blurs */}
+      <div className="absolute top-20 left-10 w-64 h-64 bg-power-blue/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-20 right-10 w-48 h-48 bg-power-red/5 rounded-full blur-3xl"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
@@ -100,59 +67,49 @@ const Services: React.FC = () => {
           </div>
         </div>
 
-        {/* Enhanced Service Grid with Workshop Aesthetic */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {/* Service Grid - Horizontal Card Layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {SERVICES.map((service, index) => {
             const Icon = service.icon;
             return (
-              <Link key={index} href={`/car-servicing-dubai/${service.slug}`}>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                  className="group relative bg-gradient-to-br from-white to-gray-50 rounded-xl p-8 shadow-sm hover:shadow-2xl transition-all duration-300 border border-gray-200 hover:border-power-blue/30 hover:-translate-y-2 overflow-hidden cursor-pointer h-full"
-                >
-                  {/* Corner Accent - Hexagon Pattern */}
-                  <div className="absolute -top-8 -right-8 w-24 h-24 opacity-0 group-hover:opacity-[0.05] transition-opacity duration-500">
+              <Link
+                key={index}
+                href={`/car-servicing-dubai/${service.slug}`}
+                className="group flex bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-gray-200 transition-all duration-200"
+              >
+                {/* Left: Service Icon */}
+                <div className="w-28 flex-shrink-0 flex items-center justify-center py-4">
+                  {service.serviceImage ? (
                     <img
-                      src="https://pixabay.com/get/g09a0e3c8e5baffaafd6e6807333c8bca3f1beb8726cf7c80ad6a43034a63a91fca442a83c6f5e0ab0e1f5c2d18f52f90.svg"
-                      alt="Honeycomb pattern"
-                      className="w-full h-full"
+                      src={service.serviceImage}
+                      alt={service.title}
+                      className="w-20 h-20 object-contain"
                     />
-                  </div>
+                  ) : (
+                    <Icon size={64} strokeWidth={1.5} className="text-gray-700" />
+                  )}
+                </div>
 
-                  {/* Tool Silhouette Background */}
-                  <div className="absolute bottom-0 right-0 w-20 h-20 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500">
-                    <img
-                      src="https://pixabay.com/get/g1c143ae009a4d73778637f7301eea16e81f21b165bdebc69c23a1ab1bf93adbb4cfceff9e4eb7d4e9005f220532a8eab.svg"
-                      alt="Wrench"
-                      className="w-full h-full"
-                    />
-                  </div>
-
-                  {/* Top accent line */}
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-power-red to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                  {/* Icon with metallic workshop effect */}
-                  <div className="relative w-14 h-14 bg-gradient-to-br from-power-blue to-blue-900 rounded-lg flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 mb-6 shadow-lg group-hover:shadow-xl">
-                    <Icon size={28} strokeWidth={2} />
-
-                    {/* Shine effect */}
-                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
-                  </div>
-
-                  {/* Content */}
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-power-blue transition-colors relative z-10">
+                {/* Right: Content */}
+                <div className="flex-1 py-4 pr-4 flex flex-col justify-center min-w-0">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-power-blue transition-colors">
                     {service.title}
                   </h3>
-                  <p className="text-gray-500 leading-relaxed text-sm relative z-10 group-hover:text-gray-700 transition-colors">
+                  <p className="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-3">
                     {service.description}
                   </p>
-
-                  {/* Bottom corner indicator */}
-                  <div className="absolute bottom-0 left-0 w-0 h-0 border-l-[20px] border-l-transparent border-b-[20px] border-b-power-red/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-bl-xl"></div>
-                </motion.div>
+                  <div className="flex items-center">
+                    {service.priceFrom && (
+                      <span className="text-power-red font-semibold">{service.priceFrom}</span>
+                    )}
+                    <span className="text-gray-400 text-sm ml-auto inline-flex items-center gap-1 group-hover:text-power-blue transition-colors">
+                      Learn More
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  </div>
+                </div>
               </Link>
             );
           })}
@@ -173,12 +130,8 @@ const Services: React.FC = () => {
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               {/* Left side with diagnostic illustration */}
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 flex-shrink-0">
-                  <img
-                    src="https://pixabay.com/get/gf6d8d7234acc8c17cfd227b9561ace4e7bb6eea44a8814194eab17f28551ffe0f6e1b04012f4f335329e9d6071ed3089.svg"
-                    alt="Garage lift"
-                    className="w-full h-full opacity-60"
-                  />
+                <div className="w-14 h-14 flex-shrink-0 bg-gradient-to-br from-power-blue to-blue-900 rounded-xl flex items-center justify-center shadow-lg">
+                  <Wrench className="w-7 h-7 text-white" />
                 </div>
                 <div className="text-left">
                   <p className="text-gray-900 font-bold text-lg mb-1">Don&apos;t see what you need?</p>

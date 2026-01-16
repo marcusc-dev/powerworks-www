@@ -41,7 +41,13 @@
       "Bash(ls:*)",
       "Bash(head:*)",
       "Bash(grep:*)",
-      "mcp__firecrawl__firecrawl_map"
+      "mcp__firecrawl__firecrawl_map",
+      "Bash(node:*)",
+      "Bash(npm --version:*)",
+      "Bash(tree:*)",
+      "Bash(tasklist:*)",
+      "Bash(findstr:*)",
+      "Bash(git diff:*)"
     ]
   }
 }

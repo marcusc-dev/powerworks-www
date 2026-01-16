@@ -5,6 +5,8 @@ export interface ServiceItem {
   description: string;
   icon: LucideIcon;
   slug: string;
+  serviceImage?: string;
+  priceFrom?: string;
 }
 
 export interface Testimonial {

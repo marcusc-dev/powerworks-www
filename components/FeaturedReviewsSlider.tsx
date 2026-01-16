@@ -71,114 +71,113 @@ const FeaturedReviewsSlider: React.FC = () => {
   return (
     <div className="relative">
       {/* Section Header */}
-      <div className="text-center mb-8">
+      <div className="text-center mb-10">
         <span className="text-power-red font-bold uppercase tracking-wider text-sm">Featured Stories</span>
         <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mt-2">Happy Customers</h2>
       </div>
 
-      {/* Main Slider Card */}
-      <div className="relative bg-gradient-to-br from-power-blue via-power-blue to-blue-900 rounded-2xl overflow-hidden shadow-2xl">
-        {/* Decorative Pattern Overlay */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,white_1px,transparent_1px)] [background-size:24px_24px]"></div>
-        </div>
+      {/* Main Slider - Split Layout */}
+      <div className="relative flex flex-col lg:flex-row items-stretch gap-0 rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
 
-        {/* Diagonal Accent */}
-        <div className="absolute -right-20 -top-20 w-80 h-80 bg-power-red/20 rounded-full blur-3xl"></div>
-        <div className="absolute -left-20 -bottom-20 w-60 h-60 bg-yellow-400/10 rounded-full blur-3xl"></div>
+        {/* Image Section - Clean white background */}
+        <div className="lg:w-1/2 relative bg-white">
+          <div className="relative h-72 md:h-80 lg:h-[420px] overflow-hidden">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={currentIndex}
+                initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: direction > 0 ? -100 : 100 }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+                className="absolute inset-0 flex items-center justify-center p-4"
+              >
+                <img
+                  src={currentReview.image}
+                  alt={`${currentReview.name}'s ${currentReview.carDescription.replace(' Owner', '')}`}
+                  className="w-full h-full object-contain"
+                />
+              </motion.div>
+            </AnimatePresence>
 
-        <div className="relative z-10 flex flex-col md:flex-row items-stretch">
-          {/* Image Section - Left side with creative clipping */}
-          <div className="md:w-2/5 relative">
-            <div className="relative h-64 md:h-80 overflow-hidden">
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.div
-                  key={currentIndex}
-                  initial={{ opacity: 0, scale: 1.1 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.5, ease: 'easeOut' }}
-                  className="absolute inset-0"
-                >
-                  <img
-                    src={currentReview.image}
-                    alt={`${currentReview.name}'s ${currentReview.carDescription.replace(' Owner', '')}`}
-                    className="w-full h-full object-cover"
-                  />
-                  {/* Gradient overlay for blend */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-power-blue md:block hidden"></div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-power-blue via-transparent to-transparent md:hidden"></div>
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Car badge floating on image */}
-              <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg">
-                <span className="text-xs font-bold text-power-blue">{currentReview.carDescription.replace(' Owner', '')}</span>
-              </div>
+            {/* Car badge floating on image */}
+            <div className="absolute bottom-4 left-4 bg-power-blue text-white px-4 py-2 rounded-full shadow-lg">
+              <span className="text-sm font-bold">{currentReview.carDescription.replace(' Owner', '')}</span>
             </div>
           </div>
+        </div>
 
-          {/* Content Section - Right side */}
-          <div className="md:w-3/5 p-6 md:p-8 flex flex-col justify-center">
+        {/* Content Section - Dark gradient */}
+        <div className="lg:w-1/2 relative bg-gradient-to-br from-gray-900 via-gray-800 to-power-blue overflow-hidden">
+          {/* Decorative elements */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-power-red/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-power-blue/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+
+          {/* Subtle pattern */}
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,white_1px,transparent_1px)] [background-size:20px_20px]"></div>
+          </div>
+
+          <div className="relative z-10 p-6 md:p-8 lg:p-10 h-full flex flex-col justify-center">
             {/* Quote Icon */}
-            <Quote className="w-10 h-10 text-power-red/60 mb-3 -scale-x-100" fill="currentColor" />
+            <Quote className="w-12 h-12 text-power-red mb-4 -scale-x-100" fill="currentColor" />
 
             {/* Animated Quote */}
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={currentIndex}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
+                exit={{ opacity: 0, y: -30 }}
                 transition={{ duration: 0.4, ease: 'easeInOut' }}
+                className="flex-1 flex flex-col justify-center"
               >
-                <blockquote className="text-lg md:text-xl text-white/95 font-medium leading-relaxed mb-6 line-clamp-4">
+                <blockquote className="text-lg md:text-xl lg:text-2xl text-white font-medium leading-relaxed mb-8">
                   {currentReview.quote}
                 </blockquote>
 
                 {/* Author with Stars */}
-                <div className="flex items-center gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                      ))}
-                    </div>
-                    <div className="text-xl font-bold text-white">{currentReview.name}</div>
-                    <div className="text-white/60 text-sm">{currentReview.carDescription}</div>
+                <div>
+                  <div className="flex items-center gap-1 mb-2">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                    ))}
                   </div>
+                  <div className="text-2xl font-bold text-white">{currentReview.name}</div>
+                  <div className="text-white/60 text-sm mt-1">{currentReview.carDescription}</div>
                 </div>
               </motion.div>
             </AnimatePresence>
 
-            {/* Navigation - Compact inline */}
-            <div className="flex items-center gap-3 mt-6 pt-4 border-t border-white/10">
+            {/* Navigation */}
+            <div className="flex items-center gap-4 mt-8 pt-6 border-t border-white/10">
               {/* Arrows */}
-              <button
-                onClick={goToPrevious}
-                className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-                aria-label="Previous review"
-              >
-                <ChevronLeft size={18} className="text-white" />
-              </button>
-              <button
-                onClick={goToNext}
-                className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-                aria-label="Next review"
-              >
-                <ChevronRight size={18} className="text-white" />
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={goToPrevious}
+                  className="p-3 rounded-full bg-white/10 hover:bg-power-red transition-colors group"
+                  aria-label="Previous review"
+                >
+                  <ChevronLeft size={20} className="text-white group-hover:text-white" />
+                </button>
+                <button
+                  onClick={goToNext}
+                  className="p-3 rounded-full bg-white/10 hover:bg-power-red transition-colors group"
+                  aria-label="Next review"
+                >
+                  <ChevronRight size={20} className="text-white group-hover:text-white" />
+                </button>
+              </div>
 
-              {/* Progress Dots */}
-              <div className="flex gap-1.5 ml-auto">
+              {/* Progress Bar */}
+              <div className="flex-1 flex gap-2">
                 {FEATURED_REVIEWS.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => goToSlide(index)}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                    className={`h-1 flex-1 rounded-full transition-all duration-300 ${
                       index === currentIndex
-                        ? 'bg-power-red w-6'
-                        : 'bg-white/30 w-1.5 hover:bg-white/50'
+                        ? 'bg-power-red'
+                        : 'bg-white/20 hover:bg-white/40'
                     }`}
                     aria-label={`Go to review ${index + 1}`}
                   />
@@ -186,7 +185,7 @@ const FeaturedReviewsSlider: React.FC = () => {
               </div>
 
               {/* Counter */}
-              <div className="text-white/40 text-sm font-mono">
+              <div className="text-white/50 text-sm font-mono">
                 {String(currentIndex + 1).padStart(2, '0')}/{String(FEATURED_REVIEWS.length).padStart(2, '0')}
               </div>
             </div>
@@ -195,21 +194,21 @@ const FeaturedReviewsSlider: React.FC = () => {
       </div>
 
       {/* Thumbnail Preview Strip */}
-      <div className="flex justify-center gap-3 mt-6">
+      <div className="flex justify-center gap-4 mt-8">
         {FEATURED_REVIEWS.map((review, index) => (
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`relative overflow-hidden rounded-lg transition-all duration-300 ${
+            className={`relative overflow-hidden rounded-xl transition-all duration-300 bg-white shadow-md ${
               index === currentIndex
-                ? 'ring-2 ring-power-red ring-offset-2 scale-105'
-                : 'opacity-60 hover:opacity-100 grayscale hover:grayscale-0'
+                ? 'ring-2 ring-power-red ring-offset-2 scale-110'
+                : 'opacity-50 hover:opacity-100 hover:scale-105'
             }`}
           >
             <img
               src={review.image}
               alt={review.name}
-              className="w-16 h-12 md:w-20 md:h-14 object-cover"
+              className="w-20 h-14 md:w-24 md:h-16 object-cover"
             />
           </button>
         ))}
