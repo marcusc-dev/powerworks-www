@@ -405,10 +405,16 @@ export function useVoiceAssistant() {
       const response = await sendToAgent(text.trim());
 
       if (response) {
-        // Combine spoken response with follow-up question
-        const fullResponse = response.follow_up_question
-          ? `${response.spoken_response} ${response.follow_up_question}`
-          : response.spoken_response;
+        // Combine spoken response with follow-up question (avoid duplicates)
+        let fullResponse = response.spoken_response;
+        if (response.follow_up_question) {
+          // Only add follow-up if it's not already contained in the spoken response
+          const normalizedSpoken = response.spoken_response.toLowerCase().trim();
+          const normalizedFollowUp = response.follow_up_question.toLowerCase().trim();
+          if (!normalizedSpoken.includes(normalizedFollowUp)) {
+            fullResponse = `${response.spoken_response} ${response.follow_up_question}`;
+          }
+        }
 
         // Add assistant message
         addMessage('assistant', fullResponse);
@@ -467,6 +473,13 @@ export function useVoiceAssistant() {
           ...prev,
           status: 'error',
           error: 'Microphone access denied. Please allow microphone access or type your message.',
+        }));
+      } else if (event.error === 'network') {
+        // Network errors are common - just return to idle and let user retry
+        setState((prev) => ({
+          ...prev,
+          status: 'idle',
+          error: 'Network issue - please try again or type your message.',
         }));
       } else if (event.error !== 'aborted' && event.error !== 'no-speech') {
         setState((prev) => ({
