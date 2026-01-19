@@ -3,7 +3,7 @@
 export type SafetyFlag = 'none' | 'caution' | 'stop_driving';
 export type BookingIntent = 'low' | 'medium' | 'high';
 export type SuggestedCTA = 'book' | 'whatsapp' | 'none';
-export type AssistantStatus = 'idle' | 'listening' | 'thinking' | 'speaking' | 'error';
+export type AssistantStatus = 'idle' | 'listening' | 'thinking' | 'speaking' | 'error' | 'booking_confirmed';
 
 export interface Message {
   id: string;
@@ -17,13 +17,25 @@ export interface LeadCapture {
   consent_granted: boolean;
   name?: string;
   phone?: string;
+  email?: string;
+  email_consent_requested?: boolean;
+  email_consent_granted?: boolean;
 }
 
 export interface ContactPrefill {
   name?: string;
   phone?: string;
+  email?: string;
   message?: string;
   page?: string;
+}
+
+export interface BookingConfirmation {
+  confirmed: boolean;
+  requested_time?: string;
+  service_type?: string;
+  vehicle?: string;
+  notes?: string;
 }
 
 export interface VoiceAgentRequest {
@@ -44,6 +56,7 @@ export interface VoiceAgentResponse {
   suggested_cta: SuggestedCTA;
   lead_capture: LeadCapture;
   contact_prefill: ContactPrefill;
+  booking_confirmation?: BookingConfirmation;
 }
 
 export interface VoiceAssistantState {
@@ -54,6 +67,7 @@ export interface VoiceAssistantState {
   bookingIntent: BookingIntent;
   leadCapture: LeadCapture;
   contactPrefill: ContactPrefill;
+  bookingConfirmation?: BookingConfirmation;
   currentTranscript: string;
   error: string | null;
   speechSupported: boolean;

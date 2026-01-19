@@ -33,6 +33,7 @@ const STATUS_LABELS: Record<AssistantStatus, string> = {
   thinking: 'Glenn is thinking...',
   speaking: 'Glenn is speaking...',
   error: 'Something went wrong',
+  booking_confirmed: 'Booking request sent!',
 };
 
 export default function VoiceAssistantPanel({
@@ -127,6 +128,7 @@ export default function VoiceAssistantPanel({
   const isListening = state.status === 'listening';
   const isThinking = state.status === 'thinking';
   const isSpeaking = state.status === 'speaking';
+  const isBookingConfirmed = state.status === 'booking_confirmed';
   const isProcessing = isThinking || isSpeaking;
   const isReadyToContinue = state.status === 'idle' && state.messages.length > 0;
 
@@ -194,6 +196,32 @@ export default function VoiceAssistantPanel({
           <p className="text-sm font-medium">
             Caution: This may need prompt attention.
           </p>
+        </div>
+      )}
+
+      {/* Booking Confirmation Banner */}
+      {isBookingConfirmed && (
+        <div
+          className="bg-green-600 text-white px-4 py-4 flex flex-col gap-2"
+          role="alert"
+          aria-live="polite"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+              <Calendar className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="font-bold text-sm">Booking Request Sent!</p>
+              <p className="text-xs opacity-90">
+                We&apos;ll call you shortly to confirm your appointment.
+              </p>
+            </div>
+          </div>
+          {state.leadCapture.email && (
+            <p className="text-xs opacity-80 ml-11">
+              Confirmation email sent to {state.leadCapture.email}
+            </p>
+          )}
         </div>
       )}
 

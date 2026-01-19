@@ -252,6 +252,9 @@ export function useVoiceAssistant() {
             ...prev.contactPrefill,
             ...data.contact_prefill,
           },
+          bookingConfirmation: data.booking_confirmation,
+          // If booking is confirmed, update status
+          ...(data.booking_confirmation?.confirmed ? { status: 'booking_confirmed' as const } : {}),
         }));
 
         return data;
