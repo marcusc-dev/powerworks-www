@@ -59,7 +59,8 @@
       "mcp__dfs-mcp__dataforseo_labs_google_ranked_keywords",
       "mcp__dfs-mcp__dataforseo_labs_google_domain_rank_overview",
       "Bash(git clone:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(npm install:*)"
     ]
   }
 }

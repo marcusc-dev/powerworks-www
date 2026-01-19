@@ -97,6 +97,8 @@ export function useVoiceAssistant() {
   const abortControllerRef = useRef<AbortController | null>(null);
   const selectedVoiceRef = useRef<SpeechSynthesisVoice | null>(null);
   const voicesLoadedRef = useRef<boolean>(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const cloudTtsAvailableRef = useRef<boolean | null>(null); // null = not checked yet
 
   // Initialize speech APIs on mount
   useEffect(() => {
@@ -173,6 +175,10 @@ export function useVoiceAssistant() {
     }
     if (synthRef.current) {
       synthRef.current.cancel();
+    }
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
     }
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -275,8 +281,56 @@ export function useVoiceAssistant() {
     [pathname, state.messages]
   );
 
-  // Speak text using TTS
-  const speak = useCallback((text: string, autoListenAfter: boolean = false): Promise<void> => {
+  // Speak text using Cloud TTS (with browser fallback)
+  const speakWithCloudTTS = useCallback(async (text: string): Promise<void> => {
+    try {
+      const response = await fetch('/api/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || data.fallback) {
+        // Cloud TTS not available, mark as unavailable
+        cloudTtsAvailableRef.current = false;
+        throw new Error('Cloud TTS not available');
+      }
+
+      // Cloud TTS is available
+      cloudTtsAvailableRef.current = true;
+
+      // Create audio element and play
+      const audioData = `data:${data.contentType};base64,${data.audio}`;
+
+      return new Promise((resolve, reject) => {
+        const audio = new Audio(audioData);
+        audioRef.current = audio;
+
+        audio.onended = () => {
+          setState((prev) => ({ ...prev, status: 'idle' }));
+          audioRef.current = null;
+          resolve();
+        };
+
+        audio.onerror = () => {
+          setState((prev) => ({ ...prev, status: 'idle' }));
+          audioRef.current = null;
+          reject(new Error('Audio playback failed'));
+        };
+
+        setState((prev) => ({ ...prev, status: 'speaking' }));
+        audio.play().catch(reject);
+      });
+    } catch {
+      // Throw to trigger fallback
+      throw new Error('Cloud TTS failed');
+    }
+  }, []);
+
+  // Speak text using browser TTS (fallback)
+  const speakWithBrowserTTS = useCallback((text: string): Promise<void> => {
     return new Promise((resolve, reject) => {
       if (!synthRef.current) {
         resolve();
@@ -288,16 +342,13 @@ export function useVoiceAssistant() {
 
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'en-GB';
-      // Slightly slower rate sounds more natural
       utterance.rate = 0.95;
       utterance.pitch = 1.0;
       utterance.volume = 1.0;
 
-      // Use the pre-loaded voice if available
       if (selectedVoiceRef.current) {
         utterance.voice = selectedVoiceRef.current;
       } else {
-        // Fallback: try to get voices now
         const voices = synthRef.current.getVoices();
         const bestVoice = getBestVoice(voices);
         if (bestVoice) {
@@ -312,7 +363,6 @@ export function useVoiceAssistant() {
       };
 
       utterance.onerror = (event) => {
-        // Don't treat 'interrupted' or 'canceled' as an error
         if (event.error === 'interrupted' || event.error === 'canceled') {
           resolve();
         } else {
@@ -326,6 +376,22 @@ export function useVoiceAssistant() {
       synthRef.current.speak(utterance);
     });
   }, []);
+
+  // Main speak function - tries Cloud TTS first, falls back to browser
+  const speak = useCallback(async (text: string): Promise<void> => {
+    // If we already know Cloud TTS is unavailable, skip it
+    if (cloudTtsAvailableRef.current === false) {
+      return speakWithBrowserTTS(text);
+    }
+
+    try {
+      await speakWithCloudTTS(text);
+    } catch {
+      // Fall back to browser TTS
+      console.log('Cloud TTS unavailable, using browser fallback');
+      return speakWithBrowserTTS(text);
+    }
+  }, [speakWithCloudTTS, speakWithBrowserTTS]);
 
   // Process user input (voice or text)
   const processUserInput = useCallback(
