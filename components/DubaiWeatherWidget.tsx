@@ -11,14 +11,14 @@ interface WeatherData {
 }
 
 const getWeatherIcon = (code: number) => {
-  if (code === 0) return <Sun className="w-8 h-8 text-yellow-400" />;
-  if (code <= 3) return <Cloud className="w-8 h-8 text-gray-400" />;
-  if (code <= 48) return <CloudFog className="w-8 h-8 text-gray-400" />;
-  if (code <= 67) return <CloudRain className="w-8 h-8 text-blue-400" />;
-  if (code <= 77) return <Snowflake className="w-8 h-8 text-blue-200" />;
-  if (code <= 86) return <CloudRain className="w-8 h-8 text-blue-400" />;
-  if (code >= 95) return <CloudLightning className="w-8 h-8 text-yellow-500" />;
-  return <Sun className="w-8 h-8 text-yellow-400" />;
+  if (code === 0) return <Sun className="w-6 h-6 text-amber-400" />;
+  if (code <= 3) return <Cloud className="w-6 h-6 text-slate-400" />;
+  if (code <= 48) return <CloudFog className="w-6 h-6 text-slate-400" />;
+  if (code <= 67) return <CloudRain className="w-6 h-6 text-sky-400" />;
+  if (code <= 77) return <Snowflake className="w-6 h-6 text-sky-200" />;
+  if (code <= 86) return <CloudRain className="w-6 h-6 text-sky-400" />;
+  if (code >= 95) return <CloudLightning className="w-6 h-6 text-amber-400" />;
+  return <Sun className="w-6 h-6 text-amber-400" />;
 };
 
 const getCondition = (code: number): string => {
@@ -78,17 +78,18 @@ export default function DubaiWeatherWidget() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-power-blue to-power-blue/90 text-white rounded-xl p-4 shadow-lg">
-      <h3 className="text-xs font-medium uppercase tracking-wider text-white/60 mb-3">
+    <div className="bg-white border border-gray-100 rounded-lg p-4 shadow-sm">
+      {/* Subtle header */}
+      <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400 mb-3">
         Dubai Weather
-      </h3>
+      </p>
 
       {loading ? (
-        <div className="flex items-center justify-center py-6">
-          <div className="animate-pulse text-white/50 text-sm">Loading...</div>
+        <div className="flex items-center justify-center py-4">
+          <div className="animate-pulse text-gray-300 text-xs">Loading...</div>
         </div>
       ) : weather ? (
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           {/* Weather Icon */}
           <div className="flex-shrink-0">
             {getWeatherIcon(weather.weatherCode)}
@@ -96,39 +97,39 @@ export default function DubaiWeatherWidget() {
 
           {/* Weather Info */}
           <div className="flex-1">
-            <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-bold">{weather.temp}</span>
-              <span className="text-lg text-white/70">°C</span>
+            <div className="flex items-baseline gap-0.5">
+              <span className="text-2xl font-semibold text-gray-900">{weather.temp}</span>
+              <span className="text-sm text-gray-400">°C</span>
             </div>
-            <p className="text-sm text-white/80">{weather.condition}</p>
+            <p className="text-xs text-gray-500">{weather.condition}</p>
           </div>
 
           {/* Humidity */}
-          <div className="flex items-center gap-1.5 text-white/60">
-            <Droplets className="w-4 h-4" />
-            <span className="text-sm">{weather.humidity}%</span>
+          <div className="flex items-center gap-1 text-gray-400">
+            <Droplets className="w-3.5 h-3.5" />
+            <span className="text-xs">{weather.humidity}%</span>
           </div>
         </div>
       ) : null}
 
-      {/* Driving tip based on weather */}
+      {/* Driving tip - subtle styling */}
       {weather && (
-        <div className="mt-4 pt-3 border-t border-white/10">
-          <div className="flex items-center gap-3">
-            {/* Vehicle Icon/Image */}
-            <div className="w-12 h-12 flex-shrink-0 bg-white/10 rounded-lg flex items-center justify-center">
-              <svg className="w-8 h-8 text-white/80" viewBox="0 0 24 24" fill="currentColor">
+        <div className="mt-3 pt-3 border-t border-gray-100">
+          <div className="flex items-start gap-2.5">
+            {/* Vehicle Icon - smaller, subtle */}
+            <div className="w-8 h-8 flex-shrink-0 bg-gray-50 rounded flex items-center justify-center">
+              <svg className="w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
               </svg>
             </div>
             <div className="flex-1">
-              <p className="text-[11px] uppercase tracking-wide text-white/50 mb-0.5">Driving Conditions</p>
-              <p className="text-xs text-white/90 leading-snug">
+              <p className="text-[10px] uppercase tracking-wide text-gray-400 mb-0.5">Driving Tip</p>
+              <p className="text-xs text-gray-600 leading-relaxed">
                 {weather.temp >= 40
-                  ? "Extreme heat - check coolant levels before driving"
+                  ? "Extreme heat - check coolant levels"
                   : weather.temp >= 35
-                  ? "Hot day - ensure your AC is working properly"
-                  : "Good driving conditions today"}
+                  ? "Hot day - ensure AC is working"
+                  : "Good driving conditions"}
               </p>
             </div>
           </div>

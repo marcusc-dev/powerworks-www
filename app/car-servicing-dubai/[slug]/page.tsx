@@ -36,6 +36,49 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+// Generate FAQ Schema for SEO
+function generateFAQSchema(faqs: { question: string; answer: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  };
+}
+
+// Generate Service Schema for SEO
+function generateServiceSchema(service: { title: string; description: string; priceFrom: string; slug: string }) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: service.title,
+    description: service.description,
+    provider: {
+      '@type': 'AutoRepair',
+      name: 'Powerworks Garage',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Al Quoz Industrial Area 3',
+        addressLocality: 'Dubai',
+        addressCountry: 'AE',
+      },
+      telephone: '+971521217425',
+      url: 'https://powerworksgarage.com',
+    },
+    areaServed: {
+      '@type': 'City',
+      name: 'Dubai',
+    },
+    url: `https://powerworksgarage.com/car-servicing-dubai/${service.slug}`,
+  };
+}
+
 export default async function ServicePage({ params }: PageProps) {
   const { slug } = await params;
   const service = getServiceBySlug(slug);
@@ -47,5 +90,21 @@ export default async function ServicePage({ params }: PageProps) {
   const relatedServices = getRelatedServices(service.relatedServices);
   const serviceReviews = service.reviewTags ? getReviewsByTags(service.reviewTags) : [];
 
-  return <ServicePageClient service={service} relatedServices={relatedServices} reviews={serviceReviews} vehicleMakes={VEHICLE_MAKES} />;
+  // Generate structured data for SEO
+  const faqSchema = generateFAQSchema(service.faqs);
+  const serviceSchema = generateServiceSchema(service);
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <ServicePageClient service={service} relatedServices={relatedServices} reviews={serviceReviews} vehicleMakes={VEHICLE_MAKES} />
+    </>
+  );
 }
