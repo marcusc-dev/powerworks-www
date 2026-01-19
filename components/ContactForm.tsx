@@ -1,9 +1,22 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { Send, CheckCircle, AlertCircle, Loader2, Mic, X } from 'lucide-react';
 
-const ContactForm: React.FC = () => {
+interface ContactFormProps {
+  initialValues?: {
+    name?: string;
+    phone?: string;
+    message?: string;
+    page?: string;
+  };
+}
+
+const ContactForm: React.FC<ContactFormProps> = ({ initialValues }) => {
+  const searchParams = useSearchParams();
+  const [showPrefillBanner, setShowPrefillBanner] = useState(false);
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -15,6 +28,54 @@ const ContactForm: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Parse URL params and prefill form
+  useEffect(() => {
+    const name = searchParams.get('name') || initialValues?.name || '';
+    const phone = searchParams.get('phone') || initialValues?.phone || '';
+    const message = searchParams.get('message') || initialValues?.message || '';
+    const page = searchParams.get('page') || initialValues?.page || '';
+
+    // Determine service from page context
+    let service = '';
+    if (page) {
+      const serviceMatch = page.match(/\/services\/([^/]+)/);
+      if (serviceMatch) {
+        const serviceSlug = serviceMatch[1];
+        // Map URL slugs to form values
+        const serviceMap: Record<string, string> = {
+          'ac-repair': 'ac-repair',
+          'brake-service': 'brakes',
+          'brakes': 'brakes',
+          'oil-change': 'oil-change',
+          'battery': 'battery',
+          'car-service': 'car-service',
+          'engine': 'engine',
+          'electrical': 'electrical',
+          'suspension': 'suspension',
+          'transmission': 'transmission',
+          'tyres': 'tyres',
+          'pre-purchase-inspection': 'inspection',
+          'fleet': 'fleet',
+        };
+        service = serviceMap[serviceSlug] || '';
+      }
+    }
+
+    // Check if any prefill data exists
+    const hasPrefillData = name || phone || message;
+
+    if (hasPrefillData) {
+      setFormData((prev) => ({
+        ...prev,
+        name: name || prev.name,
+        phone: phone || prev.phone,
+        message: message || prev.message,
+        service: service || prev.service,
+      }));
+      setShowPrefillBanner(true);
+    }
+  }, [searchParams, initialValues]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,6 +130,24 @@ const ContactForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+      {/* Prefill Banner */}
+      {showPrefillBanner && (
+        <div className="flex items-center gap-3 p-4 bg-power-blue/10 border border-power-blue/20 rounded-xl text-power-blue">
+          <Mic className="w-5 h-5 flex-shrink-0" />
+          <p className="flex-1 text-sm font-medium">
+            Prefilled from Ask Glenn — please check your details.
+          </p>
+          <button
+            type="button"
+            onClick={() => setShowPrefillBanner(false)}
+            className="text-power-blue/60 hover:text-power-blue transition-colors"
+            aria-label="Dismiss prefill notice"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div>
           <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">Your Name *</label>

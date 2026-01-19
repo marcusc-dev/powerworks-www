@@ -1,7 +1,54 @@
+import { Suspense } from 'react';
 import { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import ContactForm from '@/components/ContactForm';
 import { Phone, Mail, MapPin, Clock, Instagram, Facebook, MessageCircle } from 'lucide-react';
+
+// Wrapper component to handle Suspense for useSearchParams
+function ContactFormWrapper() {
+  return (
+    <Suspense fallback={<ContactFormSkeleton />}>
+      <ContactForm />
+    </Suspense>
+  );
+}
+
+// Loading skeleton for the contact form
+function ContactFormSkeleton() {
+  return (
+    <div className="space-y-5 animate-pulse">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div>
+          <div className="h-4 bg-gray-200 rounded w-24 mb-2" />
+          <div className="h-12 bg-gray-200 rounded-xl" />
+        </div>
+        <div>
+          <div className="h-4 bg-gray-200 rounded w-28 mb-2" />
+          <div className="h-12 bg-gray-200 rounded-xl" />
+        </div>
+      </div>
+      <div>
+        <div className="h-4 bg-gray-200 rounded w-28 mb-2" />
+        <div className="h-12 bg-gray-200 rounded-xl" />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div>
+          <div className="h-4 bg-gray-200 rounded w-32 mb-2" />
+          <div className="h-12 bg-gray-200 rounded-xl" />
+        </div>
+        <div>
+          <div className="h-4 bg-gray-200 rounded w-28 mb-2" />
+          <div className="h-12 bg-gray-200 rounded-xl" />
+        </div>
+      </div>
+      <div>
+        <div className="h-4 bg-gray-200 rounded w-24 mb-2" />
+        <div className="h-28 bg-gray-200 rounded-xl" />
+      </div>
+      <div className="h-14 bg-gray-200 rounded-xl" />
+    </div>
+  );
+}
 
 export const metadata: Metadata = {
   title: 'Contact Us | Book Your Service | Powerworks Garage Dubai',
@@ -142,7 +189,7 @@ export default function ContactPage() {
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Book Your Service</h2>
               <p className="text-gray-500 mb-8">Fill out the form and we&apos;ll get back to you within 2 hours.</p>
               <div className="bg-gray-50 rounded-2xl p-8 md:p-10">
-                <ContactForm />
+                <ContactFormWrapper />
               </div>
             </div>
           </div>

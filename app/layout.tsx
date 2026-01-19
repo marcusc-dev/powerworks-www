@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans, Jost } from 'next/font/google';
 import './globals.css';
+import { VoiceAssistantProvider } from '@/components/voice';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -272,6 +273,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </noscript>
         {/* End Google Tag Manager (noscript) */}
         {children}
+        {/* Voice Assistant - Floating Button on Every Page */}
+        <VoiceAssistantProvider />
       </body>
     </html>
   );
