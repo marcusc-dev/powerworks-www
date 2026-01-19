@@ -2,8 +2,8 @@
 
 import { NextRequest } from 'next/server';
 
-// Gemini Live API WebSocket endpoint (v1alpha for real-time streaming)
-const GEMINI_LIVE_URL = 'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent';
+// Gemini Live API WebSocket endpoint (v1beta for real-time streaming with tools support)
+const GEMINI_LIVE_URL = 'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent';
 
 // System prompt for Glenn - the voice assistant
 const GLENN_SYSTEM_PROMPT = `You are "Glenn from Powerworks", the AI voice assistant for Powerworks Garage in Dubai.
