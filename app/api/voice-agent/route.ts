@@ -103,7 +103,17 @@ function getPageContext(path: string): string {
 }
 
 // Build the system prompt for Glenn
-function buildSystemPrompt(pageContext: string, conversationContext: string): string {
+function buildSystemPrompt(pageContext: string, conversationContext: string, alreadyCaptured: { name?: string; phone?: string; email?: string }): string {
+  // Build a summary of what's already been captured
+  const capturedItems: string[] = [];
+  if (alreadyCaptured.name) capturedItems.push(`Name: ${alreadyCaptured.name}`);
+  if (alreadyCaptured.phone) capturedItems.push(`Phone: ${alreadyCaptured.phone}`);
+  if (alreadyCaptured.email) capturedItems.push(`Email: ${alreadyCaptured.email}`);
+
+  const alreadyCapturedSection = capturedItems.length > 0
+    ? `\n## ALREADY CAPTURED - DO NOT ASK AGAIN\n${capturedItems.join('\n')}\nIMPORTANT: The above information has ALREADY been provided. Do NOT ask for it again.`
+    : '';
+
   return `You are "Glenn from Powerworks", the AI voice assistant for Powerworks Garage in Dubai.
 
 ## Your Identity
@@ -116,16 +126,19 @@ ${pageContext}
 
 ## Conversation Context So Far
 ${conversationContext || 'This is the start of the conversation.'}
+${alreadyCapturedSection}
 
 ## Response Rules
 1. **Keep it short**: 1-3 sentences maximum. This is for voice, not reading.
 2. **Triage language only**: Use "likely causes", "possible", "needs inspection to confirm". NEVER diagnose definitively.
 3. **Safety first**: If symptoms suggest danger (brake failure, overheating, burning smell, flashing warning lights, loss of power), set safety_flag to "stop_driving" and advise them to stop driving immediately.
 4. **Lead capture flow** (when booking_intent is medium or high):
-   a. First ask for their name naturally if not provided
-   b. Then ask for phone with consent: "Can I take a mobile number so we can confirm your booking?"
-   c. IMPORTANT: After getting name and phone, ask for email: "Would you like a confirmation email? What's your email address?"
-   d. If they refuse any field, proceed without it
+   a. CRITICAL: Check what's already captured above. NEVER ask for information that's already been provided.
+   b. If name is missing, ask for their name naturally
+   c. If phone is missing (and name is captured), ask: "Can I take a mobile number so we can confirm your booking?"
+   d. If name and phone are captured but email is missing, ask: "Would you like a confirmation email? What's your email address?"
+   e. If they refuse any field, proceed without it
+   f. If a user provides multiple pieces of info in one message (e.g. "my name is X and my number is Y"), acknowledge ALL of them and move to the next missing field
 5. **Booking confirmation**: When you have collected name + phone (minimum), and the customer confirms they want to book:
    - Set booking_confirmation.confirmed to true
    - Say something like "Perfect, I've sent your details to the team. They'll call you shortly to confirm your appointment."
@@ -147,9 +160,14 @@ ${conversationContext || 'This is the start of the conversation.'}
 ## JSON Response Format
 You MUST respond with valid JSON only. No markdown, no explanations outside the JSON.
 
+IMPORTANT: The "spoken_response" should contain ONLY your statement/answer.
+The "follow_up_question" should contain ONLY the question you want to ask.
+Do NOT include the question in spoken_response - they will be combined automatically.
+If you have no follow-up question, set follow_up_question to an empty string "".
+
 {
-  "spoken_response": "Your conversational response (1-3 sentences)",
-  "follow_up_question": "One clarifying question to continue the conversation (or empty string if booking confirmed)",
+  "spoken_response": "Your statement or answer (do NOT include questions here)",
+  "follow_up_question": "Your follow-up question (or empty string \"\" if no question needed)",
   "booking_intent": "low" | "medium" | "high",
   "safety_flag": "none" | "caution" | "stop_driving",
   "suggested_cta": "book" | "whatsapp" | "none",
@@ -395,7 +413,8 @@ This booking was made through the AI voice assistant on the website.
         },
         to: [
           {
-            email: 'info@powerworksgaragedubai.com',
+            // TODO: Change to info@powerworksgaragedubai.com when testing complete
+            email: 'marcus@powerworksgarage.com',
             name: 'Powerworks Garage',
           },
         ],
@@ -640,17 +659,18 @@ export async function POST(request: NextRequest) {
     const pageContext = getPageContext(body.pageContext || '/');
     const conversationContext = buildConversationContext(body.history || []);
 
-    // Build prompt
-    const systemPrompt = buildSystemPrompt(pageContext, conversationContext);
-
-    // Call Gemini
-    const geminiResponse = await callGemini(systemPrompt, sanitizedText);
-
-    // Extract any lead info from conversation history
+    // Extract any lead info from conversation history BEFORE calling Gemini
+    // This includes the current message so we know what's already been provided
     const extractedLead = extractLeadInfo([
       ...(body.history || []),
       { role: 'user', content: sanitizedText },
     ]);
+
+    // Build prompt with already-captured info so AI doesn't ask again
+    const systemPrompt = buildSystemPrompt(pageContext, conversationContext, extractedLead);
+
+    // Call Gemini
+    const geminiResponse = await callGemini(systemPrompt, sanitizedText);
 
     // Merge extracted lead info with Gemini's response
     const finalLeadCapture = {
@@ -683,8 +703,19 @@ export async function POST(request: NextRequest) {
       contact_prefill: finalContactPrefill,
     };
 
+    // Log booking confirmation status for debugging
+    console.log('Booking confirmation status:', {
+      confirmed: geminiResponse.booking_confirmation?.confirmed,
+      hasName: !!finalLeadCapture.name,
+      hasPhone: !!finalLeadCapture.phone,
+      hasEmail: !!finalLeadCapture.email,
+      bookingConfirmation: geminiResponse.booking_confirmation,
+    });
+
     // If booking is confirmed, send email notifications
     if (geminiResponse.booking_confirmation?.confirmed) {
+      console.log('Booking confirmed! Sending email notification...');
+
       const leadInfo = {
         name: finalLeadCapture.name,
         phone: finalLeadCapture.phone,
@@ -694,13 +725,18 @@ export async function POST(request: NextRequest) {
       const bookingDetails = geminiResponse.booking_confirmation;
       const conversationSummary = finalContactPrefill.message || 'No summary available';
 
-      // Send notification to Powerworks (don't await - fire and forget to not slow down response)
-      sendBookingNotification(
-        leadInfo,
-        bookingDetails,
-        conversationSummary,
-        body.pageContext || '/'
-      ).catch(err => console.error('Background email send failed:', err));
+      // Send notification to Powerworks - await to see errors
+      try {
+        const emailSent = await sendBookingNotification(
+          leadInfo,
+          bookingDetails,
+          conversationSummary,
+          body.pageContext || '/'
+        );
+        console.log('Email send result:', emailSent);
+      } catch (err) {
+        console.error('Email send error:', err);
+      }
 
       // Send confirmation to customer if they provided email
       if (finalLeadCapture.email) {
@@ -710,6 +746,8 @@ export async function POST(request: NextRequest) {
           bookingDetails
         ).catch(err => console.error('Customer confirmation email failed:', err));
       }
+    } else {
+      console.log('Booking NOT confirmed yet - no email will be sent');
     }
 
     return NextResponse.json(response, {
