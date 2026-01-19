@@ -1,7 +1,7 @@
 'use server';
 
 import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 interface BookingRequest {
   customer_name: string;
@@ -15,61 +15,17 @@ interface BookingRequest {
   conversation_transcript?: string;
 }
 
-// Create SMTP transporter using Brevo SMTP relay
-function createTransporter() {
-  return nodemailer.createTransport({
-    host: 'smtp-relay.brevo.com',
-    port: 587,
-    secure: false, // TLS
-    auth: {
-      user: process.env.BREVO_SMTP_LOGIN,
-      pass: process.env.BREVO_SMTP_PASSWORD,
-    },
-  });
-}
-
 // Send booking notification email to Powerworks
 async function sendBookingNotification(booking: BookingRequest): Promise<boolean> {
-  const smtpLogin = process.env.BREVO_SMTP_LOGIN;
-  const smtpPassword = process.env.BREVO_SMTP_PASSWORD;
+  const resendApiKey = process.env.RESEND_API_KEY;
 
-  if (!smtpLogin || !smtpPassword) {
-    console.error('BREVO SMTP credentials not configured');
+  if (!resendApiKey) {
+    console.error('RESEND_API_KEY not configured');
     return false;
   }
 
   try {
-    const transporter = createTransporter();
-
-    const emailContent = `
-New Voice Assistant Booking Request (Live API)
-
-Customer Details:
------------------
-Name: ${booking.customer_name}
-Phone: ${booking.customer_phone}
-Email: ${booking.customer_email || 'Not provided'}
-
-Booking Request:
-----------------
-Requested Time: ${booking.requested_time || 'To be confirmed'}
-Service Type: ${booking.service_type}
-Vehicle: ${booking.vehicle || 'Not specified'}
-
-Issue Summary:
---------------
-${booking.issue_summary}
-
-${booking.conversation_transcript ? `
-Conversation Transcript:
-------------------------
-${booking.conversation_transcript}
-` : ''}
----
-Page: ${booking.page_context || '/'}
-Source: Voice Assistant (Ask Glenn - Live API)
-This booking was made through the AI voice assistant on the website.
-    `.trim();
+    const resend = new Resend(resendApiKey);
 
     const htmlContent = `
 <!DOCTYPE html>
@@ -156,16 +112,20 @@ This booking was made through the AI voice assistant on the website.
 </html>
     `.trim();
 
-    const info = await transporter.sendMail({
-      from: '"Powerworks Voice Assistant" <noreply@powerworksgaragedubai.com>',
-      to: 'marcus@powerworksgarage.com',
+    const { data, error } = await resend.emails.send({
+      from: 'Powerworks Voice <voice@powerworksgaragedubai.com>',
+      to: ['marcus@powerworksgarage.com'],
       replyTo: booking.customer_email || undefined,
       subject: `Voice Booking: ${booking.service_type} - ${booking.customer_name}`,
-      text: emailContent,
       html: htmlContent,
     });
 
-    console.log('Voice Live booking notification sent successfully:', info.messageId);
+    if (error) {
+      console.error('Resend error:', error);
+      return false;
+    }
+
+    console.log('Voice Live booking notification sent successfully:', data?.id);
     return true;
   } catch (error) {
     console.error('Failed to send booking notification:', error);
@@ -175,15 +135,14 @@ This booking was made through the AI voice assistant on the website.
 
 // Send confirmation email to customer (if email provided)
 async function sendCustomerConfirmation(booking: BookingRequest): Promise<boolean> {
-  const smtpLogin = process.env.BREVO_SMTP_LOGIN;
-  const smtpPassword = process.env.BREVO_SMTP_PASSWORD;
+  const resendApiKey = process.env.RESEND_API_KEY;
 
-  if (!smtpLogin || !smtpPassword || !booking.customer_email) {
+  if (!resendApiKey || !booking.customer_email) {
     return false;
   }
 
   try {
-    const transporter = createTransporter();
+    const resend = new Resend(resendApiKey);
 
     const htmlContent = `
 <!DOCTYPE html>
@@ -239,15 +198,20 @@ async function sendCustomerConfirmation(booking: BookingRequest): Promise<boolea
 </html>
     `.trim();
 
-    const info = await transporter.sendMail({
-      from: '"Powerworks Garage" <noreply@powerworksgaragedubai.com>',
-      to: booking.customer_email,
+    const { data, error } = await resend.emails.send({
+      from: 'Powerworks Garage <noreply@powerworksgaragedubai.com>',
+      to: [booking.customer_email],
       replyTo: 'info@powerworksgaragedubai.com',
       subject: 'Booking Request Received - Powerworks Garage',
       html: htmlContent,
     });
 
-    console.log('Customer confirmation sent:', info.messageId);
+    if (error) {
+      console.error('Resend customer confirmation error:', error);
+      return false;
+    }
+
+    console.log('Customer confirmation sent:', data?.id);
     return true;
   } catch (error) {
     console.error('Failed to send customer confirmation:', error);
