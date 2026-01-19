@@ -51,7 +51,15 @@
       "Bash(vercel whoami:*)",
       "Bash(vercel inspect:*)",
       "Bash(vercel project:*)",
-      "Bash(vercel ls:*)"
+      "Bash(vercel ls:*)",
+      "mcp__plugin_playwright_playwright__browser_wait_for",
+      "mcp__firecrawl__firecrawl_extract",
+      "mcp__dfs-mcp__dataforseo_labs_google_competitors_domain",
+      "mcp__dfs-mcp__backlinks_bulk_ranks",
+      "mcp__dfs-mcp__dataforseo_labs_google_ranked_keywords",
+      "mcp__dfs-mcp__dataforseo_labs_google_domain_rank_overview",
+      "Bash(git clone:*)",
+      "Bash(curl:*)"
     ]
   }
 }

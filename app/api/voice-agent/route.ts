@@ -215,9 +215,9 @@ async function callGemini(
     throw new Error('GEMINI_API_KEY is not configured');
   }
 
-  // Use gemini-1.5-flash which is widely available
+  // Use gemini-2.0-flash for best performance
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
     {
       method: 'POST',
       headers: {
@@ -249,7 +249,17 @@ async function callGemini(
 
   if (!response.ok) {
     const errorText = await response.text();
-    console.error('Gemini API error:', errorText);
+    console.error('Gemini API error:', response.status, errorText);
+
+    // Handle specific error codes
+    if (response.status === 429) {
+      throw new Error('QUOTA_EXCEEDED');
+    } else if (response.status === 404) {
+      throw new Error('MODEL_NOT_FOUND');
+    } else if (response.status === 401 || response.status === 403) {
+      throw new Error('API_KEY_INVALID');
+    }
+
     throw new Error(`Gemini API error: ${response.status}`);
   }
 
@@ -382,12 +392,22 @@ export async function POST(request: NextRequest) {
     const errorMessage =
       error instanceof Error ? error.message : 'An unexpected error occurred';
 
-    // Don't expose internal errors to client
-    const clientMessage = errorMessage.includes('GEMINI_API_KEY')
-      ? 'Service temporarily unavailable. Please try again later.'
-      : 'Something went wrong. Please try again.';
+    // Provide specific error messages based on error type
+    let clientMessage = 'Something went wrong. Please try again.';
+    let statusCode = 500;
 
-    return NextResponse.json({ error: clientMessage }, { status: 500 });
+    if (errorMessage.includes('GEMINI_API_KEY')) {
+      clientMessage = 'Service temporarily unavailable. Please try again later.';
+    } else if (errorMessage === 'QUOTA_EXCEEDED') {
+      clientMessage = 'Service is busy right now. Please try again in a moment.';
+      statusCode = 503;
+    } else if (errorMessage === 'MODEL_NOT_FOUND') {
+      clientMessage = 'Service configuration error. Please contact support.';
+    } else if (errorMessage === 'API_KEY_INVALID') {
+      clientMessage = 'Service authentication error. Please contact support.';
+    }
+
+    return NextResponse.json({ error: clientMessage }, { status: statusCode });
   }
 }
 
