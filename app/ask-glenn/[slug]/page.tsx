@@ -6,8 +6,66 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import DubaiWeatherWidget from '@/components/DubaiWeatherWidget';
 import RelatedArticles from '@/components/RelatedArticles';
+import ArticleBody from '@/components/ArticleBody';
 import { BLOG_POSTS } from '@/lib/constants';
+import { BlogPost } from '@/lib/types';
 import { Clock, User, ArrowLeft, MessageCircle, Tag } from 'lucide-react';
+
+// Generate Article Schema for SEO
+function generateArticleSchema(article: BlogPost) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    description: article.excerpt,
+    image: article.image,
+    datePublished: article.date,
+    dateModified: article.date,
+    author: {
+      '@type': 'Person',
+      name: 'Glenn Power',
+      jobTitle: 'Owner & Master Technician',
+      url: 'https://powerworksgarage.com/about',
+      worksFor: {
+        '@type': 'AutoRepair',
+        name: 'Powerworks Garage',
+        url: 'https://powerworksgarage.com',
+      },
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Powerworks Garage',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://powerworksgarage.com/full_logo.png',
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://powerworksgarage.com/ask-glenn/${article.slug}`,
+    },
+    articleSection: article.category,
+    wordCount: article.content ? article.content.split(/\s+/).length : undefined,
+  };
+}
+
+// Generate FAQ Schema for AEO (Answer Engine Optimization)
+function generateFAQSchema(faqs: { question: string; answer: string }[]) {
+  if (!faqs || faqs.length === 0) return null;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  };
+}
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -56,7 +114,24 @@ export default async function ArticlePage({ params }: PageProps) {
     (post) => post.category === article.category || post.slug !== article.slug
   );
 
+  // Generate structured data for SEO and AEO
+  const articleSchema = generateArticleSchema(article);
+  const faqSchema = article.faqs ? generateFAQSchema(article.faqs) : null;
+
   return (
+    <>
+      {/* Article Schema for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      {/* FAQ Schema for AEO - only if article has FAQs */}
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
     <div className="min-h-screen bg-gray-50">
       <Navbar />
 
@@ -120,29 +195,34 @@ export default async function ArticlePage({ params }: PageProps) {
                   </div>
                 </div>
 
-                {/* Glenn Image - Right Side */}
+                {/* Glenn Image - Right Side with transparent edges */}
                 <div className="hidden lg:block relative flex-shrink-0">
-                  <div className="relative w-48 h-56 xl:w-56 xl:h-64">
+                  <div className="relative w-52 h-60 xl:w-60 xl:h-72">
                     <Image
                       src="/glenn.jpg"
                       alt="Glenn Power"
                       fill
                       priority
-                      className="object-cover object-top rounded-lg shadow-2xl"
+                      className="object-cover object-top"
                       style={{
-                        maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)',
-                        WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)',
+                        maskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%), linear-gradient(to bottom, black 75%, transparent 100%)',
+                        WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%), linear-gradient(to bottom, black 75%, transparent 100%)',
+                        maskComposite: 'intersect',
+                        WebkitMaskComposite: 'source-in',
                       }}
                     />
-                    {/* Signature overlay */}
-                    <div className="absolute -bottom-2 -right-2 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-1.5 shadow-lg">
+                    {/* Signature overlay - positioned over Glenn */}
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
                       <Image
                         src="/signature-gp.png"
                         alt="Glenn Power Signature"
-                        width={80}
-                        height={28}
+                        width={90}
+                        height={32}
                         priority
-                        className="opacity-90"
+                        className="opacity-95 drop-shadow-lg"
+                        style={{
+                          filter: 'brightness(0) invert(1)',
+                        }}
                       />
                     </div>
                   </div>
@@ -160,27 +240,8 @@ export default async function ArticlePage({ params }: PageProps) {
             {/* Main Article Content - Left Side */}
             <article className="flex-1 min-w-0">
               <div className="bg-white rounded-2xl shadow-lg p-6 md:p-10">
-                {/* Article Body */}
-                <div
-                  className="prose prose-base max-w-none
-                    prose-headings:font-semibold prose-headings:text-gray-900
-                    prose-h2:text-xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:pt-6 prose-h2:border-t prose-h2:border-gray-200
-                    prose-h3:text-lg prose-h3:mt-8 prose-h3:mb-3
-                    prose-p:text-gray-700 prose-p:leading-[1.8] prose-p:mb-6 prose-p:text-[15px]
-                    prose-a:text-power-blue prose-a:font-medium prose-a:no-underline hover:prose-a:underline
-                    prose-strong:text-gray-900 prose-strong:font-semibold
-                    prose-ul:my-6 prose-ul:pl-6 prose-ul:list-disc prose-ul:space-y-3
-                    prose-ol:my-6 prose-ol:pl-6 prose-ol:list-decimal prose-ol:space-y-3
-                    prose-li:text-gray-700 prose-li:text-[15px] prose-li:leading-[1.8] prose-li:pl-2
-                    [&_ul>li]:marker:text-power-red [&_ol>li]:marker:text-power-blue [&_ol>li]:marker:font-semibold
-                    prose-table:my-8 prose-table:w-full prose-table:text-sm
-                    prose-th:bg-gray-50 prose-th:px-4 prose-th:py-3 prose-th:text-left prose-th:font-semibold prose-th:border prose-th:border-gray-200 prose-th:text-gray-900
-                    prose-td:px-4 prose-td:py-3 prose-td:border prose-td:border-gray-200 prose-td:text-gray-700
-                    [&_.lead]:text-lg [&_.lead]:text-gray-600 [&_.lead]:leading-relaxed [&_.lead]:mb-8 [&_.lead]:font-normal [&_.lead]:border-l-4 [&_.lead]:border-power-blue [&_.lead]:pl-4 [&_.lead]:py-1
-                    [&_h2:first-of-type]:border-t-0 [&_h2:first-of-type]:pt-0 [&_h2:first-of-type]:mt-8
-                  "
-                  dangerouslySetInnerHTML={{ __html: article.content || '' }}
-                />
+                {/* Article Body with Inline Enrichment */}
+                <ArticleBody content={article.content || ''} slug={slug} />
 
                 {/* Author Block */}
                 <div className="mt-10 pt-8 border-t border-gray-200">
@@ -264,25 +325,27 @@ export default async function ArticlePage({ params }: PageProps) {
                 {/* Related Articles */}
                 <RelatedArticles articles={relatedArticles} currentSlug={slug} />
 
-                {/* Contact CTA Card */}
-                <div className="bg-power-blue rounded-xl p-4 text-white">
-                  <h3 className="font-semibold text-base mb-2">Need Help With Your Car?</h3>
-                  <p className="text-white/80 text-sm mb-4">
-                    Book a service or get a free quote from our team.
+                {/* Contact CTA Card - subtle styling */}
+                <div className="bg-white border border-gray-100 rounded-lg p-4 shadow-sm">
+                  <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400 mb-3">
+                    Need Help?
+                  </p>
+                  <p className="text-sm text-gray-600 mb-4 leading-relaxed">
+                    Get a free quote or book your service today.
                   </p>
                   <div className="space-y-2">
                     <a
                       href="https://wa.me/971521217425"
                       target="_blank"
                       rel="noreferrer"
-                      className="flex items-center justify-center gap-2 bg-[#25D366] text-white px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-[#20bd5a] transition-colors w-full"
+                      className="flex items-center justify-center gap-2 bg-[#25D366] text-white px-3 py-2 rounded font-medium text-xs hover:bg-[#20bd5a] transition-colors w-full"
                     >
-                      <MessageCircle className="w-4 h-4" />
+                      <MessageCircle className="w-3.5 h-3.5" />
                       WhatsApp Us
                     </a>
                     <a
                       href="tel:+971521217425"
-                      className="flex items-center justify-center gap-2 bg-white/10 text-white px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-white/20 transition-colors w-full"
+                      className="flex items-center justify-center gap-2 bg-gray-50 text-gray-600 px-3 py-2 rounded font-medium text-xs hover:bg-gray-100 transition-colors w-full"
                     >
                       Call: +971 52 121 7425
                     </a>
@@ -296,5 +359,6 @@ export default async function ArticlePage({ params }: PageProps) {
 
       <Footer />
     </div>
+    </>
   );
 }

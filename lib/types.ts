@@ -34,6 +34,11 @@ export interface BrandItem {
   vehicleImage?: string;
 }
 
+export interface FAQ {
+  question: string;
+  answer: string;
+}
+
 export interface BlogPost {
   title: string;
   excerpt: string;
@@ -44,6 +49,7 @@ export interface BlogPost {
   content?: string; // Full article content in markdown/HTML
   author?: string;
   readTime?: string;
+  faqs?: FAQ[]; // FAQs for schema markup and AEO
 }
 
 export interface FleetFeature {

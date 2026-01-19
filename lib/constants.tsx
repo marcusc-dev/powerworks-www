@@ -185,7 +185,25 @@ export const BLOG_POSTS: BlogPost[] = [
 <p>At Powerworks, we test batteries as part of every service. If yours is showing signs of weakness, we'll tell you—but we won't pressure you to replace it before it's necessary. We use quality brands that are designed for hot climates, and we'll properly dispose of your old battery.</p>
 
 <p>If you're experiencing any of the warning signs above, or your battery is approaching 2 years old, message me on WhatsApp and I'll give you an honest assessment. No pressure, just straight talk.</p>
-    `
+    `,
+    faqs: [
+      {
+        question: "How long do car batteries last in Dubai?",
+        answer: "In Dubai's extreme heat, car batteries typically last 2-3 years compared to 4-5 years in cooler climates. Temperatures above 35°C accelerate chemical degradation, internal corrosion, and electrolyte evaporation inside the battery."
+      },
+      {
+        question: "Why does heat kill car batteries faster than cold?",
+        answer: "Heat causes the electrolyte inside batteries to evaporate faster, accelerates internal plate corrosion, and increases self-discharge rates. In Dubai's 8 months of extreme heat (35-50°C), this degradation is constant and severe."
+      },
+      {
+        question: "How much does car battery replacement cost in Dubai?",
+        answer: "Quality car battery replacement in Dubai typically costs AED 299-800 depending on the vehicle and battery type. Premium European vehicles like BMW, Mercedes, and Porsche may require AGM batteries costing AED 600-1,200."
+      },
+      {
+        question: "What are the warning signs of a dying car battery?",
+        answer: "Key warning signs include: slow engine cranking when starting, dimming headlights or interior lights, electrical issues like slow windows, the battery warning light coming on while driving, and age over 2 years in Dubai's climate."
+      }
+    ]
   },
   {
     title: "AC Blowing Warm? It's Not Always Gas",
@@ -258,7 +276,25 @@ export const BLOG_POSTS: BlogPost[] = [
 </ul>
 
 <p>If your AC isn't performing, message me on WhatsApp with your symptoms. I'll tell you honestly if it sounds like a simple regas or something that needs proper diagnosis.</p>
-    `
+    `,
+    faqs: [
+      {
+        question: "Why is my car AC blowing warm air in Dubai?",
+        answer: "Common causes include compressor failure, blocked condenser (from dust/sand), expansion valve issues, or refrigerant leaks. Contrary to popular belief, simply needing a 'regas' is rarely the actual problem—if refrigerant is low, there's usually a leak that needs fixing first."
+      },
+      {
+        question: "How much does AC repair cost in Dubai?",
+        answer: "AC repair costs in Dubai range from AED 199 for basic diagnostics to AED 2,000+ for compressor replacement. A simple regas costs AED 200-400 but is often a waste of money if the underlying leak isn't fixed first."
+      },
+      {
+        question: "How often should I service my car AC in Dubai?",
+        answer: "In Dubai's extreme climate, have your AC system inspected annually. Run the AC for 10 minutes weekly even in winter to keep seals lubricated, and replace cabin filters every 15,000km to prevent the system from working too hard."
+      },
+      {
+        question: "Why does my AC work when driving but blow warm at idle?",
+        answer: "This typically indicates a condenser problem. The condenser needs airflow to dissipate heat, and in Dubai's extreme temperatures, a partially blocked or damaged condenser can't cool properly without the extra airflow from driving."
+      }
+    ]
   },
   {
     title: "The Truth About 'Lifetime' Transmission Fluid",
@@ -353,7 +389,25 @@ export const BLOG_POSTS: BlogPost[] = [
 </ol>
 
 <p>Not sure when your transmission was last serviced? Send me a message with your car's details and current mileage. I'll tell you if it's due and what to expect.</p>
-    `
+    `,
+    faqs: [
+      {
+        question: "Does transmission fluid really need to be changed?",
+        answer: "Yes, despite 'lifetime fluid' marketing. In Dubai's extreme heat, transmission fluid degrades 2-3 times faster than in temperate climates. Most manufacturers mean 'lifetime' as the warranty period (4-5 years), not the actual life of your car."
+      },
+      {
+        question: "How often should I change transmission fluid in Dubai?",
+        answer: "For normal city driving in Dubai, change transmission fluid every 60,000-80,000 km. For sporty driving, every 40,000-60,000 km. CVT transmissions need service every 40,000-60,000 km. These intervals are shorter than European recommendations due to Dubai's heat."
+      },
+      {
+        question: "How much does a transmission fluid change cost in Dubai?",
+        answer: "Transmission fluid change costs AED 500-1,500 depending on the vehicle. Compare this to transmission rebuild (AED 8,000-15,000) or replacement (AED 15,000-40,000+). Regular fluid changes are cheap insurance against catastrophic failure."
+      },
+      {
+        question: "What are signs of bad transmission fluid?",
+        answer: "Warning signs include: delayed or rough shifting, slipping (engine revs but car doesn't accelerate), shuddering during gear changes, whining or humming noises, and dark brown or black fluid with a burnt smell. Fresh fluid should be red/pink."
+      }
+    ]
   },
   {
     title: "Should You Buy a Used European Car in Dubai?",
@@ -460,7 +514,25 @@ export const BLOG_POSTS: BlogPost[] = [
 </ul>
 
 <p>Thinking about a specific car? Message me the details—year, model, mileage, and price. I'll tell you honestly if it's a good deal or if you should walk away.</p>
-    `
+    `,
+    faqs: [
+      {
+        question: "Is it worth buying a used BMW or Mercedes in Dubai?",
+        answer: "Yes, if you buy the right model with full service history and get a pre-purchase inspection. European luxury cars depreciate 50-60% in 3 years in Dubai due to expat turnover and lease returns, creating excellent value—but budget AED 5,000-15,000 annually for maintenance depending on the model."
+      },
+      {
+        question: "How much does European car maintenance cost in Dubai?",
+        answer: "Annual maintenance for European cars in Dubai typically costs: Entry-level (BMW 3 Series, Audi A4) AED 5,000-8,000; Mid-range (BMW 5 Series, Mercedes E-Class) AED 8,000-12,000; High-end (Porsche, Range Rover) AED 12,000-20,000+."
+      },
+      {
+        question: "What should I check before buying a used European car in Dubai?",
+        answer: "Essential checks include: full service history (mandatory), comprehensive diagnostic scan for stored fault codes, suspension and steering wear, cooling system condition (critical in Dubai heat), transmission behavior during road test, and undercarriage inspection for leaks and damage."
+      },
+      {
+        question: "How much does a pre-purchase car inspection cost in Dubai?",
+        answer: "A thorough pre-purchase inspection at Powerworks costs AED 349-750 depending on the vehicle. The inspection takes 60-90 minutes and covers diagnostics, mechanical systems, undercarriage, and road test. This investment can save tens of thousands in hidden problems."
+      }
+    ]
   },
   {
     title: "The 10,000km Service Myth",
@@ -576,7 +648,25 @@ export const BLOG_POSTS: BlogPost[] = [
 </ul>
 
 <p>Not sure when your car is due? Message me with your last service date and mileage. I'll tell you exactly what's needed.</p>
-    `
+    `,
+    faqs: [
+      {
+        question: "How often should I service my car in Dubai?",
+        answer: "In Dubai's extreme conditions, service your car every 8,000-10,000 km or 6 months, whichever comes first. This is significantly more frequent than manufacturer recommendations (15,000-30,000 km) because Dubai's heat, stop-start traffic, and constant AC use classify as 'severe' driving conditions."
+      },
+      {
+        question: "Why do cars need more frequent oil changes in Dubai?",
+        answer: "Dubai's extreme heat (40-50°C for 6 months), constant stop-start traffic, short trips that prevent engines reaching optimal temperature, and dust/sand exposure all cause oil to break down faster. Oil loses viscosity, accumulates contaminants, and becomes acidic more quickly in these conditions."
+      },
+      {
+        question: "How much does a car service cost in Dubai?",
+        answer: "A quality car service in Dubai costs AED 349-800 depending on the vehicle. This includes premium oil meeting manufacturer specs, quality filter, multi-point inspection, and fluid top-ups. The slightly higher cost versus budget options prevents much larger repair bills later."
+      },
+      {
+        question: "What happens if I follow manufacturer service intervals in Dubai?",
+        answer: "Following European manufacturer intervals (15,000-30,000 km) in Dubai often leads to accelerated engine wear, sludge buildup, and potential major repairs costing AED 10,000-50,000+. Shorter intervals (8,000-10,000 km) cost about AED 2,400 more over 100,000 km but prevent these expensive failures."
+      }
+    ]
   },
   {
     title: "Warning Signs Your Cooling System is Failing",
@@ -677,7 +767,25 @@ export const BLOG_POSTS: BlogPost[] = [
 </ul>
 
 <p>Noticed any of these warning signs? Don't wait until you're stranded on Sheikh Zayed Road in August. Message me and describe what you're seeing—I'll tell you if it's urgent or can wait.</p>
-    `
+    `,
+    faqs: [
+      {
+        question: "What are the signs of cooling system failure?",
+        answer: "Key warning signs include: temperature gauge climbing above normal (especially in traffic), visible coolant leaks (green, orange, or pink fluid), sweet smell from the engine bay or interior vents, fluctuating temperature gauge, and milky residue under the oil cap or oil in the coolant reservoir."
+      },
+      {
+        question: "Why do cars overheat in Dubai?",
+        answer: "Dubai's extreme heat (40-50°C) combined with stop-start traffic puts enormous strain on cooling systems. Ambient temperatures near engine operating temperature mean the cooling system has less capacity to dissipate heat. Common failures include radiator/condenser blockage, failing water pump, stuck thermostat, or leaking hoses."
+      },
+      {
+        question: "How often should I change coolant in Dubai?",
+        answer: "Change coolant every 3-4 years in Dubai regardless of mileage. Old coolant becomes acidic and corrosive, damaging radiators, water pumps, and head gaskets. Also check coolant level monthly—it takes 30 seconds and could save your engine."
+      },
+      {
+        question: "How much does cooling system repair cost in Dubai?",
+        answer: "Cooling system repair costs vary: thermostat replacement AED 300-600, water pump AED 800-2,000, radiator replacement AED 1,000-3,000, heater core AED 2,000-4,000 (requires dashboard removal), and head gasket repair AED 5,000-15,000+ depending on the vehicle."
+      }
+    ]
   }
 ];
 

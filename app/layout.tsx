@@ -71,9 +71,15 @@ const jsonLd = {
   openingHoursSpecification: [
     {
       '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Sunday'],
       opens: '08:00',
       closes: '18:00',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Friday'],
+      opens: '08:00',
+      closes: '16:00',
     },
   ],
   priceRange: '$$',
@@ -89,11 +95,38 @@ const jsonLd = {
   sameAs: [
     'https://www.instagram.com/powerworksgarage',
     'https://www.facebook.com/powerworksgarage',
+    'https://www.youtube.com/@PowerworksGarage',
+    'https://www.linkedin.com/company/powerworks-garage',
   ],
-  areaServed: {
-    '@type': 'City',
-    name: 'Dubai',
+  founder: {
+    '@type': 'Person',
+    name: 'Glenn Power',
+    jobTitle: 'Owner & Master Technician',
+    description: 'British automotive expert with over 25 years of experience in vehicle repair and maintenance.',
   },
+  foundingDate: '2015',
+  areaServed: [
+    { '@type': 'City', name: 'Dubai' },
+    { '@type': 'Place', name: 'Al Quoz' },
+    { '@type': 'Place', name: 'Business Bay' },
+    { '@type': 'Place', name: 'Downtown Dubai' },
+    { '@type': 'Place', name: 'JLT' },
+    { '@type': 'Place', name: 'Dubai Marina' },
+    { '@type': 'Place', name: 'Jumeirah' },
+    { '@type': 'Place', name: 'Dubai Investment Park' },
+  ],
+  knowsAbout: [
+    'BMW repair Dubai',
+    'Mercedes service Dubai',
+    'Land Rover maintenance',
+    'Range Rover specialist',
+    'Porsche service Dubai',
+    'European car diagnostics',
+    'AC repair Dubai',
+    'Car battery replacement Dubai',
+    'Brake service Dubai',
+    'Transmission repair',
+  ],
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Car Services',
@@ -102,16 +135,80 @@ const jsonLd = {
         '@type': 'Offer',
         itemOffered: {
           '@type': 'Service',
-          name: 'Car Service',
+          name: 'Car Service Dubai',
           description: 'Comprehensive maintenance for all makes and models',
+        },
+        priceSpecification: {
+          '@type': 'PriceSpecification',
+          priceCurrency: 'AED',
+          minPrice: '349',
         },
       },
       {
         '@type': 'Offer',
         itemOffered: {
           '@type': 'Service',
-          name: 'AC Repair',
+          name: 'AC Repair Dubai',
           description: 'Expert AC diagnostics and repair for Dubai climate',
+        },
+        priceSpecification: {
+          '@type': 'PriceSpecification',
+          priceCurrency: 'AED',
+          minPrice: '199',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Oil Change Dubai',
+          description: 'Premium oils and filters to protect your engine',
+        },
+        priceSpecification: {
+          '@type': 'PriceSpecification',
+          priceCurrency: 'AED',
+          minPrice: '199',
+          maxPrice: '450',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Battery Replacement Dubai',
+          description: 'High-performance batteries for reliable starting in Dubai heat',
+        },
+        priceSpecification: {
+          '@type': 'PriceSpecification',
+          priceCurrency: 'AED',
+          minPrice: '299',
+          maxPrice: '1200',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Brake Service Dubai',
+          description: 'Safety-first brake pad and rotor services',
+        },
+        priceSpecification: {
+          '@type': 'PriceSpecification',
+          priceCurrency: 'AED',
+          minPrice: '299',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Pre-Purchase Inspection',
+          description: 'Detailed inspection reports for used car buyers',
+        },
+        priceSpecification: {
+          '@type': 'PriceSpecification',
+          priceCurrency: 'AED',
+          minPrice: '349',
         },
       },
       {
@@ -120,6 +217,11 @@ const jsonLd = {
           '@type': 'Service',
           name: 'Engine Repair',
           description: 'From tune-ups to complete overhauls by certified professionals',
+        },
+        priceSpecification: {
+          '@type': 'PriceSpecification',
+          priceCurrency: 'AED',
+          minPrice: '299',
         },
       },
       {
@@ -142,12 +244,33 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${plusJakartaSans.variable} ${jost.variable}`} suppressHydrationWarning>
       <head>
+        {/* Google Tag Manager */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KH2CHZ9M');`,
+          }}
+        />
+        {/* End Google Tag Manager */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className="font-sans antialiased">
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-KH2CHZ9M"
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
+        </noscript>
+        {/* End Google Tag Manager (noscript) */}
         {children}
       </body>
     </html>
