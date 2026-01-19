@@ -38,6 +38,7 @@ export default function RelatedArticles({ articles, currentSlug }: RelatedArticl
                 src={post.image}
                 alt={post.title}
                 fill
+                priority
                 className="object-cover group-hover:scale-105 transition-transform duration-300"
                 sizes="(max-width: 768px) 100vw, 280px"
               />

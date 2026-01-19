@@ -47,7 +47,11 @@
       "Bash(tree:*)",
       "Bash(tasklist:*)",
       "Bash(findstr:*)",
-      "Bash(git diff:*)"
+      "Bash(git diff:*)",
+      "Bash(vercel whoami:*)",
+      "Bash(vercel inspect:*)",
+      "Bash(vercel project:*)",
+      "Bash(vercel ls:*)"
     ]
   }
 }

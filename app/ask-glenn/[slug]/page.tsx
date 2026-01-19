@@ -127,6 +127,7 @@ export default async function ArticlePage({ params }: PageProps) {
                       src="/glenn.jpg"
                       alt="Glenn Power"
                       fill
+                      priority
                       className="object-cover object-top rounded-lg shadow-2xl"
                       style={{
                         maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)',
@@ -140,6 +141,7 @@ export default async function ArticlePage({ params }: PageProps) {
                         alt="Glenn Power Signature"
                         width={80}
                         height={28}
+                        priority
                         className="opacity-90"
                       />
                     </div>
@@ -162,19 +164,20 @@ export default async function ArticlePage({ params }: PageProps) {
                 <div
                   className="prose prose-base max-w-none
                     prose-headings:font-semibold prose-headings:text-gray-900
-                    prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4 prose-h2:pt-4 prose-h2:border-t prose-h2:border-gray-100
-                    prose-h3:text-lg prose-h3:mt-6 prose-h3:mb-3
-                    prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-5 prose-p:text-[15px]
+                    prose-h2:text-xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:pt-6 prose-h2:border-t prose-h2:border-gray-200
+                    prose-h3:text-lg prose-h3:mt-8 prose-h3:mb-3
+                    prose-p:text-gray-700 prose-p:leading-[1.8] prose-p:mb-6 prose-p:text-[15px]
                     prose-a:text-power-blue prose-a:font-medium prose-a:no-underline hover:prose-a:underline
                     prose-strong:text-gray-900 prose-strong:font-semibold
-                    prose-ul:my-5 prose-ul:pl-5 prose-ul:space-y-2
-                    prose-ol:my-5 prose-ol:pl-5 prose-ol:space-y-2
-                    prose-li:text-gray-700 prose-li:text-[15px] prose-li:leading-relaxed prose-li:my-0
-                    prose-table:my-6 prose-table:w-full prose-table:text-sm
+                    prose-ul:my-6 prose-ul:pl-6 prose-ul:list-disc prose-ul:space-y-3
+                    prose-ol:my-6 prose-ol:pl-6 prose-ol:list-decimal prose-ol:space-y-3
+                    prose-li:text-gray-700 prose-li:text-[15px] prose-li:leading-[1.8] prose-li:pl-2
+                    [&_ul>li]:marker:text-power-red [&_ol>li]:marker:text-power-blue [&_ol>li]:marker:font-semibold
+                    prose-table:my-8 prose-table:w-full prose-table:text-sm
                     prose-th:bg-gray-50 prose-th:px-4 prose-th:py-3 prose-th:text-left prose-th:font-semibold prose-th:border prose-th:border-gray-200 prose-th:text-gray-900
                     prose-td:px-4 prose-td:py-3 prose-td:border prose-td:border-gray-200 prose-td:text-gray-700
-                    [&_.lead]:text-lg [&_.lead]:text-gray-600 [&_.lead]:leading-relaxed [&_.lead]:mb-6 [&_.lead]:font-normal [&_.lead]:border-l-4 [&_.lead]:border-power-blue [&_.lead]:pl-4
-                    [&_h2:first-of-type]:border-t-0 [&_h2:first-of-type]:pt-0 [&_h2:first-of-type]:mt-6
+                    [&_.lead]:text-lg [&_.lead]:text-gray-600 [&_.lead]:leading-relaxed [&_.lead]:mb-8 [&_.lead]:font-normal [&_.lead]:border-l-4 [&_.lead]:border-power-blue [&_.lead]:pl-4 [&_.lead]:py-1
+                    [&_h2:first-of-type]:border-t-0 [&_h2:first-of-type]:pt-0 [&_h2:first-of-type]:mt-8
                   "
                   dangerouslySetInnerHTML={{ __html: article.content || '' }}
                 />
@@ -189,6 +192,7 @@ export default async function ArticlePage({ params }: PageProps) {
                           src="/glenn.jpg"
                           alt="Glenn Power - Owner of Powerworks Garage"
                           fill
+                          priority
                           className="object-cover object-top"
                         />
                       </div>
@@ -210,6 +214,7 @@ export default async function ArticlePage({ params }: PageProps) {
                           alt="Glenn Power Signature"
                           width={120}
                           height={40}
+                          priority
                           className="opacity-80"
                         />
                         <a
