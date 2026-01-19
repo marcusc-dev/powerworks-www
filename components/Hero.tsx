@@ -1,16 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Star, ShieldCheck } from 'lucide-react';
-import dynamic from 'next/dynamic';
-import { IMAGES, HERO_SLIDES, LOTTIE_URLS } from '@/lib/constants';
+import { Star } from 'lucide-react';
+import { HERO_SLIDES } from '@/lib/constants';
 import BackgroundPaths from './BackgroundPaths';
 import { motion, AnimatePresence } from 'framer-motion';
-
-const Player = dynamic(
-  () => import('@lottiefiles/react-lottie-player').then((mod) => mod.Player),
-  { ssr: false }
-);
 
 // Headlines - each as a complete message
 const HERO_HEADLINES = [
@@ -136,17 +130,6 @@ const Hero: React.FC = () => {
             </a>
           </div>
 
-          {/* Key Selling Points */}
-          <div className="mt-10 flex items-center gap-8 text-white/80 text-sm font-medium">
-             <div className="flex items-center gap-2">
-                <ShieldCheck className="text-green-400" size={20} />
-                <span>Fully Licensed</span>
-             </div>
-             <div className="flex items-center gap-2">
-                <img src={IMAGES.logoUnionJack} alt="UK Flag" className="w-6 h-4 object-cover rounded-sm opacity-90" />
-                <span>British Owned & Managed</span>
-             </div>
-          </div>
         </div>
 
         {/* Glenn Cutout Image - Full height, boxed horizontally */}
@@ -188,15 +171,6 @@ const Hero: React.FC = () => {
             ))}
         </div>
 
-        {/* Lottie Scroll Indicator */}
-        <div className="hidden md:block opacity-70">
-           <Player
-              autoplay
-              loop
-              src={LOTTIE_URLS.scrollDown}
-              style={{ height: '40px', width: '40px' }}
-           />
-        </div>
       </div>
     </div>
   );

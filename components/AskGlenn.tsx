@@ -202,7 +202,7 @@ const AskGlenn: React.FC = () => {
 
                   {/* Read More Link */}
                   <a
-                    href="#contact"
+                    href={`/ask-glenn/${post.slug}`}
                     className="inline-flex items-center gap-2 text-[#dc2626] font-bold text-sm hover:gap-3 transition-all group/link"
                   >
                     <span>Read Full Article</span>

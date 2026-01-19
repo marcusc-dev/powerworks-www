@@ -40,6 +40,10 @@ export interface BlogPost {
   category: string;
   date: string;
   image: string;
+  slug: string;
+  content?: string; // Full article content in markdown/HTML
+  author?: string;
+  readTime?: string;
 }
 
 export interface FleetFeature {
