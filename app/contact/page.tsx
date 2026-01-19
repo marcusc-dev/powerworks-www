@@ -114,7 +114,7 @@ export default function ContactPage() {
                       Usually responds in minutes
                     </p>
                     <p className="text-gray-600 mt-3 leading-relaxed">
-                      &ldquo;Send us your enquiry and I&apos;ll make sure you get a quick, helpful response. Looking forward to hearing from you!&rdquo;
+                      &ldquo;Send us your enquiry and I&apos;ll make sure you get a quick, helpful response. You can also hit the Ask Glenn button and we&apos;ll chat to you right now to see how best to assist. Looking forward to hearing from you!&rdquo;
                     </p>
                   </div>
                 </div>
