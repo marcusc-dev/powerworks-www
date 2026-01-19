@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Sun, Cloud, CloudRain, CloudLightning, CloudFog, Snowflake, Thermometer, Droplets } from 'lucide-react';
+import { Sun, Cloud, CloudRain, CloudLightning, CloudFog, Snowflake, Droplets } from 'lucide-react';
 
 interface WeatherData {
   temp: number;
@@ -78,8 +78,8 @@ export default function DubaiWeatherWidget() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-power-blue to-power-blue/90 text-white rounded-xl p-5 shadow-lg">
-      <h3 className="text-xs font-bold uppercase tracking-wider text-white/60 mb-4">
+    <div className="bg-gradient-to-br from-power-blue to-power-blue/90 text-white rounded-xl p-4 shadow-lg">
+      <h3 className="text-xs font-medium uppercase tracking-wider text-white/60 mb-3">
         Dubai Weather
       </h3>
 
@@ -114,16 +114,24 @@ export default function DubaiWeatherWidget() {
       {/* Driving tip based on weather */}
       {weather && (
         <div className="mt-4 pt-3 border-t border-white/10">
-          <p className="text-xs text-white/70 flex items-start gap-2">
-            <Thermometer className="w-4 h-4 flex-shrink-0 mt-0.5" />
-            <span>
-              {weather.temp >= 40
-                ? "Extreme heat - check coolant levels before driving"
-                : weather.temp >= 35
-                ? "Hot day - ensure your AC is working properly"
-                : "Good driving conditions today"}
-            </span>
-          </p>
+          <div className="flex items-center gap-3">
+            {/* Vehicle Icon/Image */}
+            <div className="w-12 h-12 flex-shrink-0 bg-white/10 rounded-lg flex items-center justify-center">
+              <svg className="w-8 h-8 text-white/80" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
+              </svg>
+            </div>
+            <div className="flex-1">
+              <p className="text-[11px] uppercase tracking-wide text-white/50 mb-0.5">Driving Conditions</p>
+              <p className="text-xs text-white/90 leading-snug">
+                {weather.temp >= 40
+                  ? "Extreme heat - check coolant levels before driving"
+                  : weather.temp >= 35
+                  ? "Hot day - ensure your AC is working properly"
+                  : "Good driving conditions today"}
+              </p>
+            </div>
+          </div>
         </div>
       )}
     </div>

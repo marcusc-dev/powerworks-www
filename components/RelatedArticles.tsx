@@ -19,8 +19,8 @@ export default function RelatedArticles({ articles, currentSlug }: RelatedArticl
 
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-      <div className="bg-power-red px-5 py-3">
-        <h3 className="text-white font-bold text-sm uppercase tracking-wider">
+      <div className="bg-power-red/90 px-4 py-2.5">
+        <h3 className="text-white font-medium text-xs uppercase tracking-wider">
           Related Articles
         </h3>
       </div>
@@ -30,24 +30,25 @@ export default function RelatedArticles({ articles, currentSlug }: RelatedArticl
           <Link
             key={post.slug}
             href={`/ask-glenn/${post.slug}`}
-            className="flex gap-3 p-4 hover:bg-gray-50 transition-colors group"
+            className="block p-4 hover:bg-gray-50 transition-colors group"
           >
             {/* Thumbnail */}
-            <div className="relative w-20 h-16 flex-shrink-0 rounded-lg overflow-hidden">
+            <div className="relative w-full h-28 rounded-lg overflow-hidden mb-3">
               <Image
                 src={post.image}
                 alt={post.title}
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-300"
+                sizes="(max-width: 768px) 100vw, 280px"
               />
             </div>
 
             {/* Content */}
-            <div className="flex-1 min-w-0">
-              <h4 className="text-sm font-semibold text-gray-900 line-clamp-2 group-hover:text-power-blue transition-colors leading-tight">
+            <div>
+              <h4 className="text-base font-semibold text-gray-900 line-clamp-2 group-hover:text-power-blue transition-colors leading-snug mb-1.5">
                 {post.title}
               </h4>
-              <p className="text-xs text-gray-500 mt-1 line-clamp-2">
+              <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed">
                 {post.excerpt}
               </p>
             </div>

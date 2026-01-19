@@ -76,44 +76,75 @@ export default async function ArticlePage({ params }: PageProps) {
           {/* Hero Content */}
           <div className="absolute inset-0 flex items-end">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-8 md:pb-12">
-              {/* Back Link */}
-              <Link
-                href="/ask-glenn"
-                className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-4 text-sm font-medium transition-colors"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Back to Ask Glenn
-              </Link>
+              <div className="flex items-end justify-between gap-8">
+                {/* Left Content */}
+                <div className="flex-1 max-w-3xl">
+                  {/* Back Link */}
+                  <Link
+                    href="/ask-glenn"
+                    className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-4 text-sm font-medium transition-colors"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    Back to Ask Glenn
+                  </Link>
 
-              {/* Category Badge */}
-              <div className="flex items-center gap-2 mb-4">
-                <span className="inline-flex items-center gap-1.5 bg-power-red text-white text-xs font-bold px-3 py-1.5 rounded-full">
-                  <Tag className="w-3 h-3" />
-                  {article.category}
-                </span>
-              </div>
-
-              {/* Title */}
-              <h1 className="text-2xl md:text-4xl lg:text-5xl font-extrabold text-white max-w-4xl leading-tight">
-                {article.title}
-              </h1>
-
-              {/* Meta Info */}
-              <div className="flex flex-wrap items-center gap-4 mt-4 text-white/80 text-sm">
-                <div className="flex items-center gap-2">
-                  <User className="w-4 h-4" />
-                  <span>By {article.author || 'Glenn'}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" />
-                  <span>{article.date}</span>
-                </div>
-                {article.readTime && (
-                  <div className="flex items-center gap-2">
-                    <span className="w-1 h-1 rounded-full bg-white/50"></span>
-                    <span>{article.readTime}</span>
+                  {/* Category Badge */}
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="inline-flex items-center gap-1.5 bg-power-red text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                      <Tag className="w-3 h-3" />
+                      {article.category}
+                    </span>
                   </div>
-                )}
+
+                  {/* Title */}
+                  <h1 className="text-xl md:text-3xl lg:text-4xl font-bold text-white leading-tight">
+                    {article.title}
+                  </h1>
+
+                  {/* Meta Info */}
+                  <div className="flex flex-wrap items-center gap-4 mt-4 text-white/80 text-sm">
+                    <div className="flex items-center gap-2">
+                      <User className="w-4 h-4" />
+                      <span>By {article.author || 'Glenn'}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4" />
+                      <span>{article.date}</span>
+                    </div>
+                    {article.readTime && (
+                      <div className="flex items-center gap-2">
+                        <span className="w-1 h-1 rounded-full bg-white/50"></span>
+                        <span>{article.readTime}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Glenn Image - Right Side */}
+                <div className="hidden lg:block relative flex-shrink-0">
+                  <div className="relative w-48 h-56 xl:w-56 xl:h-64">
+                    <Image
+                      src="/glenn.jpg"
+                      alt="Glenn Power"
+                      fill
+                      className="object-cover object-top rounded-lg shadow-2xl"
+                      style={{
+                        maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)',
+                        WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)',
+                      }}
+                    />
+                    {/* Signature overlay */}
+                    <div className="absolute -bottom-2 -right-2 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-1.5 shadow-lg">
+                      <Image
+                        src="/signature-gp.png"
+                        alt="Glenn Power Signature"
+                        width={80}
+                        height={28}
+                        className="opacity-90"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -129,23 +160,69 @@ export default async function ArticlePage({ params }: PageProps) {
               <div className="bg-white rounded-2xl shadow-lg p-6 md:p-10">
                 {/* Article Body */}
                 <div
-                  className="prose prose-lg max-w-none
-                    prose-headings:font-bold prose-headings:text-gray-900
-                    prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4
-                    prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
-                    prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-4
-                    prose-a:text-power-blue prose-a:font-semibold prose-a:no-underline hover:prose-a:underline
-                    prose-strong:text-gray-900
-                    prose-ul:my-4 prose-ul:pl-6
-                    prose-ol:my-4 prose-ol:pl-6
-                    prose-li:text-gray-700 prose-li:my-1
-                    prose-table:my-6 prose-table:w-full
-                    prose-th:bg-gray-100 prose-th:p-3 prose-th:text-left prose-th:font-semibold prose-th:border prose-th:border-gray-200
-                    prose-td:p-3 prose-td:border prose-td:border-gray-200
-                    [&_.lead]:text-xl [&_.lead]:text-gray-600 [&_.lead]:leading-relaxed [&_.lead]:mb-6 [&_.lead]:font-normal
+                  className="prose prose-base max-w-none
+                    prose-headings:font-semibold prose-headings:text-gray-900
+                    prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4 prose-h2:pt-4 prose-h2:border-t prose-h2:border-gray-100
+                    prose-h3:text-lg prose-h3:mt-6 prose-h3:mb-3
+                    prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-5 prose-p:text-[15px]
+                    prose-a:text-power-blue prose-a:font-medium prose-a:no-underline hover:prose-a:underline
+                    prose-strong:text-gray-900 prose-strong:font-semibold
+                    prose-ul:my-5 prose-ul:pl-5 prose-ul:space-y-2
+                    prose-ol:my-5 prose-ol:pl-5 prose-ol:space-y-2
+                    prose-li:text-gray-700 prose-li:text-[15px] prose-li:leading-relaxed prose-li:my-0
+                    prose-table:my-6 prose-table:w-full prose-table:text-sm
+                    prose-th:bg-gray-50 prose-th:px-4 prose-th:py-3 prose-th:text-left prose-th:font-semibold prose-th:border prose-th:border-gray-200 prose-th:text-gray-900
+                    prose-td:px-4 prose-td:py-3 prose-td:border prose-td:border-gray-200 prose-td:text-gray-700
+                    [&_.lead]:text-lg [&_.lead]:text-gray-600 [&_.lead]:leading-relaxed [&_.lead]:mb-6 [&_.lead]:font-normal [&_.lead]:border-l-4 [&_.lead]:border-power-blue [&_.lead]:pl-4
+                    [&_h2:first-of-type]:border-t-0 [&_h2:first-of-type]:pt-0 [&_h2:first-of-type]:mt-6
                   "
                   dangerouslySetInnerHTML={{ __html: article.content || '' }}
                 />
+
+                {/* Author Block */}
+                <div className="mt-10 pt-8 border-t border-gray-200">
+                  <div className="flex flex-col sm:flex-row gap-6 items-start">
+                    {/* Author Image */}
+                    <div className="flex-shrink-0">
+                      <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden shadow-lg">
+                        <Image
+                          src="/glenn.jpg"
+                          alt="Glenn Power - Owner of Powerworks Garage"
+                          fill
+                          className="object-cover object-top"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Author Info */}
+                    <div className="flex-1">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-2">
+                        <h4 className="text-lg font-semibold text-gray-900">Glenn Power</h4>
+                        <span className="text-sm text-power-blue font-medium">Owner & Master Technician</span>
+                      </div>
+                      <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                        With over 25 years of experience in automotive repair, Glenn founded Powerworks Garage to bring British standards of quality and honesty to Dubai. He personally oversees every job and is always happy to chat about your car.
+                      </p>
+                      {/* Signature */}
+                      <div className="flex items-center gap-4">
+                        <Image
+                          src="/signature-gp.png"
+                          alt="Glenn Power Signature"
+                          width={120}
+                          height={40}
+                          className="opacity-80"
+                        />
+                        <a
+                          href="https://wa.me/971521217425"
+                          className="text-sm text-[#25D366] hover:underline font-medium flex items-center gap-1.5"
+                        >
+                          <MessageCircle className="w-4 h-4" />
+                          Message Glenn
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
                 {/* WhatsApp CTA */}
                 <div className="mt-12 p-6 md:p-8 bg-gradient-to-br from-[#25D366] to-[#20bd5a] rounded-2xl">
@@ -173,7 +250,7 @@ export default async function ArticlePage({ params }: PageProps) {
             </article>
 
             {/* Sidebar - Right Side */}
-            <aside className="lg:w-80 xl:w-96 space-y-6">
+            <aside className="lg:w-72 xl:w-80 space-y-5">
               {/* Sticky Container */}
               <div className="lg:sticky lg:top-24 space-y-6">
                 {/* Dubai Weather Widget */}
@@ -183,8 +260,8 @@ export default async function ArticlePage({ params }: PageProps) {
                 <RelatedArticles articles={relatedArticles} currentSlug={slug} />
 
                 {/* Contact CTA Card */}
-                <div className="bg-power-blue rounded-xl p-5 text-white">
-                  <h3 className="font-bold text-lg mb-2">Need Help With Your Car?</h3>
+                <div className="bg-power-blue rounded-xl p-4 text-white">
+                  <h3 className="font-semibold text-base mb-2">Need Help With Your Car?</h3>
                   <p className="text-white/80 text-sm mb-4">
                     Book a service or get a free quote from our team.
                   </p>
