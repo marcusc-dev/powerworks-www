@@ -1,6 +1,7 @@
 'use server';
 
 import { NextRequest, NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
 
 interface BookingRequest {
   customer_name: string;
@@ -14,16 +15,32 @@ interface BookingRequest {
   conversation_transcript?: string;
 }
 
+// Create SMTP transporter using Brevo SMTP relay
+function createTransporter() {
+  return nodemailer.createTransport({
+    host: 'smtp-relay.brevo.com',
+    port: 587,
+    secure: false, // TLS
+    auth: {
+      user: process.env.BREVO_SMTP_LOGIN,
+      pass: process.env.BREVO_SMTP_PASSWORD,
+    },
+  });
+}
+
 // Send booking notification email to Powerworks
 async function sendBookingNotification(booking: BookingRequest): Promise<boolean> {
-  const BREVO_API_KEY = process.env.BREVO_API_KEY;
+  const smtpLogin = process.env.BREVO_SMTP_LOGIN;
+  const smtpPassword = process.env.BREVO_SMTP_PASSWORD;
 
-  if (!BREVO_API_KEY) {
-    console.error('BREVO_API_KEY is not configured - cannot send booking notification');
+  if (!smtpLogin || !smtpPassword) {
+    console.error('BREVO SMTP credentials not configured');
     return false;
   }
 
   try {
+    const transporter = createTransporter();
+
     const emailContent = `
 New Voice Assistant Booking Request (Live API)
 
@@ -54,31 +71,7 @@ Source: Voice Assistant (Ask Glenn - Live API)
 This booking was made through the AI voice assistant on the website.
     `.trim();
 
-    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
-      method: 'POST',
-      headers: {
-        'accept': 'application/json',
-        'api-key': BREVO_API_KEY,
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        sender: {
-          name: 'Powerworks Voice Assistant',
-          email: 'noreply@powerworksgaragedubai.com',
-        },
-        to: [
-          {
-            email: 'marcus@powerworksgarage.com',
-            name: 'Powerworks Garage',
-          },
-        ],
-        replyTo: booking.customer_email ? {
-          email: booking.customer_email,
-          name: booking.customer_name,
-        } : undefined,
-        subject: `🎙️ Voice Booking: ${booking.service_type} - ${booking.customer_name}`,
-        textContent: emailContent,
-        htmlContent: `
+    const htmlContent = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -105,11 +98,11 @@ This booking was made through the AI voice assistant on the website.
     <div class="header">
       <h1>POWERWORKS</h1>
       <p>New Voice Assistant Booking</p>
-      <span class="badge">🎙️ Ask Glenn (Live)</span>
+      <span class="badge">Ask Glenn (Live)</span>
     </div>
     <div class="content">
       <div class="section">
-        <h3>📞 Customer Details</h3>
+        <h3>Customer Details</h3>
         <div class="field">
           <span class="label">Name:</span>
           <span class="value">${booking.customer_name}</span>
@@ -122,12 +115,12 @@ This booking was made through the AI voice assistant on the website.
           <span class="label">Email:</span>
           <span class="value">${booking.customer_email ? `<a href="mailto:${booking.customer_email}">${booking.customer_email}</a>` : 'Not provided'}</span>
         </div>
-        <a href="tel:${booking.customer_phone}" class="cta cta-phone">📞 Call Customer</a>
-        <a href="https://wa.me/${booking.customer_phone.replace(/[^0-9]/g, '')}" class="cta">💬 WhatsApp</a>
+        <a href="tel:${booking.customer_phone}" class="cta cta-phone">Call Customer</a>
+        <a href="https://wa.me/${booking.customer_phone.replace(/[^0-9]/g, '')}" class="cta">WhatsApp</a>
       </div>
 
       <div class="section">
-        <h3>📅 Booking Request</h3>
+        <h3>Booking Request</h3>
         <div class="field">
           <span class="label">Requested Time:</span>
           <span class="value">${booking.requested_time || 'To be confirmed'}</span>
@@ -143,13 +136,13 @@ This booking was made through the AI voice assistant on the website.
       </div>
 
       <div class="section">
-        <h3>💬 Issue Summary</h3>
+        <h3>Issue Summary</h3>
         <div class="summary-box">${booking.issue_summary.replace(/\n/g, '<br>')}</div>
       </div>
 
       ${booking.conversation_transcript ? `
       <div class="section">
-        <h3>🎙️ Full Conversation Transcript</h3>
+        <h3>Full Conversation Transcript</h3>
         <div class="summary-box" style="font-size: 13px; line-height: 1.8;">${booking.conversation_transcript.replace(/\n/g, '<br>').replace(/Customer:/g, '<strong style="color: #e63946;">Customer:</strong>').replace(/Glenn:/g, '<strong style="color: #1a1a2e;">Glenn:</strong>')}</div>
       </div>
       ` : ''}
@@ -161,17 +154,18 @@ This booking was made through the AI voice assistant on the website.
   </div>
 </body>
 </html>
-        `.trim(),
-      }),
+    `.trim();
+
+    const info = await transporter.sendMail({
+      from: '"Powerworks Voice Assistant" <noreply@powerworksgaragedubai.com>',
+      to: 'marcus@powerworksgarage.com',
+      replyTo: booking.customer_email || undefined,
+      subject: `Voice Booking: ${booking.service_type} - ${booking.customer_name}`,
+      text: emailContent,
+      html: htmlContent,
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Brevo API error for voice booking:', errorData);
-      return false;
-    }
-
-    console.log('Voice Live booking notification sent successfully');
+    console.log('Voice Live booking notification sent successfully:', info.messageId);
     return true;
   } catch (error) {
     console.error('Failed to send booking notification:', error);
@@ -181,32 +175,17 @@ This booking was made through the AI voice assistant on the website.
 
 // Send confirmation email to customer (if email provided)
 async function sendCustomerConfirmation(booking: BookingRequest): Promise<boolean> {
-  const BREVO_API_KEY = process.env.BREVO_API_KEY;
+  const smtpLogin = process.env.BREVO_SMTP_LOGIN;
+  const smtpPassword = process.env.BREVO_SMTP_PASSWORD;
 
-  if (!BREVO_API_KEY || !booking.customer_email) {
+  if (!smtpLogin || !smtpPassword || !booking.customer_email) {
     return false;
   }
 
   try {
-    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
-      method: 'POST',
-      headers: {
-        'accept': 'application/json',
-        'api-key': BREVO_API_KEY,
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        sender: {
-          name: 'Powerworks Garage',
-          email: 'noreply@powerworksgaragedubai.com',
-        },
-        to: [{ email: booking.customer_email, name: booking.customer_name }],
-        replyTo: {
-          email: 'info@powerworksgaragedubai.com',
-          name: 'Powerworks Garage',
-        },
-        subject: `Booking Request Received - Powerworks Garage`,
-        htmlContent: `
+    const transporter = createTransporter();
+
+    const htmlContent = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -235,7 +214,7 @@ async function sendCustomerConfirmation(booking: BookingRequest): Promise<boolea
       <p>Thank you for your booking request through our voice assistant. We've received your details and our team will call you shortly to confirm your appointment.</p>
 
       <div class="details">
-        <h3>📅 Your Booking Request</h3>
+        <h3>Your Booking Request</h3>
         <p><strong>Service:</strong> ${booking.service_type}</p>
         <p><strong>Requested Time:</strong> ${booking.requested_time || 'To be confirmed'}</p>
         ${booking.vehicle ? `<p><strong>Vehicle:</strong> ${booking.vehicle}</p>` : ''}
@@ -243,26 +222,33 @@ async function sendCustomerConfirmation(booking: BookingRequest): Promise<boolea
 
       <p>If you need to reach us before we call, you can contact us directly:</p>
 
-      <a href="https://wa.me/971521217425" class="cta">💬 WhatsApp Us</a>
+      <a href="https://wa.me/971521217425" class="cta">WhatsApp Us</a>
 
       <div class="contact-info">
-        <p><strong>📞 Phone:</strong> <a href="tel:+971521217425">052 121 7425</a></p>
-        <p><strong>📍 Location:</strong> Al Quoz Industrial Area 3, Dubai</p>
-        <p><strong>⏰ Hours:</strong> Monday - Sunday, 8AM - 6PM</p>
+        <p><strong>Phone:</strong> <a href="tel:+971521217425">052 121 7425</a></p>
+        <p><strong>Location:</strong> Al Quoz Industrial Area 3, Dubai</p>
+        <p><strong>Hours:</strong> Monday - Sunday, 8AM - 6PM</p>
       </div>
     </div>
     <div class="footer">
-      <p>Powerworks Garage Dubai<br>British-Owned • Professional Service</p>
+      <p>Powerworks Garage Dubai<br>British-Owned - Professional Service</p>
       <p style="font-size: 11px; color: #999;">This email was sent because you made a booking request through our website voice assistant.</p>
     </div>
   </div>
 </body>
 </html>
-        `.trim(),
-      }),
+    `.trim();
+
+    const info = await transporter.sendMail({
+      from: '"Powerworks Garage" <noreply@powerworksgaragedubai.com>',
+      to: booking.customer_email,
+      replyTo: 'info@powerworksgaragedubai.com',
+      subject: 'Booking Request Received - Powerworks Garage',
+      html: htmlContent,
     });
 
-    return response.ok;
+    console.log('Customer confirmation sent:', info.messageId);
+    return true;
   } catch (error) {
     console.error('Failed to send customer confirmation:', error);
     return false;
