@@ -128,6 +128,7 @@ export default function VoiceAssistantPanel({
   const isThinking = state.status === 'thinking';
   const isSpeaking = state.status === 'speaking';
   const isProcessing = isThinking || isSpeaking;
+  const isReadyToContinue = state.status === 'idle' && state.messages.length > 0;
 
   return (
     <div
@@ -276,7 +277,9 @@ export default function VoiceAssistantPanel({
       {/* Status bar */}
       <div className="px-4 py-2 bg-gray-50 border-t border-gray-100">
         <p className="text-xs text-gray-500 text-center" aria-live="polite">
-          {STATUS_LABELS[state.status]}
+          {state.status === 'idle' && state.messages.length > 0
+            ? 'Tap the mic to continue...'
+            : STATUS_LABELS[state.status]}
         </p>
       </div>
 
@@ -291,16 +294,20 @@ export default function VoiceAssistantPanel({
             className={`relative w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-power-red/30 disabled:opacity-50 disabled:cursor-not-allowed ${
               isListening
                 ? 'bg-power-red text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                : isReadyToContinue
+                  ? 'bg-power-blue text-white hover:bg-blue-700'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
-            {isListening && (
-              <span className="absolute inset-0 rounded-full bg-power-red/30 animate-ping motion-reduce:animate-none" />
+            {(isListening || isReadyToContinue) && (
+              <span className={`absolute inset-0 rounded-full animate-ping motion-reduce:animate-none ${
+                isListening ? 'bg-power-red/30' : 'bg-power-blue/30'
+              }`} />
             )}
             {isListening ? (
               <MicOff className="w-7 h-7 relative z-10" />
             ) : (
-              <Mic className="w-7 h-7" />
+              <Mic className="w-7 h-7 relative z-10" />
             )}
           </button>
         </div>

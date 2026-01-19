@@ -7,8 +7,6 @@ import {
   Message,
   VoiceAgentRequest,
   VoiceAgentResponse,
-  LeadCapture,
-  ContactPrefill,
 } from './types';
 
 // Generate a simple UUID for session tracking
@@ -36,6 +34,42 @@ function hasSpeechSynthesis(): boolean {
   return 'speechSynthesis' in window;
 }
 
+// Get a good quality voice (prefer natural-sounding voices)
+function getBestVoice(voices: SpeechSynthesisVoice[]): SpeechSynthesisVoice | null {
+  // Prefer premium/natural voices - these typically have better quality
+  const preferredVoices = [
+    // Google voices (usually better quality)
+    'Google UK English Male',
+    'Google UK English Female',
+    // Microsoft neural voices (Edge/Windows 11)
+    'Microsoft Ryan Online (Natural)',
+    'Microsoft Sonia Online (Natural)',
+    'Microsoft George Online (Natural)',
+    // macOS voices
+    'Daniel',
+    'Oliver',
+    'Samantha',
+    // Generic good options
+    'en-GB',
+  ];
+
+  // First try to find a specifically named premium voice
+  for (const preferred of preferredVoices) {
+    const voice = voices.find(
+      (v) => v.name.includes(preferred) || (preferred === 'en-GB' && v.lang === 'en-GB')
+    );
+    if (voice) return voice;
+  }
+
+  // Fall back to any British English voice
+  const britishVoice = voices.find((v) => v.lang === 'en-GB' || v.lang.startsWith('en-GB'));
+  if (britishVoice) return britishVoice;
+
+  // Fall back to any English voice
+  const englishVoice = voices.find((v) => v.lang.startsWith('en'));
+  return englishVoice || null;
+}
+
 const initialState: VoiceAssistantState = {
   isOpen: false,
   status: 'idle',
@@ -61,6 +95,8 @@ export function useVoiceAssistant() {
   const synthRef = useRef<SpeechSynthesis | null>(null);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const selectedVoiceRef = useRef<SpeechSynthesisVoice | null>(null);
+  const voicesLoadedRef = useRef<boolean>(false);
 
   // Initialize speech APIs on mount
   useEffect(() => {
@@ -83,6 +119,23 @@ export function useVoiceAssistant() {
 
     if (hasSynth) {
       synthRef.current = window.speechSynthesis;
+
+      // Voices may not be loaded immediately - wait for them
+      const loadVoices = () => {
+        const voices = synthRef.current?.getVoices() || [];
+        if (voices.length > 0) {
+          selectedVoiceRef.current = getBestVoice(voices);
+          voicesLoadedRef.current = true;
+        }
+      };
+
+      // Try immediately (might work in some browsers)
+      loadVoices();
+
+      // Also listen for voiceschanged event (Chrome needs this)
+      if (synthRef.current) {
+        synthRef.current.onvoiceschanged = loadVoices;
+      }
     }
 
     return () => {
@@ -96,6 +149,7 @@ export function useVoiceAssistant() {
       }
       if (synthRef.current) {
         synthRef.current.cancel();
+        synthRef.current.onvoiceschanged = null;
       }
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
@@ -219,7 +273,7 @@ export function useVoiceAssistant() {
   );
 
   // Speak text using TTS
-  const speak = useCallback((text: string): Promise<void> => {
+  const speak = useCallback((text: string, autoListenAfter: boolean = false): Promise<void> => {
     return new Promise((resolve, reject) => {
       if (!synthRef.current) {
         resolve();
@@ -231,16 +285,22 @@ export function useVoiceAssistant() {
 
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'en-GB';
-      utterance.rate = 1.0;
+      // Slightly slower rate sounds more natural
+      utterance.rate = 0.95;
       utterance.pitch = 1.0;
+      utterance.volume = 1.0;
 
-      // Try to find a British English voice
-      const voices = synthRef.current.getVoices();
-      const britishVoice = voices.find(
-        (v) => v.lang === 'en-GB' || v.lang.startsWith('en-GB')
-      );
-      if (britishVoice) {
-        utterance.voice = britishVoice;
+      // Use the pre-loaded voice if available
+      if (selectedVoiceRef.current) {
+        utterance.voice = selectedVoiceRef.current;
+      } else {
+        // Fallback: try to get voices now
+        const voices = synthRef.current.getVoices();
+        const bestVoice = getBestVoice(voices);
+        if (bestVoice) {
+          utterance.voice = bestVoice;
+          selectedVoiceRef.current = bestVoice;
+        }
       }
 
       utterance.onend = () => {
@@ -249,10 +309,11 @@ export function useVoiceAssistant() {
       };
 
       utterance.onerror = (event) => {
-        // Don't treat 'interrupted' as an error
-        if (event.error === 'interrupted') {
+        // Don't treat 'interrupted' or 'canceled' as an error
+        if (event.error === 'interrupted' || event.error === 'canceled') {
           resolve();
         } else {
+          setState((prev) => ({ ...prev, status: 'idle' }));
           reject(new Error(event.error));
         }
       };
