@@ -446,12 +446,13 @@ export function useGeminiLive() {
         console.log('WebSocket connected to Gemini Live');
 
         // Send setup message with correct format per Gemini Live API docs
-        // Note: Using 'AUDIO' responseModality with function calling enabled
+        // Note: Using both TEXT and AUDIO modalities to enable function calling
+        // Function calls come through TEXT, speech comes through AUDIO
         const setupMessage = {
           setup: {
             model: `models/${config.model}`,
             generationConfig: {
-              responseModalities: ['AUDIO'],
+              responseModalities: ['TEXT', 'AUDIO'],
               speechConfig: {
                 voiceConfig: {
                   prebuiltVoiceConfig: {
