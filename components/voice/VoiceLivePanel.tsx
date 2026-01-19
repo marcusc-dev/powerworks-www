@@ -15,6 +15,8 @@ import {
   Volume2,
   Wifi,
   WifiOff,
+  Mail,
+  Check,
 } from 'lucide-react';
 import { GeminiLiveState, LiveStatus } from './useGeminiLive';
 import { WHATSAPP_URL } from './contactPrefill';
@@ -125,6 +127,43 @@ export default function VoiceLivePanel({
   const inputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const [textInput, setTextInput] = useState('');
+  const [isSendingTranscript, setIsSendingTranscript] = useState(false);
+  const [transcriptSent, setTranscriptSent] = useState(false);
+
+  // Send transcript to Powerworks
+  const handleSendTranscript = useCallback(async () => {
+    if (state.messages.length === 0 || isSendingTranscript) return;
+
+    setIsSendingTranscript(true);
+    try {
+      const transcript = state.messages
+        .map(msg => `${msg.role === 'user' ? 'Customer' : 'Glenn'}: ${msg.content}`)
+        .join('\n\n');
+
+      const response = await fetch('/api/voice-live-booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customer_name: 'Voice Conversation',
+          customer_phone: 'See transcript',
+          service_type: 'Voice Inquiry',
+          issue_summary: 'Customer had a voice conversation with Glenn. See full transcript below.',
+          page_context: pathname,
+          conversation_transcript: transcript,
+        }),
+      });
+
+      if (response.ok) {
+        setTranscriptSent(true);
+        // Reset after 5 seconds
+        setTimeout(() => setTranscriptSent(false), 5000);
+      }
+    } catch (error) {
+      console.error('Failed to send transcript:', error);
+    } finally {
+      setIsSendingTranscript(false);
+    }
+  }, [state.messages, pathname, isSendingTranscript]);
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -416,9 +455,38 @@ export default function VoiceLivePanel({
 
       {/* CTA Footer */}
       <div className="p-4 bg-gray-50 border-t border-gray-100 space-y-2">
+        {/* Send Transcript Button - Only show when there are messages */}
+        {state.messages.length > 0 && (
+          <button
+            onClick={handleSendTranscript}
+            disabled={isSendingTranscript || transcriptSent}
+            className={`w-full py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+              transcriptSent
+                ? 'bg-green-600 text-white focus:ring-green-600'
+                : 'bg-power-red text-white hover:bg-red-700 focus:ring-power-red'
+            } disabled:opacity-70`}
+          >
+            {isSendingTranscript ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Sending...
+              </>
+            ) : transcriptSent ? (
+              <>
+                <Check className="w-4 h-4" />
+                Sent to Powerworks!
+              </>
+            ) : (
+              <>
+                <Mail className="w-4 h-4" />
+                Send Conversation to Powerworks
+              </>
+            )}
+          </button>
+        )}
         <button
           onClick={handleBookAppointment}
-          className="w-full bg-power-red text-white py-3 rounded-xl font-bold text-sm hover:bg-red-700 transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-power-red focus:ring-offset-2"
+          className="w-full bg-power-dark text-white py-3 rounded-xl font-bold text-sm hover:bg-gray-800 transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-power-dark focus:ring-offset-2"
         >
           <Calendar className="w-4 h-4" />
           Book Appointment
