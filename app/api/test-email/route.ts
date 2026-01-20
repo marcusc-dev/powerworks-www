@@ -18,7 +18,7 @@ export async function GET() {
 
     // Send test email
     const { data, error } = await resend.emails.send({
-      from: 'Powerworks Test <voice@powerworksgaragedubai.com>',
+      from: 'Powerworks Test <voice@powerworksgarage.com>',
       to: ['marcus@powerworksgarage.com'],
       subject: 'Test Email - Voice Assistant',
       html: '<h1>Test Successful!</h1><p>This is a test email from the Powerworks voice assistant. If you receive this, email sending is working correctly!</p>',

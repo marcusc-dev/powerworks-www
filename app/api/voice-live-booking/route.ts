@@ -113,7 +113,7 @@ async function sendBookingNotification(booking: BookingRequest): Promise<boolean
     `.trim();
 
     const { data, error } = await resend.emails.send({
-      from: 'Powerworks Voice <voice@powerworksgaragedubai.com>',
+      from: 'Powerworks Voice <voice@powerworksgarage.com>',
       to: ['marcus@powerworksgarage.com'],
       replyTo: booking.customer_email || undefined,
       subject: `Voice Booking: ${booking.service_type} - ${booking.customer_name}`,
@@ -199,9 +199,9 @@ async function sendCustomerConfirmation(booking: BookingRequest): Promise<boolea
     `.trim();
 
     const { data, error } = await resend.emails.send({
-      from: 'Powerworks Garage <noreply@powerworksgaragedubai.com>',
+      from: 'Powerworks Garage <noreply@powerworksgarage.com>',
       to: [booking.customer_email],
-      replyTo: 'info@powerworksgaragedubai.com',
+      replyTo: 'info@powerworksgarage.com',
       subject: 'Booking Request Received - Powerworks Garage',
       html: htmlContent,
     });
