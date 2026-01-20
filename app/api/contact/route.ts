@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { Resend } from 'resend';
 
 interface ContactFormData {
   name: string;
@@ -21,65 +22,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const BREVO_API_KEY = process.env.BREVO_API_KEY;
+    const resendApiKey = process.env.RESEND_API_KEY;
 
-    if (!BREVO_API_KEY) {
-      console.error('BREVO_API_KEY is not configured');
+    if (!resendApiKey) {
+      console.error('RESEND_API_KEY is not configured');
       return NextResponse.json(
         { error: 'Email service not configured' },
         { status: 500 }
       );
     }
 
-    // Build email content
-    const emailContent = `
-New Contact Form Submission from Powerworks Website
+    const resend = new Resend(resendApiKey);
 
-Customer Details:
------------------
-Name: ${body.name}
-Phone: ${body.phone}
-Email: ${body.email || 'Not provided'}
-
-Vehicle Information:
--------------------
-Vehicle: ${body.vehicle || 'Not specified'}
-Service Required: ${body.service || 'Not specified'}
-
-Message:
---------
-${body.message || 'No message provided'}
-
----
-This email was sent from the Powerworks website contact form.
-    `.trim();
-
-    // Send email via Brevo API
-    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
-      method: 'POST',
-      headers: {
-        'accept': 'application/json',
-        'api-key': BREVO_API_KEY,
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        sender: {
-          name: 'Powerworks Website',
-          email: 'noreply@powerworksgaragedubai.com',
-        },
-        to: [
-          {
-            email: 'info@powerworksgaragedubai.com',
-            name: 'Powerworks Garage',
-          },
-        ],
-        replyTo: body.email ? {
-          email: body.email,
-          name: body.name,
-        } : undefined,
-        subject: `New Enquiry: ${body.service || 'General'} - ${body.name}`,
-        textContent: emailContent,
-        htmlContent: `
+    // Build HTML email content
+    const htmlContent = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -96,6 +52,8 @@ This email was sent from the Powerworks website contact form.
     .value { color: #333; }
     .message-box { background: white; padding: 15px; border-left: 4px solid #e63946; margin-top: 10px; }
     .footer { text-align: center; padding: 15px; color: #666; font-size: 12px; }
+    .cta { display: inline-block; background: #25D366; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; margin: 5px; }
+    .cta-phone { background: #e63946; }
   </style>
 </head>
 <body>
@@ -119,6 +77,8 @@ This email was sent from the Powerworks website contact form.
           <span class="label">Email:</span>
           <span class="value">${body.email ? `<a href="mailto:${body.email}">${body.email}</a>` : 'Not provided'}</span>
         </div>
+        <a href="tel:${body.phone}" class="cta cta-phone">Call Customer</a>
+        <a href="https://wa.me/${body.phone.replace(/[^0-9]/g, '')}" class="cta">WhatsApp</a>
       </div>
 
       <div class="section">
@@ -146,19 +106,25 @@ This email was sent from the Powerworks website contact form.
   </div>
 </body>
 </html>
-        `.trim(),
-      }),
+    `.trim();
+
+    const { data, error } = await resend.emails.send({
+      from: 'Powerworks Website <website@powerworksgarage.com>',
+      to: ['marcus@powerworksgarage.com'],
+      replyTo: body.email || undefined,
+      subject: `New Enquiry: ${body.service || 'General'} - ${body.name}`,
+      html: htmlContent,
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Brevo API error:', errorData);
+    if (error) {
+      console.error('Resend API error:', error);
       return NextResponse.json(
         { error: 'Failed to send email' },
         { status: 500 }
       );
     }
 
+    console.log('Contact form email sent:', data?.id);
     return NextResponse.json({ success: true, message: 'Email sent successfully' });
 
   } catch (error) {
