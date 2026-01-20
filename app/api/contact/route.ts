@@ -40,26 +40,27 @@ export async function POST(request: NextRequest) {
 <html>
 <head>
   <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-    .header { background: #1a1a2e; color: white; padding: 20px; text-align: center; }
-    .header h1 { margin: 0; color: #e63946; }
-    .content { padding: 20px; background: #f9f9f9; }
-    .section { margin-bottom: 20px; }
-    .section h3 { color: #1a1a2e; border-bottom: 2px solid #e63946; padding-bottom: 5px; }
-    .field { margin: 10px 0; }
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background: #f5f5f5; }
+    .container { max-width: 600px; margin: 0 auto; background: white; }
+    .header { background: #ffffff; padding: 25px 20px; text-align: center; border-bottom: 3px solid #e63946; }
+    .header img { max-width: 150px; height: auto; }
+    .header p { margin: 10px 0 0; color: #1a1a2e; font-size: 16px; font-weight: 600; }
+    .content { padding: 25px; background: #ffffff; }
+    .section { margin-bottom: 25px; background: #f9f9f9; padding: 20px; border-radius: 8px; }
+    .section h3 { color: #1a1a2e; border-bottom: 2px solid #e63946; padding-bottom: 8px; margin-top: 0; font-size: 18px; }
+    .field { margin: 12px 0; }
     .label { font-weight: bold; color: #555; }
     .value { color: #333; }
     .message-box { background: white; padding: 15px; border-left: 4px solid #e63946; margin-top: 10px; }
-    .footer { text-align: center; padding: 15px; color: #666; font-size: 12px; }
-    .cta { display: inline-block; background: #25D366; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; margin: 5px; }
+    .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; background: #f9f9f9; border-top: 1px solid #eee; }
+    .cta { display: inline-block; background: #25D366; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; margin: 5px; font-weight: 600; }
     .cta-phone { background: #e63946; }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>POWERWORKS</h1>
+      <img src="https://powerworksgarage.com/logo.png" alt="Powerworks Garage" />
       <p>New Website Enquiry</p>
     </div>
     <div class="content">
