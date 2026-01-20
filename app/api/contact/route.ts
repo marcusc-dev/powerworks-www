@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
 
     const { data, error } = await resend.emails.send({
       from: 'Powerworks Website <website@powerworksgarage.com>',
-      to: ['marcus@powerworksgarage.com'],
+      to: ['marcus@powerworksgarage.com', 'help@powerworksgarage.com'],
       replyTo: body.email || undefined,
       subject: `New Enquiry: ${body.service || 'General'} - ${body.name}`,
       html: htmlContent,
