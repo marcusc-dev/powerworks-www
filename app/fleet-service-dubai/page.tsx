@@ -7,6 +7,9 @@ import { Truck, CheckCircle, Phone, MessageCircle } from 'lucide-react';
 export const metadata: Metadata = {
   title: 'Fleet Services Dubai | Corporate Vehicle Maintenance | Powerworks Garage',
   description: 'Specialized fleet maintenance programs in Dubai. Free pickup & dropoff, priority service, and 100% uptime focus for corporate vehicle fleets.',
+  alternates: {
+    canonical: '/fleet-service-dubai',
+  },
 };
 
 export default function FleetPage() {

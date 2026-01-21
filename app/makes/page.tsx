@@ -7,6 +7,9 @@ import { VEHICLE_MAKES, getMakesByTier } from '@/lib/vehicle-makes-data';
 export const metadata: Metadata = {
   title: 'Car Brands We Service | All Makes Welcome | Powerworks Garage Dubai',
   description: 'Expert service for all car brands in Dubai. BMW, Mercedes, Audi, Porsche, Land Rover, Toyota & more. Specialist knowledge, dealer-level diagnostics.',
+  alternates: {
+    canonical: '/makes',
+  },
 };
 
 export default function MakesPage() {

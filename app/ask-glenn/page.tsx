@@ -8,6 +8,9 @@ import { MessageCircle, Phone, HelpCircle, Lightbulb, Wrench, ThermometerSun } f
 export const metadata: Metadata = {
   title: 'Ask Glenn | Expert Car Advice Dubai | Powerworks Garage',
   description: 'Get honest, no-nonsense car advice from Glenn Power. 25+ years experience, zero upselling. Ask about car problems, maintenance, or get a second opinion.',
+  alternates: {
+    canonical: '/ask-glenn',
+  },
 };
 
 export default function AskGlennPage() {

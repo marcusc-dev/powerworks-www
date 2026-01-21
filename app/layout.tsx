@@ -41,9 +41,6 @@ export const metadata: Metadata = {
     ],
   },
   metadataBase: new URL('https://powerworksgarage.com'),
-  alternates: {
-    canonical: '/',
-  },
 };
 
 const jsonLd = {

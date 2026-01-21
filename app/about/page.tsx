@@ -7,6 +7,9 @@ import { Award, Users, Wrench, Heart, Shield, Clock } from 'lucide-react';
 export const metadata: Metadata = {
   title: 'About Us | Meet Glenn Power | Powerworks Garage Dubai',
   description: 'British-owned car repair specialists in Dubai. Meet Glenn Power, our founder with 15+ years experience bringing UK workshop standards to the UAE.',
+  alternates: {
+    canonical: '/about',
+  },
 };
 
 export default function AboutPage() {

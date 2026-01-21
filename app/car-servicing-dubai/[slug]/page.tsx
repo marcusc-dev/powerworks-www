@@ -28,6 +28,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: service.metaTitle,
     description: service.metaDescription,
+    alternates: {
+      canonical: `/car-servicing-dubai/${slug}`,
+    },
     openGraph: {
       title: service.metaTitle,
       description: service.metaDescription,

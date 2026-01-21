@@ -43,6 +43,9 @@ const iconMap: Record<ServiceIconName, LucideIcon> = {
 export const metadata: Metadata = {
   title: 'Car Services Dubai | Full Service Menu | Powerworks Garage',
   description: 'Complete car service menu in Dubai. Servicing, AC repair, brakes, engine, transmission, tyres, batteries & more. British-standard repairs for all makes.',
+  alternates: {
+    canonical: '/car-servicing-dubai',
+  },
 };
 
 export default function ServicesPage() {

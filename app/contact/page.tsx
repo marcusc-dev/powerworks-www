@@ -53,6 +53,9 @@ function ContactFormSkeleton() {
 export const metadata: Metadata = {
   title: 'Contact Us | Book Your Service | Powerworks Garage Dubai',
   description: 'Contact Powerworks Garage in Al Quoz, Dubai. Book your car service, get a quote, or ask a question. Call 052 121 7425 or WhatsApp us.',
+  alternates: {
+    canonical: '/contact',
+  },
 };
 
 export default function ContactPage() {

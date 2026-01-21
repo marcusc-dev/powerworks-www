@@ -92,6 +92,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${article.title} | Ask Glenn | Powerworks Garage Dubai`,
     description: article.excerpt,
+    alternates: {
+      canonical: `/ask-glenn/${slug}`,
+    },
     openGraph: {
       title: article.title,
       description: article.excerpt,

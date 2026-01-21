@@ -9,6 +9,9 @@ import { ALL_REVIEWS, REVIEW_STATS, CAR_MAKE_CATEGORIES, SERVICE_REVIEW_CATEGORI
 export const metadata: Metadata = {
   title: `Customer Reviews | ${REVIEW_STATS.averageRating}★ Google Rating | Powerworks Garage Dubai`,
   description: `Read what our customers say about Powerworks Garage Dubai. ${REVIEW_STATS.averageRating}-star Google rating with ${REVIEW_STATS.totalReviews}+ reviews. Real testimonials from satisfied car owners.`,
+  alternates: {
+    canonical: '/reviews',
+  },
 };
 
 export default function ReviewsPage() {
