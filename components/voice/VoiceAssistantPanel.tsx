@@ -19,12 +19,84 @@ import { buildContactUrl, WHATSAPP_URL } from './contactPrefill';
 
 interface VoiceAssistantPanelProps {
   state: VoiceAssistantState;
+  pathname: string;
   onClose: () => void;
   onStartListening: () => void;
   onStopListening: () => void;
   onSendText: (text: string) => void;
   onReset: () => void;
   onClearError: () => void;
+}
+
+// Get contextual greeting based on current page
+function getContextualGreeting(pathname: string): { title: string; subtitle: string } {
+  const greetings: Record<string, { title: string; subtitle: string }> = {
+    'ac-repair': {
+      title: "AC not cooling?",
+      subtitle: "Tell me about your AC issue and I'll help diagnose it.",
+    },
+    'brake-service': {
+      title: "Brake concerns?",
+      subtitle: "Describe what you're experiencing and I'll help assess the situation.",
+    },
+    'oil-change': {
+      title: "Due for an oil change?",
+      subtitle: "I can help you choose the right oil and schedule a service.",
+    },
+    'battery': {
+      title: "Battery trouble?",
+      subtitle: "Tell me the symptoms and I'll help figure out what's wrong.",
+    },
+    'car-service': {
+      title: "Need a service?",
+      subtitle: "Tell me about your car and I'll recommend the right service.",
+    },
+    'engine': {
+      title: "Engine issues?",
+      subtitle: "Describe the problem and I'll help identify likely causes.",
+    },
+    'electrical': {
+      title: "Warning lights on?",
+      subtitle: "Tell me which lights are showing and I'll explain what they mean.",
+    },
+    'suspension': {
+      title: "Ride feeling rough?",
+      subtitle: "Describe what you're noticing and I'll help diagnose it.",
+    },
+    'transmission': {
+      title: "Gear problems?",
+      subtitle: "Tell me about the shifting issue and I'll help assess it.",
+    },
+    'tyres': {
+      title: "Tyre concerns?",
+      subtitle: "Tell me what's happening and I'll advise on next steps.",
+    },
+    'pre-purchase': {
+      title: "Buying a used car?",
+      subtitle: "I can explain our inspection process and what we check.",
+    },
+    'fleet': {
+      title: "Need fleet support?",
+      subtitle: "Tell me about your fleet and I'll explain our business services.",
+    },
+    'contact': {
+      title: "Ready to book?",
+      subtitle: "I can help you schedule an appointment or answer questions.",
+    },
+  };
+
+  // Check for matching page context
+  for (const [key, greeting] of Object.entries(greetings)) {
+    if (pathname.includes(key)) {
+      return greeting;
+    }
+  }
+
+  // Default greeting
+  return {
+    title: "Hi, I'm Glenn!",
+    subtitle: "Tap the mic button and tell me about your car issue. I'll help you figure out what's wrong.",
+  };
 }
 
 const STATUS_LABELS: Record<AssistantStatus, string> = {
@@ -38,6 +110,7 @@ const STATUS_LABELS: Record<AssistantStatus, string> = {
 
 export default function VoiceAssistantPanel({
   state,
+  pathname,
   onClose,
   onStartListening,
   onStopListening,
@@ -45,6 +118,8 @@ export default function VoiceAssistantPanel({
   onReset,
   onClearError,
 }: VoiceAssistantPanelProps) {
+  // Get contextual greeting based on current page
+  const greeting = getContextualGreeting(pathname);
   const router = useRouter();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -232,15 +307,15 @@ export default function VoiceAssistantPanel({
         aria-live="polite"
         aria-label="Conversation history"
       >
-        {/* Welcome message */}
+        {/* Welcome message - contextual based on page */}
         {state.messages.length === 0 && (
           <div className="text-center py-8">
             <div className="w-16 h-16 bg-power-red/10 rounded-full flex items-center justify-center mx-auto mb-4">
               <Volume2 className="w-8 h-8 text-power-red" />
             </div>
-            <h3 className="text-gray-900 font-semibold mb-2">Hi, I&apos;m Glenn!</h3>
+            <h3 className="text-gray-900 font-semibold mb-2">{greeting.title}</h3>
             <p className="text-gray-500 text-sm max-w-[250px] mx-auto">
-              Tap the mic button and tell me about your car issue. I&apos;ll help you figure out what&apos;s wrong.
+              {greeting.subtitle}
             </p>
           </div>
         )}
@@ -305,9 +380,11 @@ export default function VoiceAssistantPanel({
       {/* Status bar */}
       <div className="px-4 py-2 bg-gray-50 border-t border-gray-100">
         <p className="text-xs text-gray-500 text-center" aria-live="polite">
-          {state.status === 'idle' && state.messages.length > 0
-            ? 'Tap the mic to continue...'
-            : STATUS_LABELS[state.status]}
+          {state.status === 'error'
+            ? 'Tap the mic to try again or type below'
+            : state.status === 'idle' && state.messages.length > 0
+              ? 'Tap the mic to continue...'
+              : STATUS_LABELS[state.status]}
         </p>
       </div>
 

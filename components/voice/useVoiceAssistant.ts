@@ -99,6 +99,23 @@ export function useVoiceAssistant() {
   const voicesLoadedRef = useRef<boolean>(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const cloudTtsAvailableRef = useRef<boolean | null>(null); // null = not checked yet
+  const speechRecognitionSupportedRef = useRef<boolean>(false);
+  const silenceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const finalTranscriptRef = useRef<string>('');
+  const isProcessingRef = useRef<boolean>(false);
+
+  // Create a fresh speech recognition instance (Chrome needs this for each session)
+  const createRecognition = useCallback(() => {
+    const SpeechRecognitionClass = getSpeechRecognition();
+    if (!SpeechRecognitionClass) return null;
+
+    const recognition = new SpeechRecognitionClass();
+    recognition.continuous = true; // Keep listening until manually stopped
+    recognition.interimResults = true;
+    recognition.lang = 'en-GB';
+    recognition.maxAlternatives = 1;
+    return recognition;
+  }, []);
 
   // Initialize speech APIs on mount
   useEffect(() => {
@@ -106,18 +123,12 @@ export function useVoiceAssistant() {
     const hasRecognition = !!SpeechRecognitionClass;
     const hasSynth = hasSpeechSynthesis();
 
+    speechRecognitionSupportedRef.current = hasRecognition;
+
     setState((prev) => ({
       ...prev,
       speechSupported: hasRecognition || hasSynth,
     }));
-
-    if (hasRecognition) {
-      const recognition = new SpeechRecognitionClass();
-      recognition.continuous = false;
-      recognition.interimResults = true;
-      recognition.lang = 'en-GB';
-      recognitionRef.current = recognition;
-    }
 
     if (hasSynth) {
       synthRef.current = window.speechSynthesis;
@@ -156,6 +167,10 @@ export function useVoiceAssistant() {
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
       }
+      if (silenceTimeoutRef.current) {
+        clearTimeout(silenceTimeoutRef.current);
+        silenceTimeoutRef.current = null;
+      }
     };
   }, []);
 
@@ -183,6 +198,14 @@ export function useVoiceAssistant() {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
+    if (silenceTimeoutRef.current) {
+      clearTimeout(silenceTimeoutRef.current);
+      silenceTimeoutRef.current = null;
+    }
+
+    // Reset refs
+    finalTranscriptRef.current = '';
+    isProcessingRef.current = false;
 
     setState((prev) => ({
       ...prev,
@@ -293,9 +316,10 @@ export function useVoiceAssistant() {
       const data = await response.json();
 
       if (!response.ok || data.fallback) {
-        // Cloud TTS not available, mark as unavailable
+        // Cloud TTS not available, mark as unavailable for future calls
         cloudTtsAvailableRef.current = false;
-        throw new Error('Cloud TTS not available');
+        // Return rejected promise to trigger fallback (not a real error)
+        return Promise.reject('fallback');
       }
 
       // Cloud TTS is available
@@ -308,24 +332,52 @@ export function useVoiceAssistant() {
         const audio = new Audio(audioData);
         audioRef.current = audio;
 
-        audio.onended = () => {
+        const cleanup = () => {
+          console.log('Cloud TTS finished, setting status to idle');
           setState((prev) => ({ ...prev, status: 'idle' }));
           audioRef.current = null;
+        };
+
+        audio.onended = () => {
+          cleanup();
           resolve();
         };
 
-        audio.onerror = () => {
-          setState((prev) => ({ ...prev, status: 'idle' }));
-          audioRef.current = null;
+        audio.onerror = (e) => {
+          console.error('Audio playback error:', e);
+          cleanup();
           reject(new Error('Audio playback failed'));
         };
 
+        // Fallback timeout in case onended doesn't fire
+        audio.onloadedmetadata = () => {
+          const duration = audio.duration;
+          if (duration && isFinite(duration)) {
+            // Set a timeout slightly longer than the audio duration
+            setTimeout(() => {
+              if (audioRef.current === audio) {
+                console.log('Cloud TTS timeout cleanup');
+                cleanup();
+                resolve();
+              }
+            }, (duration * 1000) + 500);
+          }
+        };
+
         setState((prev) => ({ ...prev, status: 'speaking' }));
-        audio.play().catch(reject);
+        audio.play().catch((err) => {
+          console.error('Audio play failed:', err);
+          cleanup();
+          reject(err);
+        });
       });
-    } catch {
-      // Throw to trigger fallback
-      throw new Error('Cloud TTS failed');
+    } catch (err) {
+      // Only log actual errors, not expected fallbacks
+      if (err !== 'fallback') {
+        console.log('Cloud TTS unavailable, will use browser fallback');
+      }
+      // Reject to trigger fallback
+      return Promise.reject('fallback');
     }
   }, []);
 
@@ -387,8 +439,7 @@ export function useVoiceAssistant() {
     try {
       await speakWithCloudTTS(text);
     } catch {
-      // Fall back to browser TTS
-      console.log('Cloud TTS unavailable, using browser fallback');
+      // Fall back to browser TTS silently (Cloud TTS logs handled in speakWithCloudTTS)
       return speakWithBrowserTTS(text);
     }
   }, [speakWithCloudTTS, speakWithBrowserTTS]);
@@ -407,11 +458,35 @@ export function useVoiceAssistant() {
       if (response) {
         // Combine spoken response with follow-up question (avoid duplicates)
         let fullResponse = response.spoken_response;
-        if (response.follow_up_question) {
-          // Only add follow-up if it's not already contained in the spoken response
-          const normalizedSpoken = response.spoken_response.toLowerCase().trim();
-          const normalizedFollowUp = response.follow_up_question.toLowerCase().trim();
-          if (!normalizedSpoken.includes(normalizedFollowUp)) {
+        if (response.follow_up_question && response.follow_up_question.trim()) {
+          // Normalize both strings for comparison
+          const normalizeForComparison = (str: string) => {
+            return str
+              .toLowerCase()
+              .trim()
+              // Remove punctuation
+              .replace(/[?.!,]/g, '')
+              // Normalize common phrases
+              .replace(/what can i help you with/g, 'how can i help')
+              .replace(/how can i assist/g, 'how can i help')
+              .replace(/what seems to be/g, 'what is')
+              .replace(/what's/g, 'what is')
+              // Remove extra spaces
+              .replace(/\s+/g, ' ');
+          };
+
+          const normalizedSpoken = normalizeForComparison(response.spoken_response);
+          const normalizedFollowUp = normalizeForComparison(response.follow_up_question);
+
+          // Check if follow-up is semantically similar to what's already in the response
+          const isSimilar = normalizedSpoken.includes(normalizedFollowUp) ||
+                           normalizedFollowUp.includes(normalizedSpoken) ||
+                           // Check for common question patterns that might already be in the response
+                           (normalizedSpoken.includes('how can i help') && normalizedFollowUp.includes('how can i help')) ||
+                           (normalizedSpoken.includes('what is wrong') && normalizedFollowUp.includes('what is wrong')) ||
+                           (normalizedSpoken.includes('tell me more') && normalizedFollowUp.includes('tell me more'));
+
+          if (!isSimilar) {
             fullResponse = `${response.spoken_response} ${response.follow_up_question}`;
           }
         }
@@ -432,9 +507,8 @@ export function useVoiceAssistant() {
   );
 
   // Start voice recognition
-  const startListening = useCallback(() => {
-    const recognition = recognitionRef.current;
-    if (!recognition) {
+  const startListening = useCallback(async () => {
+    if (!speechRecognitionSupportedRef.current) {
       setState((prev) => ({
         ...prev,
         error: 'Voice recognition is not supported in your browser. Please type your message.',
@@ -442,11 +516,75 @@ export function useVoiceAssistant() {
       return;
     }
 
+    // On localhost (even HTTP), browsers typically allow microphone access
+    // Skip the explicit getUserMedia check and let SpeechRecognition handle permissions
+    // This avoids issues where mediaDevices isn't available on HTTP but speech recognition still works
+    const isLocalDev = typeof window !== 'undefined' && (
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1' ||
+      window.location.hostname.endsWith('.local') ||
+      window.location.hostname === 'powerworks.local'
+    );
+
+    // Only try explicit permission request on HTTPS (not local development)
+    if (!isLocalDev && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        // Stop the stream immediately - we just needed permission
+        stream.getTracks().forEach(track => track.stop());
+      } catch (permissionError) {
+        console.error('Microphone permission error:', permissionError);
+        setState((prev) => ({
+          ...prev,
+          status: 'idle',
+          error: 'Microphone access denied. Please check your browser settings and allow microphone access for this site.',
+        }));
+        return;
+      }
+    }
+    // On localhost or when mediaDevices isn't available, let SpeechRecognition handle permissions directly
+
+    // Stop any previous recognition instance
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.stop();
+        recognitionRef.current.onresult = null;
+        recognitionRef.current.onerror = null;
+        recognitionRef.current.onend = null;
+      } catch {
+        // Ignore
+      }
+    }
+
     // Stop any ongoing TTS
     if (synthRef.current) {
       synthRef.current.cancel();
     }
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
 
+    // Create a fresh recognition instance (Chrome requires this)
+    const recognition = createRecognition();
+    if (!recognition) {
+      setState((prev) => ({
+        ...prev,
+        error: 'Failed to initialize voice recognition. Please type your message.',
+      }));
+      return;
+    }
+    recognitionRef.current = recognition;
+
+    // Reset transcript refs for new session
+    finalTranscriptRef.current = '';
+    isProcessingRef.current = false;
+    if (silenceTimeoutRef.current) {
+      clearTimeout(silenceTimeoutRef.current);
+      silenceTimeoutRef.current = null;
+    }
+
+    // Clear any previous errors and set listening state
     setState((prev) => ({
       ...prev,
       status: 'listening',
@@ -455,40 +593,98 @@ export function useVoiceAssistant() {
     }));
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
-      let transcript = '';
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        transcript += event.results[i][0].transcript;
+      // Clear any existing silence timeout
+      if (silenceTimeoutRef.current) {
+        clearTimeout(silenceTimeoutRef.current);
+        silenceTimeoutRef.current = null;
       }
-      setState((prev) => ({ ...prev, currentTranscript: transcript }));
 
-      // If final result, process it
-      if (event.results[event.results.length - 1].isFinal) {
-        processUserInput(transcript);
+      // Build full transcript from all results
+      let interimTranscript = '';
+      let finalTranscript = '';
+
+      for (let i = 0; i < event.results.length; i++) {
+        const result = event.results[i];
+        if (result.isFinal) {
+          finalTranscript += result[0].transcript;
+        } else {
+          interimTranscript += result[0].transcript;
+        }
       }
+
+      // Combine final + interim for display
+      const displayTranscript = (finalTranscript + ' ' + interimTranscript).trim();
+      finalTranscriptRef.current = finalTranscript;
+
+      setState((prev) => ({ ...prev, currentTranscript: displayTranscript }));
+
+      // Set a silence timeout - wait for user to stop speaking
+      // Use longer timeout (2 seconds) to allow for natural pauses when speaking numbers
+      const silenceDelay = 2000;
+
+      silenceTimeoutRef.current = setTimeout(() => {
+        const transcriptToProcess = (finalTranscriptRef.current + ' ' + interimTranscript).trim();
+
+        if (transcriptToProcess && !isProcessingRef.current) {
+          isProcessingRef.current = true;
+
+          // Stop recognition before processing
+          try {
+            recognition.stop();
+          } catch {
+            // Ignore
+          }
+
+          // Process the complete transcript
+          processUserInput(transcriptToProcess);
+
+          // Reset for next input
+          finalTranscriptRef.current = '';
+          isProcessingRef.current = false;
+        }
+      }, silenceDelay);
     };
 
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+      console.log('Speech recognition error:', event.error);
       if (event.error === 'not-allowed') {
-        setState((prev) => ({
-          ...prev,
-          status: 'error',
-          error: 'Microphone access denied. Please allow microphone access or type your message.',
-        }));
-      } else if (event.error === 'network') {
-        // Network errors are common - just return to idle and let user retry
+        // On Chrome, check if there's a permission prompt in the address bar
+        const helpText = isLocalDev
+          ? 'Please click "Allow" in the browser popup, or check the microphone icon in your address bar.'
+          : 'Please allow microphone access in your browser settings.';
         setState((prev) => ({
           ...prev,
           status: 'idle',
-          error: 'Network issue - please try again or type your message.',
+          error: `Microphone access denied. ${helpText}`,
+        }));
+      } else if (event.error === 'network') {
+        // Network errors are common with speech recognition - provide helpful message
+        setState((prev) => ({
+          ...prev,
+          status: 'idle',
+          error: 'Speech service unavailable. Please type your message instead.',
+        }));
+      } else if (event.error === 'audio-capture') {
+        setState((prev) => ({
+          ...prev,
+          status: 'idle',
+          error: 'No microphone found. Please connect a microphone or type your message.',
+        }));
+      } else if (event.error === 'service-not-allowed') {
+        setState((prev) => ({
+          ...prev,
+          status: 'idle',
+          error: 'Speech recognition not available. Please type your message.',
         }));
       } else if (event.error !== 'aborted' && event.error !== 'no-speech') {
         setState((prev) => ({
           ...prev,
-          status: 'error',
-          error: `Speech recognition error: ${event.error}`,
+          status: 'idle',
+          error: `Voice recognition issue. Please type your message instead.`,
         }));
       } else {
-        setState((prev) => ({ ...prev, status: 'idle' }));
+        // For 'aborted' or 'no-speech', just go back to idle without error
+        setState((prev) => ({ ...prev, status: 'idle', error: null }));
       }
     };
 
@@ -502,20 +698,31 @@ export function useVoiceAssistant() {
       });
     };
 
+    // Start recognition immediately after setting up handlers
     try {
       recognition.start();
+      console.log('Speech recognition started');
     } catch (error) {
-      // Recognition might already be running
+      console.error('Failed to start recognition:', error);
       setState((prev) => ({
         ...prev,
-        status: 'error',
-        error: 'Failed to start voice recognition. Please try again.',
+        status: 'idle',
+        error: 'Failed to start voice recognition. Please try again or type your message.',
       }));
     }
-  }, [processUserInput]);
+  }, [processUserInput, createRecognition]);
 
   // Stop voice recognition
   const stopListening = useCallback(() => {
+    // Clear silence timeout
+    if (silenceTimeoutRef.current) {
+      clearTimeout(silenceTimeoutRef.current);
+      silenceTimeoutRef.current = null;
+    }
+
+    // Get the current transcript before stopping
+    const currentTranscript = finalTranscriptRef.current;
+
     if (recognitionRef.current) {
       try {
         recognitionRef.current.stop();
@@ -523,8 +730,17 @@ export function useVoiceAssistant() {
         // Ignore
       }
     }
-    setState((prev) => ({ ...prev, status: 'idle' }));
-  }, []);
+
+    // If there's a transcript and we're not already processing, process it
+    if (currentTranscript && currentTranscript.trim() && !isProcessingRef.current) {
+      isProcessingRef.current = true;
+      processUserInput(currentTranscript.trim());
+      finalTranscriptRef.current = '';
+      isProcessingRef.current = false;
+    } else {
+      setState((prev) => ({ ...prev, status: 'idle' }));
+    }
+  }, [processUserInput]);
 
   // Send text message (for fallback input)
   const sendTextMessage = useCallback(

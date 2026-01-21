@@ -35,35 +35,41 @@ const ContactForm: React.FC<ContactFormProps> = ({ initialValues }) => {
     const phone = searchParams.get('phone') || initialValues?.phone || '';
     const message = searchParams.get('message') || initialValues?.message || '';
     const page = searchParams.get('page') || initialValues?.page || '';
+    const serviceParam = searchParams.get('service') || '';
 
-    // Determine service from page context
+    // Map URL slugs to form values
+    const serviceMap: Record<string, string> = {
+      'ac-repair': 'ac-repair',
+      'brake-service': 'brakes',
+      'brakes': 'brakes',
+      'oil-change': 'oil-change',
+      'battery': 'battery',
+      'car-service': 'car-service',
+      'engine': 'engine',
+      'electrical': 'electrical',
+      'suspension': 'suspension',
+      'transmission': 'transmission',
+      'tyres': 'tyres',
+      'pre-purchase-inspection': 'inspection',
+      'inspection': 'inspection',
+      'fleet': 'fleet',
+    };
+
+    // Determine service from direct param or page context
     let service = '';
-    if (page) {
+    if (serviceParam) {
+      // Direct service parameter takes priority
+      service = serviceMap[serviceParam] || serviceParam;
+    } else if (page) {
       const serviceMatch = page.match(/\/services\/([^/]+)/);
       if (serviceMatch) {
         const serviceSlug = serviceMatch[1];
-        // Map URL slugs to form values
-        const serviceMap: Record<string, string> = {
-          'ac-repair': 'ac-repair',
-          'brake-service': 'brakes',
-          'brakes': 'brakes',
-          'oil-change': 'oil-change',
-          'battery': 'battery',
-          'car-service': 'car-service',
-          'engine': 'engine',
-          'electrical': 'electrical',
-          'suspension': 'suspension',
-          'transmission': 'transmission',
-          'tyres': 'tyres',
-          'pre-purchase-inspection': 'inspection',
-          'fleet': 'fleet',
-        };
         service = serviceMap[serviceSlug] || '';
       }
     }
 
     // Check if any prefill data exists
-    const hasPrefillData = name || phone || message;
+    const hasPrefillData = name || phone || message || service;
 
     if (hasPrefillData) {
       setFormData((prev) => ({
@@ -73,7 +79,9 @@ const ContactForm: React.FC<ContactFormProps> = ({ initialValues }) => {
         message: message || prev.message,
         service: service || prev.service,
       }));
-      setShowPrefillBanner(true);
+      if (name || phone || message) {
+        setShowPrefillBanner(true);
+      }
     }
   }, [searchParams, initialValues]);
 

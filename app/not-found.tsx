@@ -87,7 +87,7 @@ export default function NotFound() {
               Back to Home
             </Link>
             <Link
-              href="/services"
+              href="/car-servicing-dubai"
               className="bg-gray-100 text-gray-900 px-8 py-3 rounded-xl font-bold hover:bg-gray-200 transition-all hover:scale-105 transform"
             >
               View Services

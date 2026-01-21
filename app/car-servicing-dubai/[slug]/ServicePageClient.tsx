@@ -28,7 +28,16 @@ import {
   Truck,
   Gauge,
   Settings,
-  LucideIcon
+  LucideIcon,
+  Eye,
+  Ruler,
+  MessageSquare,
+  Package,
+  Lightbulb,
+  FileText,
+  Search,
+  CheckCircle2,
+  AlertCircle
 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -54,12 +63,73 @@ const iconMap: Record<ServiceIconName, LucideIcon> = {
   Shield
 };
 
+// Map service page slugs to contact form service values
+const serviceFormMap: Record<string, string> = {
+  'car-service-dubai': 'car-service',
+  'ac-repair-dubai': 'ac-repair',
+  'oil-change-dubai': 'oil-change',
+  'electrical-diagnostics-dubai': 'electrical',
+  'brake-service-dubai': 'brakes',
+  'suspension-repair-dubai': 'suspension',
+  'transmission-repair-dubai': 'transmission',
+  'engine-repair-dubai': 'engine',
+  'battery-replacement-dubai': 'battery',
+  'tyre-replacement-dubai': 'tyres',
+  'pre-purchase-inspection-dubai': 'inspection',
+  'car-recovery-dubai': 'other',
+  'fleet-maintenance-dubai': 'fleet',
+  'timing-belt-dubai': 'engine',
+  'car-inspection-dubai': 'inspection',
+};
+
 interface ServicePageClientProps {
   service: ServiceData;
   relatedServices: ServiceData[];
   reviews?: Testimonial[];
   vehicleMakes?: VehicleMake[];
 }
+
+// Helper function to determine icon for process step based on title
+const getProcessStepIcon = (title: string, index: number): LucideIcon => {
+  const lowerTitle = title.toLowerCase();
+
+  // Inspection related
+  if (lowerTitle.includes('inspect') || lowerTitle.includes('visual') || lowerTitle.includes('check')) {
+    return Eye;
+  }
+  // Measurement related
+  if (lowerTitle.includes('measure') || lowerTitle.includes('test') || lowerTitle.includes('diagnostic')) {
+    return Ruler;
+  }
+  // Recommendation/Communication related
+  if (lowerTitle.includes('recommend') || lowerTitle.includes('explain') || lowerTitle.includes('consult')) {
+    return MessageSquare;
+  }
+  // Parts/Installation related
+  if (lowerTitle.includes('parts') || lowerTitle.includes('fit') || lowerTitle.includes('install') || lowerTitle.includes('replace')) {
+    return Package;
+  }
+  // Advice/Tips related
+  if (lowerTitle.includes('advice') || lowerTitle.includes('tip') || lowerTitle.includes('guidance') || lowerTitle.includes('bed-in')) {
+    return Lightbulb;
+  }
+  // Documentation related
+  if (lowerTitle.includes('report') || lowerTitle.includes('document') || lowerTitle.includes('record')) {
+    return FileText;
+  }
+  // Search/Discovery related
+  if (lowerTitle.includes('search') || lowerTitle.includes('identify') || lowerTitle.includes('locate')) {
+    return Search;
+  }
+  // Completion related
+  if (lowerTitle.includes('complete') || lowerTitle.includes('finish') || lowerTitle.includes('final')) {
+    return CheckCircle2;
+  }
+
+  // Default icons based on position
+  const defaultIcons = [Eye, Ruler, MessageSquare, Package, Lightbulb];
+  return defaultIcons[index % defaultIcons.length];
+};
 
 export default function ServicePageClient({ service, relatedServices, reviews = [], vehicleMakes = [] }: ServicePageClientProps) {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -207,112 +277,317 @@ export default function ServicePageClient({ service, relatedServices, reviews = 
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
       </section>
 
-      {/* Overview Section */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            {/* Overview Text */}
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                Overview
+      {/* Overview Section - Redesigned */}
+      <section className="py-16 md:py-24 bg-gradient-to-b from-white via-gray-50/50 to-white relative overflow-hidden">
+        {/* Decorative Elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-power-blue/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-power-red/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            {/* Overview Text - Left Side */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="lg:col-span-5"
+            >
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 bg-power-blue/10 text-power-blue px-4 py-2 rounded-full mb-6">
+                <Icon size={18} />
+                <span className="font-semibold text-sm">{service.shortTitle}</span>
+              </div>
+
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
+                Service <span className="text-power-blue">Overview</span>
               </h2>
-              <p className="text-lg text-gray-600 leading-relaxed">
+
+              <p className="text-lg text-gray-600 leading-relaxed mb-8">
                 {service.overview}
               </p>
-            </div>
 
-            {/* What's Included */}
-            <div className="bg-gray-50 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                What&apos;s Included
-              </h3>
-              <ul className="space-y-4">
-                {service.included.map((item, index) => (
-                  <motion.li
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.05 }}
-                    className="flex items-start gap-3"
+              {/* Quick Stats */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                  <div className="text-2xl font-bold text-power-blue mb-1">{service.priceFrom}</div>
+                  <div className="text-sm text-gray-500">Starting Price</div>
+                </div>
+                <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                  <div className="text-2xl font-bold text-power-red mb-1">{service.included.length}+</div>
+                  <div className="text-sm text-gray-500">Checks Included</div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* What's Included - Right Side */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="lg:col-span-7"
+            >
+              <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-gray-100 relative overflow-hidden">
+                {/* Card Header Decoration */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-power-blue via-power-red to-power-blue" />
+
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-power-blue to-power-blue/80 rounded-xl flex items-center justify-center text-white shadow-lg">
+                    <ClipboardCheck size={24} />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900">What&apos;s Included</h3>
+                    <p className="text-sm text-gray-500">Comprehensive service checklist</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {service.included.map((item, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.03 }}
+                      className="flex items-start gap-3 p-3 rounded-xl bg-gray-50 hover:bg-power-blue/5 transition-colors group"
+                    >
+                      <div className="w-6 h-6 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm group-hover:scale-110 transition-transform">
+                        <Check size={14} className="text-white" strokeWidth={3} />
+                      </div>
+                      <span className="text-gray-700 text-sm leading-snug">{item}</span>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* CTA at bottom of card */}
+                <div className="mt-6 pt-6 border-t border-gray-100 flex flex-col sm:flex-row gap-3">
+                  <a
+                    href={`/contact?service=${serviceFormMap[service.slug] || 'other'}`}
+                    className="flex-1 inline-flex items-center justify-center gap-2 bg-power-red text-white px-6 py-3 rounded-xl font-semibold hover:bg-red-700 transition-all shadow-lg hover:shadow-xl"
                   >
-                    <div className="w-6 h-6 bg-power-blue rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Check size={14} className="text-white" />
-                    </div>
-                    <span className="text-gray-700">{item}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </div>
+                    Book This Service
+                    <ArrowRight size={18} />
+                  </a>
+                  <a
+                    href="tel:+971521217425"
+                    className="flex-1 inline-flex items-center justify-center gap-2 bg-power-blue text-white px-6 py-3 rounded-xl font-semibold hover:bg-power-blue/90 transition-all"
+                  >
+                    <Phone size={18} />
+                    Call Now
+                  </a>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Process Section */}
-      <section className="py-16 md:py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Our Process
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              We follow a systematic approach to deliver quality results every time.
-            </p>
+      {/* Process Section - Redesigned Timeline */}
+      <section className="py-16 md:py-24 bg-gradient-to-br from-gray-50 via-white to-gray-50 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-[0.02]">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e3a5f_1px,transparent_1px),linear-gradient(to_bottom,#1e3a5f_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          {/* Section Header */}
+          <div className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center gap-2 bg-power-blue/10 text-power-blue px-4 py-2 rounded-full mb-6"
+            >
+              <ClipboardCheck size={18} />
+              <span className="font-semibold text-sm">Our Systematic Approach</span>
+            </motion.div>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4"
+            >
+              How We Work
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-lg text-gray-600 max-w-2xl mx-auto"
+            >
+              Every job follows our proven {service.process.length}-step process to ensure consistent, quality results.
+            </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-            {service.process.map((step, index) => (
+          {/* Timeline - Desktop View */}
+          <div className="hidden lg:block">
+            <div className="relative">
+              {/* Main Timeline Line */}
               <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                className="absolute top-20 left-0 right-0 h-1 bg-gradient-to-r from-gray-200 via-power-blue/20 to-gray-200"
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
                 viewport={{ once: true }}
-                transition={{
-                  delay: index * 0.15,
-                  duration: 0.5,
-                  ease: [0.25, 0.46, 0.45, 0.94]
-                }}
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                className="relative group"
-              >
-                {/* Connector Line */}
-                {index < service.process.length - 1 && (
-                  <motion.div
-                    className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-gray-200 -translate-x-1/2 z-0"
-                    initial={{ scaleX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.15 + 0.3, duration: 0.4 }}
-                    style={{ originX: 0 }}
-                  />
-                )}
+                transition={{ duration: 1.5, ease: "easeInOut" }}
+              />
 
-                <div className="relative z-10 bg-white rounded-xl p-6 shadow-sm border border-gray-100 h-full overflow-hidden transition-all duration-300 group-hover:shadow-lg group-hover:border-power-blue/20">
-                  {/* Step Number */}
-                  <motion.div
-                    className="w-12 h-12 bg-power-blue text-white rounded-full flex items-center justify-center font-bold text-lg mb-4 transition-all duration-300 group-hover:scale-110 group-hover:bg-power-red"
-                    initial={{ scale: 0, rotate: -180 }}
-                    whileInView={{ scale: 1, rotate: 0 }}
-                    viewport={{ once: true }}
-                    transition={{
-                      delay: index * 0.15 + 0.2,
-                      type: "spring",
-                      stiffness: 200,
-                      damping: 15
-                    }}
-                  >
-                    {step.step}
-                  </motion.div>
-                  <h3 className="text-sm font-bold text-gray-900 mb-2 transition-colors duration-300 group-hover:text-power-blue">
-                    {step.title}
-                  </h3>
-                  <p className="text-gray-600 text-xs">
-                    {step.description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+              {/* Steps */}
+              <div className="grid gap-0" style={{ gridTemplateColumns: `repeat(${service.process.length}, minmax(0, 1fr))` }}>
+                {service.process.map((step, index) => {
+                  const StepIcon = getProcessStepIcon(step.title, index);
+                  const isEven = index % 2 === 0;
+
+                  return (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: isEven ? 40 : -40 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{
+                        delay: index * 0.15,
+                        duration: 0.6,
+                        ease: [0.25, 0.46, 0.45, 0.94]
+                      }}
+                      className="relative"
+                    >
+                      {/* Step Container - Alternating top/bottom */}
+                      <div className={`flex flex-col items-center ${isEven ? 'pt-32' : 'pb-32 flex-col-reverse'}`}>
+                        {/* Card */}
+                        <motion.div
+                          whileHover={{ y: isEven ? -8 : 8, scale: 1.02 }}
+                          className="relative group w-full max-w-[240px]"
+                        >
+                          <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-100 transition-all duration-300 group-hover:border-power-blue group-hover:shadow-xl">
+                            {/* Step Number Badge */}
+                            <div className="absolute -top-3 -right-3 w-10 h-10 bg-power-red rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg ring-4 ring-white">
+                              {step.step}
+                            </div>
+
+                            {/* Icon */}
+                            <div className="w-14 h-14 bg-gradient-to-br from-power-blue to-power-blue/80 rounded-xl flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform shadow-md">
+                              <StepIcon size={28} strokeWidth={2} />
+                            </div>
+
+                            {/* Title */}
+                            <h3 className="text-sm font-bold text-gray-900 mb-2 leading-tight min-h-[2.25rem] group-hover:text-power-blue transition-colors">
+                              {step.title}
+                            </h3>
+
+                            {/* Description */}
+                            <p className="text-sm text-gray-600 leading-relaxed">
+                              {step.description}
+                            </p>
+                          </div>
+                        </motion.div>
+
+                        {/* Connector to Timeline */}
+                        <motion.div
+                          initial={{ scaleY: 0 }}
+                          whileInView={{ scaleY: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: index * 0.15 + 0.3, duration: 0.4 }}
+                          className={`w-0.5 bg-gradient-to-b from-power-blue to-gray-300 ${isEven ? 'h-24' : 'h-24'}`}
+                          style={{ transformOrigin: isEven ? 'top' : 'bottom' }}
+                        />
+
+                        {/* Timeline Node */}
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          whileInView={{ scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{
+                            delay: index * 0.15 + 0.5,
+                            type: "spring",
+                            stiffness: 200
+                          }}
+                          className="relative z-10"
+                        >
+                          <div className="w-6 h-6 bg-power-blue rounded-full border-4 border-white shadow-lg">
+                            <div className="w-full h-full rounded-full bg-power-red animate-ping absolute inset-0 opacity-20"></div>
+                          </div>
+                        </motion.div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
+
+          {/* Mobile View - Vertical Timeline */}
+          <div className="lg:hidden space-y-8">
+            {service.process.map((step, index) => {
+              const StepIcon = getProcessStepIcon(step.title, index);
+
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="relative"
+                >
+                  {/* Vertical Line */}
+                  {index < service.process.length - 1 && (
+                    <div className="absolute left-7 top-16 bottom-0 w-0.5 bg-gradient-to-b from-power-blue to-gray-200 -mb-8"></div>
+                  )}
+
+                  <div className="flex gap-4">
+                    {/* Left Side - Icon & Number */}
+                    <div className="flex-shrink-0 relative">
+                      {/* Icon Circle */}
+                      <motion.div
+                        initial={{ scale: 0, rotate: -180 }}
+                        whileInView={{ scale: 1, rotate: 0 }}
+                        viewport={{ once: true }}
+                        transition={{
+                          delay: index * 0.1 + 0.2,
+                          type: "spring",
+                          stiffness: 200
+                        }}
+                        className="w-14 h-14 bg-gradient-to-br from-power-blue to-power-blue/80 rounded-xl flex items-center justify-center text-white shadow-lg relative z-10"
+                      >
+                        <StepIcon size={24} strokeWidth={2} />
+                      </motion.div>
+                      {/* Step Number Badge */}
+                      <div className="absolute -top-2 -right-2 w-7 h-7 bg-power-red rounded-full flex items-center justify-center text-white font-bold text-xs shadow-md ring-2 ring-white z-20">
+                        {step.step}
+                      </div>
+                    </div>
+
+                    {/* Right Side - Content Card */}
+                    <div className="flex-1 bg-white rounded-xl p-5 shadow-md border-2 border-gray-100 hover:border-power-blue hover:shadow-lg transition-all">
+                      <h3 className="text-base font-bold text-gray-900 mb-2 leading-tight">
+                        {step.title}
+                      </h3>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        {step.description}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Bottom CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-16 text-center"
+          >
+            <div className="inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-full px-6 py-3">
+              <CheckCircle2 size={20} className="text-green-600" />
+              <span className="text-gray-700 font-medium">
+                Quality-assured process on every job
+              </span>
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -733,7 +1008,7 @@ export default function ServicePageClient({ service, relatedServices, reviews = 
               WhatsApp Us
             </a>
             <a
-              href="#contact"
+              href={`/contact?service=${serviceFormMap[service.slug] || 'other'}`}
               className="inline-flex items-center gap-2 bg-power-red text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-red-700 transition-all shadow-lg"
             >
               Book Online

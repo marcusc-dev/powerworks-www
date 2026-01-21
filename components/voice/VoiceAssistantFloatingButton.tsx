@@ -15,6 +15,7 @@ export default function VoiceAssistantFloatingButton() {
     sendTextMessage,
     resetConversation,
     clearError,
+    pathname,
   } = useVoiceAssistant();
 
   // Handle click outside to close panel
@@ -84,6 +85,7 @@ export default function VoiceAssistantFloatingButton() {
         <div data-voice-assistant="panel">
           <VoiceAssistantPanel
             state={state}
+            pathname={pathname}
             onClose={closePanel}
             onStartListening={startListening}
             onStopListening={stopListening}

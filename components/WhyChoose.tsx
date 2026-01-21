@@ -9,7 +9,8 @@ import {
   Users,
   Wrench,
   Building2,
-  HeartHandshake
+  HeartHandshake,
+  CheckCircle
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -263,21 +264,13 @@ const WhyChoose: React.FC = () => {
         >
           <div className="inline-flex flex-col sm:flex-row items-center gap-4 p-6 bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-700/50 shadow-xl">
             <div className="flex items-center gap-3">
-              {/* Checkered flag icon */}
-              <div className="w-12 h-12 flex items-center justify-center">
-                <img
-                  src="https://pixabay.com/get/gd644de7a7289bb3b8727b028bf07e9785eddd5d24f639333fc64a3c5c36822b34c12cafba478b5099917252b4f0404b9.svg"
-                  alt="Checkered flag"
-                  className="w-10 h-10"
-                  style={{ filter: 'invert(1)' }}
-                />
-              </div>
+              <CheckCircle className="w-8 h-8 text-emerald-500" />
               <p className="text-gray-300 text-sm">
                 <span className="font-bold text-white">150+ happy customers</span> this month
               </p>
             </div>
             <a
-              href="#contact"
+              href="/reviews"
               className="bg-power-red text-white px-8 py-3 rounded-full font-bold hover:bg-red-700 transition-all shadow-lg hover:shadow-xl hover:shadow-power-red/50 hover:scale-105 flex items-center gap-2"
             >
               Experience the Difference
