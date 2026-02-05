@@ -100,7 +100,7 @@ export default function NotFound() {
       <footer className="bg-gray-900 text-white py-6">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <p className="text-gray-400 text-sm">
-            &copy; 2025 Powerworks Garage Dubai. British Precision. Dubai Hospitality.
+            &copy; 2026 Powerworks Garage Dubai. British Precision. Dubai Hospitality.
           </p>
         </div>
       </footer>
