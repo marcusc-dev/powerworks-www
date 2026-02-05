@@ -219,7 +219,7 @@ export default function ContactPage() {
       {/* Simple Footer */}
       <footer className="bg-gray-900 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400 text-sm">
-          <p>&copy; 2025 Powerworks Garage Dubai. British Precision. Dubai Hospitality.</p>
+          <p>&copy; 2026 Powerworks Garage Dubai. British Precision. Dubai Hospitality.</p>
         </div>
       </footer>
     </div>
