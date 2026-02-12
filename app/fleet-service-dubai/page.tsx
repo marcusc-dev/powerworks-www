@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import { FLEET_FEATURES } from '@/lib/constants';
 import { Truck, CheckCircle, Phone, MessageCircle } from 'lucide-react';
 
@@ -14,6 +15,11 @@ export const metadata: Metadata = {
 
 export default function FleetPage() {
   return (
+    <>
+      <BreadcrumbSchema items={[
+        { name: 'Home', url: '/' },
+        { name: 'Fleet Services', url: '/fleet-service-dubai' },
+      ]} />
     <div className="min-h-screen bg-white">
       <Navbar />
 
@@ -196,5 +202,6 @@ export default function FleetPage() {
 
       <Footer />
     </div>
+    </>
   );
 }

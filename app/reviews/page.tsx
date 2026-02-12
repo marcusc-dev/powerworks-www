@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import FeaturedReviewsSlider from '@/components/FeaturedReviewsSlider';
 import { Star, ExternalLink, Car, Wrench } from 'lucide-react';
 import { ALL_REVIEWS, REVIEW_STATS, CAR_MAKE_CATEGORIES, SERVICE_REVIEW_CATEGORIES, getReviewsByCarMake, getReviewsByService } from '@/lib/reviews-data';
@@ -16,6 +17,11 @@ export const metadata: Metadata = {
 
 export default function ReviewsPage() {
   return (
+    <>
+      <BreadcrumbSchema items={[
+        { name: 'Home', url: '/' },
+        { name: 'Customer Reviews', url: '/reviews' },
+      ]} />
     <div className="min-h-screen bg-white">
       <Navbar />
 
@@ -270,5 +276,6 @@ export default function ReviewsPage() {
 
       <Footer />
     </div>
+    </>
   );
 }

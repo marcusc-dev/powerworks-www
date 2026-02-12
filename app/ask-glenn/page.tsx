@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import AskGlenn from '@/components/AskGlenn';
 import { MessageCircle, Phone, HelpCircle, Lightbulb, Wrench, ThermometerSun } from 'lucide-react';
 
@@ -15,6 +16,11 @@ export const metadata: Metadata = {
 
 export default function AskGlennPage() {
   return (
+    <>
+      <BreadcrumbSchema items={[
+        { name: 'Home', url: '/' },
+        { name: 'Ask Glenn', url: '/ask-glenn' },
+      ]} />
     <div className="min-h-screen bg-white">
       <Navbar />
 
@@ -214,5 +220,6 @@ export default function AskGlennPage() {
 
       <Footer />
     </div>
+    </>
   );
 }

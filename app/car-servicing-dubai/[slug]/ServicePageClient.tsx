@@ -151,8 +151,19 @@ export default function ServicePageClient({ service, relatedServices, reviews = 
     });
   };
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://powerworksgarage.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Car Services', item: 'https://powerworksgarage.com/car-servicing-dubai' },
+      { '@type': 'ListItem', position: 3, name: service.shortTitle, item: `https://powerworksgarage.com/car-servicing-dubai/${service.slug}` },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-white">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Navbar />
 
       {/* Hero Section */}

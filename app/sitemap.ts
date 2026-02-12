@@ -5,59 +5,75 @@ import { BLOG_POSTS } from '@/lib/constants';
 
 const baseUrl = 'https://powerworksgarage.com';
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const currentDate = new Date().toISOString();
+// Use a fixed date for lastModified so Google treats it as a real signal
+// Update this date when content actually changes
+const LAST_CONTENT_UPDATE = '2026-02-12';
 
+export default function sitemap(): MetadataRoute.Sitemap {
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: currentDate,
+      lastModified: LAST_CONTENT_UPDATE,
       changeFrequency: 'weekly',
       priority: 1.0,
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: currentDate,
+      lastModified: LAST_CONTENT_UPDATE,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: currentDate,
+      lastModified: LAST_CONTENT_UPDATE,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/ask-glenn`,
-      lastModified: currentDate,
+      lastModified: LAST_CONTENT_UPDATE,
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/car-servicing-dubai`,
-      lastModified: currentDate,
+      lastModified: LAST_CONTENT_UPDATE,
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/fleet-service-dubai`,
-      lastModified: currentDate,
+      lastModified: LAST_CONTENT_UPDATE,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
       url: `${baseUrl}/reviews`,
-      lastModified: currentDate,
+      lastModified: LAST_CONTENT_UPDATE,
       changeFrequency: 'weekly',
       priority: 0.7,
     },
+    {
+      url: `${baseUrl}/makes`,
+      lastModified: LAST_CONTENT_UPDATE,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
   ];
 
-  // Service pages
+  // Vehicle make pages (e.g., /makes/bmw)
+  const makePages: MetadataRoute.Sitemap = VEHICLE_MAKES.map((make) => ({
+    url: `${baseUrl}/makes/${make.slug}`,
+    lastModified: LAST_CONTENT_UPDATE,
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
+  }));
+
+  // Service pages (e.g., /car-servicing-dubai/car-service-dubai)
   const servicePages: MetadataRoute.Sitemap = SERVICES_DATA.map((service) => ({
     url: `${baseUrl}/car-servicing-dubai/${service.slug}`,
-    lastModified: currentDate,
+    lastModified: LAST_CONTENT_UPDATE,
     changeFrequency: 'monthly' as const,
     priority: 0.8,
   }));
@@ -66,7 +82,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const serviceMakePages: MetadataRoute.Sitemap = SERVICES_DATA.flatMap((service) =>
     VEHICLE_MAKES.map((make) => ({
       url: `${baseUrl}/car-servicing-dubai/${service.slug}/${make.slug}`,
-      lastModified: currentDate,
+      lastModified: LAST_CONTENT_UPDATE,
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     }))
@@ -75,13 +91,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Blog posts (Ask Glenn articles)
   const blogPages: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => ({
     url: `${baseUrl}/ask-glenn/${post.slug}`,
-    lastModified: currentDate,
+    lastModified: LAST_CONTENT_UPDATE,
     changeFrequency: 'monthly' as const,
-    priority: 0.6,
+    priority: 0.7,
   }));
 
   return [
     ...staticPages,
+    ...makePages,
     ...servicePages,
     ...serviceMakePages,
     ...blogPages,

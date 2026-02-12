@@ -120,6 +120,15 @@ export default async function ArticlePage({ params }: PageProps) {
   // Generate structured data for SEO and AEO
   const articleSchema = generateArticleSchema(article);
   const faqSchema = article.faqs ? generateFAQSchema(article.faqs) : null;
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://powerworksgarage.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Ask Glenn', item: 'https://powerworksgarage.com/ask-glenn' },
+      { '@type': 'ListItem', position: 3, name: article.title, item: `https://powerworksgarage.com/ask-glenn/${slug}` },
+    ],
+  };
 
   return (
     <>
@@ -135,6 +144,11 @@ export default async function ArticlePage({ params }: PageProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       )}
+      {/* Breadcrumb Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
     <div className="min-h-screen bg-gray-50">
       <Navbar />
 

@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import ContactForm from '@/components/ContactForm';
+import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import { Phone, Mail, MapPin, Clock, Instagram, Facebook, MessageCircle } from 'lucide-react';
 
 // Wrapper component to handle Suspense for useSearchParams
@@ -60,6 +61,11 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
+    <>
+      <BreadcrumbSchema items={[
+        { name: 'Home', url: '/' },
+        { name: 'Contact', url: '/contact' },
+      ]} />
     <div className="min-h-screen bg-white">
       <Navbar />
 
@@ -223,5 +229,6 @@ export default function ContactPage() {
         </div>
       </footer>
     </div>
+    </>
   );
 }

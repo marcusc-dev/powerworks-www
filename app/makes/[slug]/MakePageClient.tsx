@@ -159,8 +159,19 @@ export default function MakePageClient({ make }: MakePageClientProps) {
   const topServices = SERVICES_DATA.slice(0, 6);
   const testimonial = getTestimonialForMake(make);
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://powerworksgarage.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Brands We Service', item: 'https://powerworksgarage.com/makes' },
+      { '@type': 'ListItem', position: 3, name: `${make.name} Service`, item: `https://powerworksgarage.com/makes/${make.slug}` },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-white">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Navbar />
 
       {/* Hero Section - Clean White Design */}

@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import AboutOwner from '@/components/AboutOwner';
 import { Award, Users, Wrench, Heart, Shield, Clock } from 'lucide-react';
 
@@ -14,6 +15,11 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
+    <>
+      <BreadcrumbSchema items={[
+        { name: 'Home', url: '/' },
+        { name: 'About Us', url: '/about' },
+      ]} />
     <div className="min-h-screen bg-white">
       <Navbar />
 
@@ -150,5 +156,6 @@ export default function AboutPage() {
 
       <Footer />
     </div>
+    </>
   );
 }

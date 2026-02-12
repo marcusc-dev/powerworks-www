@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import { SERVICES_DATA, ServiceIconName } from '@/lib/services-data';
 import {
   CarFront,
@@ -50,6 +51,11 @@ export const metadata: Metadata = {
 
 export default function ServicesPage() {
   return (
+    <>
+      <BreadcrumbSchema items={[
+        { name: 'Home', url: '/' },
+        { name: 'Car Services', url: '/car-servicing-dubai' },
+      ]} />
     <div className="min-h-screen bg-white">
       <Navbar />
 
@@ -327,5 +333,6 @@ export default function ServicesPage() {
 
       <Footer />
     </div>
+    </>
   );
 }

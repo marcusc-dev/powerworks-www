@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import { VEHICLE_MAKES, getMakesByTier } from '@/lib/vehicle-makes-data';
 
 export const metadata: Metadata = {
@@ -18,6 +19,11 @@ export default function MakesPage() {
   const mainstreamMakes = getMakesByTier('mainstream');
 
   return (
+    <>
+      <BreadcrumbSchema items={[
+        { name: 'Home', url: '/' },
+        { name: 'Brands We Service', url: '/makes' },
+      ]} />
     <div className="min-h-screen bg-white">
       <Navbar />
 
@@ -258,5 +264,6 @@ export default function MakesPage() {
 
       <Footer />
     </div>
+    </>
   );
 }
