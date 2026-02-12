@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import {
   Phone,
@@ -34,6 +35,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { ServiceData, ServiceIconName } from '@/lib/services-data';
 import { VehicleMake } from '@/lib/vehicle-makes-data';
+import { Testimonial } from '@/lib/types';
 
 const iconMap: Record<ServiceIconName, LucideIcon> = {
   CarFront,
@@ -56,6 +58,7 @@ const iconMap: Record<ServiceIconName, LucideIcon> = {
 interface MakeServicePageClientProps {
   service: ServiceData;
   vehicleMake: VehicleMake;
+  reviews?: Testimonial[];
 }
 
 // Generate make-specific FAQs based on the service and make
@@ -95,10 +98,22 @@ function generateMakeServiceFAQs(service: ServiceData, make: VehicleMake) {
   return faqs;
 }
 
-export default function MakeServicePageClient({ service, vehicleMake }: MakeServicePageClientProps) {
+export default function MakeServicePageClient({ service, vehicleMake, reviews = [] }: MakeServicePageClientProps) {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [showAllReviews, setShowAllReviews] = useState(false);
+  const [expandedReviews, setExpandedReviews] = useState<Set<number>>(new Set());
   const Icon = iconMap[service.iconName];
   const makeServiceFAQs = generateMakeServiceFAQs(service, vehicleMake);
+  const displayedReviews = showAllReviews ? reviews.slice(0, 6) : reviews.slice(0, 3);
+
+  const toggleReviewExpanded = (index: number) => {
+    setExpandedReviews(prev => {
+      const next = new Set(prev);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
+    });
+  };
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -120,10 +135,13 @@ export default function MakeServicePageClient({ service, vehicleMake }: MakeServ
       <section className="relative pt-40 pb-20 md:pt-48 md:pb-28 overflow-hidden">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0">
-          <img
+          <Image
             src={vehicleMake.vehicleImage || service.heroImage}
-            alt={`${service.shortTitle} for ${vehicleMake.name}`}
-            className="w-full h-full object-cover"
+            alt={`${service.shortTitle} for ${vehicleMake.name} in Dubai`}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-power-blue/95 via-power-blue/85 to-power-blue/70"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30"></div>
@@ -146,11 +164,13 @@ export default function MakeServicePageClient({ service, vehicleMake }: MakeServ
             {/* Badge with Make Logo */}
             <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-6">
               {vehicleMake.logo && (
-                <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center p-1">
-                  <img
+                <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center p-1 relative">
+                  <Image
                     src={vehicleMake.logo}
-                    alt={vehicleMake.name}
-                    className="max-w-full max-h-full object-contain"
+                    alt={`${vehicleMake.name} logo`}
+                    width={24}
+                    height={24}
+                    className="object-contain"
                   />
                 </div>
               )}
@@ -252,14 +272,16 @@ export default function MakeServicePageClient({ service, vehicleMake }: MakeServ
             >
               <div className="flex items-start gap-4 mb-6">
                 <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-power-red flex-shrink-0">
-                  <img
+                  <Image
                     src="/glenn-power.png"
-                    alt="Glenn - Powerworks Founder"
-                    className="w-full h-full object-cover"
+                    alt="Glenn Power - Powerworks Founder & Master Technician"
+                    width={64}
+                    height={64}
+                    className="object-cover"
                   />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900">Glenn&apos;s Expert Insight</h3>
+                  <h2 className="text-lg font-bold text-gray-900">Glenn&apos;s Expert Insight</h2>
                   <p className="text-sm text-gray-500">25+ Years Experience</p>
                 </div>
               </div>
@@ -267,10 +289,12 @@ export default function MakeServicePageClient({ service, vehicleMake }: MakeServ
                 &ldquo;{vehicleMake.glennQuote}&rdquo;
               </blockquote>
               <div className="mt-4">
-                <img
+                <Image
                   src="/signature-gp.png"
-                  alt="Glenn's signature"
-                  className="h-10 opacity-60"
+                  alt="Glenn Power's signature"
+                  width={120}
+                  height={40}
+                  className="opacity-60"
                 />
               </div>
             </motion.div>
@@ -469,10 +493,12 @@ export default function MakeServicePageClient({ service, vehicleMake }: MakeServ
                   >
                     <div className="flex gap-4 pl-14">
                       <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-power-red flex-shrink-0">
-                        <img
+                        <Image
                           src="/glenn-power.png"
-                          alt="Glenn"
-                          className="w-full h-full object-cover"
+                          alt="Glenn Power"
+                          width={40}
+                          height={40}
+                          className="object-cover"
                         />
                       </div>
                       <div className="flex-1">
@@ -489,6 +515,90 @@ export default function MakeServicePageClient({ service, vehicleMake }: MakeServ
           </div>
         </div>
       </section>
+
+      {/* Customer Reviews Section */}
+      {displayedReviews.length > 0 && (
+        <section className="py-16 md:py-24 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-700 px-4 py-2 rounded-full mb-4">
+                <Star size={16} className="fill-yellow-500" />
+                <span className="font-semibold text-sm">Verified Reviews</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                What {vehicleMake.name} Owners Say
+              </h2>
+              <p className="text-lg text-gray-600">
+                Real feedback from {vehicleMake.name} owners who trust Powerworks Garage.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {displayedReviews.map((review, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="bg-gray-50 rounded-2xl p-6 border border-gray-100"
+                >
+                  <div className="flex gap-1 mb-3">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        size={16}
+                        className={i < review.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}
+                      />
+                    ))}
+                  </div>
+                  <p className={`text-gray-700 leading-relaxed ${!expandedReviews.has(index) ? 'line-clamp-4' : ''}`}>
+                    &ldquo;{review.text}&rdquo;
+                  </p>
+                  {review.text.length > 200 && (
+                    <button
+                      onClick={() => toggleReviewExpanded(index)}
+                      className="text-power-blue text-sm font-medium mt-2 hover:underline"
+                    >
+                      {expandedReviews.has(index) ? 'Show Less' : 'Show More'}
+                    </button>
+                  )}
+                  <div className="flex items-center gap-3 mt-4 pt-4 border-t border-gray-200">
+                    <div className="w-10 h-10 bg-power-blue rounded-full flex items-center justify-center text-white font-bold">
+                      {review.name.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900">{review.name}</p>
+                      <p className="text-sm text-gray-500">{review.date}</p>
+                    </div>
+                    {review.source === 'google' && (
+                      <div className="ml-auto text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded">Google</div>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="flex items-center justify-center gap-4 mt-8">
+              {!showAllReviews && reviews.length > 3 && (
+                <button
+                  onClick={() => setShowAllReviews(true)}
+                  className="text-power-blue font-semibold hover:underline"
+                >
+                  Show More Reviews
+                </button>
+              )}
+              <Link
+                href="/reviews"
+                className="inline-flex items-center gap-2 text-gray-600 font-medium hover:text-power-blue transition-colors"
+              >
+                View All Reviews
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Other Services for this Make */}
       <section className="py-16 md:py-24 bg-gray-50">
