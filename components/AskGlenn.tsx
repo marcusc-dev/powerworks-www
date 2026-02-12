@@ -192,7 +192,7 @@ const AskGlenn: React.FC = () => {
 
                   {/* Title */}
                   <h4 className="font-heading text-xl font-bold text-gray-900 mb-3 group-hover:text-[#1e3a8a] transition-colors leading-tight line-clamp-2">
-                    {post.title}
+                    <a href={`/ask-glenn/${post.slug}`}>{post.title}</a>
                   </h4>
 
                   {/* Excerpt */}

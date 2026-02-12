@@ -16,6 +16,7 @@ import {
   Users
 } from 'lucide-react';
 import { ServiceItem, Testimonial, NavItem, BrandItem, BlogPost, FleetFeature } from './types';
+import { NEW_BLOG_POSTS } from './blog-posts';
 
 // Images - using local assets from public folder
 export const IMAGES = {
@@ -786,7 +787,8 @@ export const BLOG_POSTS: BlogPost[] = [
         answer: "Cooling system repair costs vary: thermostat replacement AED 300-600, water pump AED 800-2,000, radiator replacement AED 1,000-3,000, heater core AED 2,000-4,000 (requires dashboard removal), and head gasket repair AED 5,000-15,000+ depending on the vehicle."
       }
     ]
-  }
+  },
+  ...NEW_BLOG_POSTS,
 ];
 
 export const REVIEWS: Testimonial[] = [
