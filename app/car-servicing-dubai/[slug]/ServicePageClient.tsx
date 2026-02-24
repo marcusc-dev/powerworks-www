@@ -41,6 +41,7 @@ import {
 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BookingButton from '@/components/BookingButton';
 import { ServiceData, ServiceIconName } from '@/lib/services-data';
 import { Testimonial } from '@/lib/types';
 import { VehicleMake } from '@/lib/vehicle-makes-data';
@@ -373,13 +374,12 @@ export default function ServicePageClient({ service, relatedServices, reviews = 
 
                 {/* CTA at bottom of card */}
                 <div className="mt-6 pt-6 border-t border-gray-100 flex flex-col sm:flex-row gap-3">
-                  <a
-                    href={`/contact?service=${serviceFormMap[service.slug] || 'other'}`}
+                  <BookingButton
                     className="flex-1 inline-flex items-center justify-center gap-2 bg-power-red text-white px-6 py-3 rounded-xl font-semibold hover:bg-red-700 transition-all shadow-lg hover:shadow-xl"
                   >
                     Book This Service
                     <ArrowRight size={18} />
-                  </a>
+                  </BookingButton>
                   <a
                     href="tel:+971521217425"
                     className="flex-1 inline-flex items-center justify-center gap-2 bg-power-blue text-white px-6 py-3 rounded-xl font-semibold hover:bg-power-blue/90 transition-all"
@@ -1018,13 +1018,12 @@ export default function ServicePageClient({ service, relatedServices, reviews = 
               <MessageCircle size={20} />
               WhatsApp Us
             </a>
-            <a
-              href={`/contact?service=${serviceFormMap[service.slug] || 'other'}`}
+            <BookingButton
               className="inline-flex items-center gap-2 bg-power-red text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-red-700 transition-all shadow-lg"
             >
               Book Online
               <ArrowRight size={20} />
-            </a>
+            </BookingButton>
           </div>
         </div>
       </section>

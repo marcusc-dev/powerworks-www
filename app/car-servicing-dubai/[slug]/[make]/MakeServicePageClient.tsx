@@ -36,6 +36,7 @@ import Footer from '@/components/Footer';
 import { ServiceData, ServiceIconName } from '@/lib/services-data';
 import { VehicleMake } from '@/lib/vehicle-makes-data';
 import { Testimonial } from '@/lib/types';
+import BookingButton from '@/components/BookingButton';
 
 const iconMap: Record<ServiceIconName, LucideIcon> = {
   CarFront,
@@ -641,13 +642,11 @@ export default function MakeServicePageClient({ service, vehicleMake, reviews = 
             Our {vehicleMake.shortName} specialists are ready to help. Contact us today.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a
-              href="tel:+971521217425"
+            <BookingButton
               className="inline-flex items-center gap-2 bg-white text-power-blue px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all shadow-lg"
             >
-              <Phone size={20} />
-              052 121 7425
-            </a>
+              Book Online
+            </BookingButton>
             <a
               href={`https://wa.me/971521217425?text=Hi, I need ${service.shortTitle} for my ${vehicleMake.name}`}
               target="_blank"

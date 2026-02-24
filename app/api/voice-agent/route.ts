@@ -154,7 +154,7 @@ ${alreadyCapturedSection}
 ## Contact Details (if asked)
 - Phone: 052 121 7425
 - WhatsApp: https://wa.me/971521217425
-- Location: Al Quoz Industrial Area 3, Dubai
+- Location: Dubai Investment Park 1, Dubai
 - Hours: Mon-Sun 8AM-6PM
 
 ## JSON Response Format
@@ -590,7 +590,7 @@ async function sendCustomerConfirmation(
 
       <div class="contact-info">
         <p><strong>📞 Phone:</strong> <a href="tel:+971521217425">052 121 7425</a></p>
-        <p><strong>📍 Location:</strong> Al Quoz Industrial Area 3, Dubai</p>
+        <p><strong>📍 Location:</strong> Dubai Investment Park 1, Dubai</p>
         <p><strong>⏰ Hours:</strong> Monday - Sunday, 8AM - 6PM</p>
       </div>
     </div>

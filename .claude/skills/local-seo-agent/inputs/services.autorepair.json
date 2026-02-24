@@ -1,0 +1,24 @@
+{
+  "services": [
+    "Car Service",
+    "Car Repair",
+    "Oil Change",
+    "AC Repair",
+    "Transmission Repair",
+    "Brake Service",
+    "Suspension Repair",
+    "Electrical Diagnostics",
+    "Engine Diagnostics & Repair",
+    "Battery Replacement",
+    "Tyre Replacement",
+    "Pre-Purchase Inspection",
+    "Detailing & Polishing"
+  ],
+  "priority_services": [
+    "Car Service",
+    "AC Repair",
+    "Brake Service",
+    "Electrical Diagnostics",
+    "Pre-Purchase Inspection"
+  ]
+}

@@ -7,7 +7,7 @@ const baseUrl = 'https://powerworksgarage.com';
 
 // Use a fixed date for lastModified so Google treats it as a real signal
 // Update this date when content actually changes
-const LAST_CONTENT_UPDATE = '2026-02-12';
+const LAST_CONTENT_UPDATE = '2026-02-17';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // Static pages
@@ -53,6 +53,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: LAST_CONTENT_UPDATE,
       changeFrequency: 'weekly',
       priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/locations/dubai-investment-park`,
+      lastModified: LAST_CONTENT_UPDATE,
+      changeFrequency: 'monthly',
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/makes`,

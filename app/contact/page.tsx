@@ -53,7 +53,7 @@ function ContactFormSkeleton() {
 
 export const metadata: Metadata = {
   title: 'Contact Us | Book Your Service | Powerworks Garage Dubai',
-  description: 'Contact Powerworks Garage in Al Quoz, Dubai. Book your car service, get a quote, or ask a question. Call 052 121 7425 or WhatsApp us.',
+  description: 'Contact Powerworks Garage in Dubai Investment Park. Book your car service, get a quote, or ask a question. Call 052 121 7425 or WhatsApp us.',
   alternates: {
     canonical: '/contact',
   },
@@ -176,7 +176,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-xs text-gray-500 uppercase font-bold tracking-wider">Location</p>
-                    <p className="text-gray-900 font-medium">Al Quoz Industrial Area 3<br/>Dubai, UAE</p>
+                    <p className="text-gray-900 font-medium">Dubai Investment Park 1<br/>Dubai, UAE</p>
                   </div>
                 </div>
               </div>
@@ -208,7 +208,7 @@ export default function ContactPage() {
       {/* Map Section */}
       <section className="h-96 relative">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3612.8687702868843!2d55.2274!3d25.1065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f696655555555%3A0x5555555555555555!2sAl%20Quoz!5e0!3m2!1sen!2sae!4v1620000000000!5m2!1sen!2sae"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3616.0!2d55.1508571!3d24.9861876!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f7389305297f7%3A0xe85f630215780c08!2sPowerworks%20Garage%20DIP!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae"
           width="100%"
           height="100%"
           style={{ border: 0 }}
@@ -218,7 +218,7 @@ export default function ContactPage() {
         ></iframe>
         <div className="absolute bottom-6 left-6 bg-white p-4 rounded-xl shadow-xl">
           <p className="font-bold text-gray-900">Powerworks Garage</p>
-          <p className="text-sm text-gray-500">Al Quoz Industrial Area 3, Dubai</p>
+          <p className="text-sm text-gray-500">Dubai Investment Park 1, Dubai</p>
         </div>
       </section>
 

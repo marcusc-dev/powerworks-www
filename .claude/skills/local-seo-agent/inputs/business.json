@@ -1,0 +1,34 @@
+{
+  "business_name": "Powerworks Garage",
+  "tagline": "British-Owned & Trusted Car Repair Specialists in Dubai",
+  "phone": "+971-XX-XXXXXXX",
+  "whatsapp": "+971-XX-XXXXXXX",
+  "address": "Dubai, UAE (add exact address)",
+  "areas_served": ["Dubai"],
+  "primary_category": "Auto Repair Shop",
+  "secondary_categories": ["Car Service", "AC Repair", "Diagnostics"],
+  "usp": [
+    "British-owned",
+    "British-trained technicians",
+    "Transparent, honest advice",
+    "Real workshop (not a marketplace)",
+    "Strong Google reviews",
+    "Fleet servicing capability"
+  ],
+  "hours": {
+    "mon": "08:00-18:00",
+    "tue": "08:00-18:00",
+    "wed": "08:00-18:00",
+    "thu": "08:00-18:00",
+    "fri": "08:00-18:00",
+    "sat": "08:00-14:00",
+    "sun": "Closed"
+  },
+  "brands_served": ["All makes and models", "British", "German", "Japanese"],
+  "trust_signals": [
+    "Google reviews",
+    "Technician bios & training",
+    "Workshop photos",
+    "Case studies for fleet clients"
+  ]
+}

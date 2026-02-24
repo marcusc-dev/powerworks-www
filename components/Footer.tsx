@@ -43,7 +43,7 @@ const Footer: React.FC = () => {
             <div className="lg:col-span-2">
               <img src="/logo_dark.png" alt="Powerworks Garage" className="h-16 mb-6" />
               <p className="text-gray-400 mb-8 leading-relaxed max-w-sm">
-                British-owned car repair specialists in Dubai. We bring UK workshop standards, honest diagnostics, and genuine care to every vehicle.
+                British-owned car repair specialists in Dubai Investment Park (DIP). We bring UK workshop standards, honest diagnostics, and genuine care to every vehicle.
               </p>
 
               <div className="space-y-5">
@@ -93,7 +93,7 @@ const Footer: React.FC = () => {
                   </div>
                   <div>
                     <p className="text-xs text-gray-500 uppercase font-bold tracking-wider">Location</p>
-                    <p className="text-white font-medium">Al Quoz Industrial Area 3<br/>Dubai, UAE</p>
+                    <p className="text-white font-medium">Dubai Investment Park 1<br/>Dubai, UAE</p>
                   </div>
                 </div>
               </div>
@@ -272,7 +272,7 @@ const Footer: React.FC = () => {
         {/* Map Section */}
         <div className="w-full h-64 relative">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3612.8687702868843!2d55.2274!3d25.1065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f696655555555%3A0x5555555555555555!2sAl%20Quoz!5e0!3m2!1sen!2sae!4v1620000000000!5m2!1sen!2sae"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3616.0!2d55.1508571!3d24.9861876!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f7389305297f7%3A0xe85f630215780c08!2sPowerworks%20Garage%20DIP!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae"
             width="100%"
             height="100%"
             style={{ border: 0, filter: 'grayscale(100%) contrast(1.1)' }}
@@ -295,7 +295,7 @@ const Footer: React.FC = () => {
               <div className="flex items-center gap-6">
                 <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
                 <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-                <a href="#" className="hover:text-white transition-colors">Sitemap</a>
+                <a href="/sitemap.xml" className="hover:text-white transition-colors">Sitemap</a>
               </div>
             </div>
           </div>

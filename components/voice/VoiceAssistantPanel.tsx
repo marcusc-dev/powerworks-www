@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { VoiceAssistantState, AssistantStatus } from './types';
 import { buildContactUrl, WHATSAPP_URL } from './contactPrefill';
+import { BOOKING_URL } from '@/lib/constants';
 
 interface VoiceAssistantPanelProps {
   state: VoiceAssistantState;
@@ -193,12 +194,9 @@ export default function VoiceAssistantPanel({
     }
   }, [state.status, onStartListening, onStopListening]);
 
-  // Navigate to contact with prefill
   const handleBookAppointment = useCallback(() => {
-    const url = buildContactUrl(state.contactPrefill);
-    router.push(url);
-    onClose();
-  }, [router, state.contactPrefill, onClose]);
+    window.open(BOOKING_URL, '_blank', 'noopener,noreferrer');
+  }, []);
 
   const isListening = state.status === 'listening';
   const isThinking = state.status === 'thinking';

@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import FeaturedReviewsSlider from '@/components/FeaturedReviewsSlider';
 import { Star, ExternalLink, Car, Wrench } from 'lucide-react';
+import BookingButton from '@/components/BookingButton';
 import { ALL_REVIEWS, REVIEW_STATS, CAR_MAKE_CATEGORIES, SERVICE_REVIEW_CATEGORIES, getReviewsByCarMake, getReviewsByService } from '@/lib/reviews-data';
 
 export const metadata: Metadata = {
@@ -255,12 +256,11 @@ export default function ReviewsPage() {
             Experience the Powerworks difference for yourself.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a
-              href="/contact"
+            <BookingButton
               className="inline-flex items-center gap-2 bg-white text-power-blue px-8 py-4 rounded-xl font-bold hover:bg-gray-100 transition-all shadow-lg"
             >
               Book Your Service
-            </a>
+            </BookingButton>
             <a
               href="https://g.page/r/CaXX8WWhIsOLEAE/review"
               target="_blank"

@@ -67,17 +67,19 @@ function generateServiceSchema(service: { title: string; description: string; pr
       name: 'Powerworks Garage',
       address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Al Quoz Industrial Area 3',
+        streetAddress: 'Dubai Investment Park 1',
         addressLocality: 'Dubai',
         addressCountry: 'AE',
       },
       telephone: '+971521217425',
       url: 'https://powerworksgarage.com',
     },
-    areaServed: {
-      '@type': 'City',
-      name: 'Dubai',
-    },
+    areaServed: [
+      { '@type': 'City', name: 'Dubai' },
+      { '@type': 'Place', name: 'Dubai Investment Park' },
+      { '@type': 'Place', name: 'DIP 1' },
+      { '@type': 'Place', name: 'DIP 2' },
+    ],
     url: `https://powerworksgarage.com/car-servicing-dubai/${service.slug}`,
   };
 }

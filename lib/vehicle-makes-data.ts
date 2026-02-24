@@ -66,7 +66,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'BMW Service Dubai | BMW Specialist Garage | Powerworks',
-    metaDescription: 'Expert BMW service & repair in Dubai. ISTA diagnostics, trained technicians, genuine parts. 3 Series, 5 Series, X5 specialists. Al Quoz. Book today.'
+    metaDescription: 'Expert BMW service & repair in Dubai. ISTA diagnostics, trained technicians, genuine parts. 3 Series, 5 Series, X5 specialists. DIP, Dubai. Book today.'
   },
   {
     slug: 'mercedes',
@@ -112,7 +112,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Mercedes Service Dubai | Mercedes Specialist Garage | Powerworks',
-    metaDescription: 'Expert Mercedes-Benz service in Dubai. XENTRY diagnostics, AIRMATIC repair, all models serviced. C-Class to S-Class. Al Quoz garage. Book now.'
+    metaDescription: 'Expert Mercedes-Benz service in Dubai. XENTRY diagnostics, AIRMATIC repair, all models serviced. C-Class to S-Class. DIP, Dubai. Book now.'
   },
   {
     slug: 'audi',
@@ -157,7 +157,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Audi Service Dubai | Audi Specialist Garage | Powerworks',
-    metaDescription: 'Expert Audi service in Dubai. ODIS diagnostics, DSG service, Quattro specialists. A4, A6, Q5, Q7 serviced. Al Quoz. Book your appointment.'
+    metaDescription: 'Expert Audi service in Dubai. ODIS diagnostics, DSG service, Quattro specialists. A4, A6, Q5, Q7 serviced. DIP, Dubai. Book your appointment.'
   },
   {
     slug: 'porsche',
@@ -203,7 +203,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Porsche Service Dubai | Porsche Specialist Garage | Powerworks',
-    metaDescription: 'Expert Porsche service in Dubai. PIWIS diagnostics, PDK service, 911 & Cayenne specialists. British-standard care for your Porsche. Al Quoz.'
+    metaDescription: 'Expert Porsche service in Dubai. PIWIS diagnostics, PDK service, 911 & Cayenne specialists. British-standard care for your Porsche. DIP, Dubai.'
   },
   {
     slug: 'land-rover',
@@ -249,7 +249,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Land Rover Service Dubai | Defender & Discovery Specialist | Powerworks',
-    metaDescription: 'Expert Land Rover service in Dubai. British-owned garage, SDD diagnostics, air suspension specialists. Defender, Discovery. Al Quoz.'
+    metaDescription: 'Expert Land Rover service in Dubai. British-owned garage, SDD diagnostics, air suspension specialists. Defender, Discovery. DIP, Dubai.'
   },
   {
     slug: 'range-rover',
@@ -295,7 +295,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Range Rover Service Dubai | Range Rover Specialist | Powerworks',
-    metaDescription: 'Expert Range Rover service in Dubai. British-owned garage, air suspension specialists, SDD diagnostics. Range Rover Sport, Velar, Evoque. Al Quoz.'
+    metaDescription: 'Expert Range Rover service in Dubai. British-owned garage, air suspension specialists, SDD diagnostics. Range Rover Sport, Velar, Evoque. DIP, Dubai.'
   },
   {
     slug: 'rolls-royce',
@@ -341,7 +341,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Rolls-Royce Service Dubai | Rolls-Royce Specialist | Powerworks',
-    metaDescription: 'Expert Rolls-Royce service in Dubai. British-owned garage, Phantom, Ghost, Cullinan specialists. Luxury care for luxury vehicles. Al Quoz.'
+    metaDescription: 'Expert Rolls-Royce service in Dubai. British-owned garage, Phantom, Ghost, Cullinan specialists. Luxury care for luxury vehicles. DIP, Dubai.'
   },
   {
     slug: 'aston-martin',
@@ -387,7 +387,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Aston Martin Service Dubai | Aston Martin Specialist | Powerworks',
-    metaDescription: 'Expert Aston Martin service in Dubai. British-owned garage, DB11, Vantage, DBX specialists. V8 & V12 expertise. Al Quoz. Book today.'
+    metaDescription: 'Expert Aston Martin service in Dubai. British-owned garage, DB11, Vantage, DBX specialists. V8 & V12 expertise. DIP, Dubai. Book today.'
   },
   {
     slug: 'volkswagen',
@@ -433,7 +433,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Volkswagen Service Dubai | VW Specialist Garage | Powerworks',
-    metaDescription: 'Expert Volkswagen service in Dubai. ODIS diagnostics, DSG service, Golf, Passat, Tiguan specialists. German car expertise. Al Quoz. Book today.'
+    metaDescription: 'Expert Volkswagen service in Dubai. ODIS diagnostics, DSG service, Golf, Passat, Tiguan specialists. German car expertise. DIP, Dubai. Book today.'
   },
   {
     slug: 'bentley',
@@ -479,7 +479,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Bentley Service Dubai | Bentley Specialist Garage | Powerworks',
-    metaDescription: 'Expert Bentley service in Dubai. Continental GT, Bentayga, Flying Spur specialists. British-owned garage with genuine care. Al Quoz. Book now.'
+    metaDescription: 'Expert Bentley service in Dubai. Continental GT, Bentayga, Flying Spur specialists. British-owned garage with genuine care. DIP, Dubai. Book now.'
   },
   {
     slug: 'toyota',
@@ -525,7 +525,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Toyota Service Dubai | Land Cruiser Specialist | Powerworks Garage',
-    metaDescription: 'Expert Toyota service in Dubai. Land Cruiser, Prado, Camry specialists. Japanese reliability with British service standards. Al Quoz. Book today.'
+    metaDescription: 'Expert Toyota service in Dubai. Land Cruiser, Prado, Camry specialists. Japanese reliability with British service standards. DIP, Dubai. Book today.'
   },
   {
     slug: 'nissan',
@@ -571,7 +571,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Nissan Service Dubai | Patrol Specialist Garage | Powerworks',
-    metaDescription: 'Expert Nissan service in Dubai. Patrol, Altima, GT-R specialists. CVT service, full diagnostics. Japanese engineering, British service. Al Quoz.'
+    metaDescription: 'Expert Nissan service in Dubai. Patrol, Altima, GT-R specialists. CVT service, full diagnostics. Japanese engineering, British service. DIP, Dubai.'
   },
   {
     slug: 'jaguar',
@@ -617,7 +617,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Jaguar Service Dubai | Jaguar Specialist Garage | Powerworks',
-    metaDescription: 'Expert Jaguar service in Dubai. British-owned garage, F-PACE, XF, F-TYPE specialists. SDD diagnostics. Al Quoz. Book your Jaguar service.'
+    metaDescription: 'Expert Jaguar service in Dubai. British-owned garage, F-PACE, XF, F-TYPE specialists. SDD diagnostics. DIP, Dubai. Book your Jaguar service.'
   },
   {
     slug: 'ford',
@@ -663,7 +663,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Ford Service Dubai | Mustang & Explorer Specialist | Powerworks',
-    metaDescription: 'Expert Ford service in Dubai. Mustang, Explorer, Expedition specialists. EcoBoost experts. American muscle, British service standards. Al Quoz.'
+    metaDescription: 'Expert Ford service in Dubai. Mustang, Explorer, Expedition specialists. EcoBoost experts. American muscle, British service standards. DIP, Dubai.'
   },
   {
     slug: 'chevrolet',
@@ -709,7 +709,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Chevrolet Service Dubai | Tahoe & Camaro Specialist | Powerworks',
-    metaDescription: 'Expert Chevrolet service in Dubai. Tahoe, Suburban, Camaro, Corvette specialists. V8 expertise. Al Quoz garage. Book your Chevy service.'
+    metaDescription: 'Expert Chevrolet service in Dubai. Tahoe, Suburban, Camaro, Corvette specialists. V8 expertise. DIP, Dubai. Book your Chevy service.'
   },
   {
     slug: 'honda',
@@ -754,7 +754,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Honda Service Dubai | Honda Specialist Garage | Powerworks',
-    metaDescription: 'Expert Honda service in Dubai. Accord, Civic, CR-V specialists. VTEC expertise, reliable Japanese engineering. Al Quoz. Book today.'
+    metaDescription: 'Expert Honda service in Dubai. Accord, Civic, CR-V specialists. VTEC expertise, reliable Japanese engineering. DIP, Dubai. Book today.'
   },
   {
     slug: 'lexus',
@@ -799,7 +799,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Lexus Service Dubai | Lexus Specialist Garage | Powerworks',
-    metaDescription: 'Expert Lexus service in Dubai. LX, RX, ES specialists. Japanese luxury with British service standards. Al Quoz. Book your Lexus service.'
+    metaDescription: 'Expert Lexus service in Dubai. LX, RX, ES specialists. Japanese luxury with British service standards. DIP, Dubai. Book your Lexus service.'
   },
   {
     slug: 'infiniti',
@@ -845,7 +845,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Infiniti Service Dubai | Infiniti Specialist Garage | Powerworks',
-    metaDescription: 'Expert Infiniti service in Dubai. QX80, Q50, Q60 specialists. Japanese luxury car experts. Al Quoz garage. Book your Infiniti service.'
+    metaDescription: 'Expert Infiniti service in Dubai. QX80, Q50, Q60 specialists. Japanese luxury car experts. DIP, Dubai. Book your Infiniti service.'
   },
   {
     slug: 'mini',
@@ -891,7 +891,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'MINI Service Dubai | MINI Cooper Specialist | Powerworks',
-    metaDescription: 'Expert MINI service in Dubai. Cooper, Cooper S, JCW specialists. British-owned garage for British cars. Al Quoz. Book your MINI service.'
+    metaDescription: 'Expert MINI service in Dubai. Cooper, Cooper S, JCW specialists. British-owned garage for British cars. DIP, Dubai. Book your MINI service.'
   },
   {
     slug: 'jeep',
@@ -937,7 +937,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Jeep Service Dubai | Wrangler & Grand Cherokee Specialist | Powerworks',
-    metaDescription: 'Expert Jeep service in Dubai. Wrangler, Grand Cherokee specialists. 4x4 experts, lift kits, modifications. Al Quoz. Book your Jeep service.'
+    metaDescription: 'Expert Jeep service in Dubai. Wrangler, Grand Cherokee specialists. 4x4 experts, lift kits, modifications. DIP, Dubai. Book your Jeep service.'
   },
   {
     slug: 'gmc',
@@ -983,7 +983,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'GMC Service Dubai | Yukon & Sierra Specialist | Powerworks',
-    metaDescription: 'Expert GMC service in Dubai. Yukon, Sierra, Terrain specialists. American truck experts. Al Quoz garage. Book your GMC service.'
+    metaDescription: 'Expert GMC service in Dubai. Yukon, Sierra, Terrain specialists. American truck experts. DIP, Dubai. Book your GMC service.'
   },
   {
     slug: 'dodge',
@@ -1029,7 +1029,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Dodge Service Dubai | Charger & Challenger Specialist | Powerworks',
-    metaDescription: 'Expert Dodge service in Dubai. Charger, Challenger, HEMI specialists. American muscle car experts. Ram trucks. Al Quoz. Book today.'
+    metaDescription: 'Expert Dodge service in Dubai. Charger, Challenger, HEMI specialists. American muscle car experts. Ram trucks. DIP, Dubai. Book today.'
   },
   {
     slug: 'maserati',
@@ -1075,7 +1075,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Maserati Service Dubai | Maserati Specialist Garage | Powerworks',
-    metaDescription: 'Expert Maserati service in Dubai. Ghibli, GranTurismo, Levante specialists. Italian exotic car expertise. Al Quoz. Book your Maserati service.'
+    metaDescription: 'Expert Maserati service in Dubai. Ghibli, GranTurismo, Levante specialists. Italian exotic car expertise. DIP, Dubai. Book your Maserati service.'
   },
   {
     slug: 'ferrari',
@@ -1121,7 +1121,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Ferrari Service Dubai | Ferrari Specialist Garage | Powerworks',
-    metaDescription: 'Expert Ferrari service in Dubai. 488, F8, Roma specialists. Italian supercar expertise with proper care. Al Quoz. Book your Ferrari service.'
+    metaDescription: 'Expert Ferrari service in Dubai. 488, F8, Roma specialists. Italian supercar expertise with proper care. DIP, Dubai. Book your Ferrari service.'
   },
   {
     slug: 'lamborghini',
@@ -1167,7 +1167,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Lamborghini Service Dubai | Lamborghini Specialist | Powerworks',
-    metaDescription: 'Expert Lamborghini service in Dubai. Huracán, Urus, Aventador specialists. Italian supercar expertise. Al Quoz. Book your Lamborghini service.'
+    metaDescription: 'Expert Lamborghini service in Dubai. Huracán, Urus, Aventador specialists. Italian supercar expertise. DIP, Dubai. Book your Lamborghini service.'
   },
   {
     slug: 'mazda',
@@ -1213,7 +1213,7 @@ export const VEHICLE_MAKES: VehicleMake[] = [
       }
     ],
     metaTitle: 'Mazda Service Dubai | Mazda Specialist Garage | Powerworks',
-    metaDescription: 'Expert Mazda service in Dubai. CX-5, Mazda3, MX-5 specialists. SkyActiv expertise. Japanese reliability. Al Quoz. Book your Mazda service.'
+    metaDescription: 'Expert Mazda service in Dubai. CX-5, Mazda3, MX-5 specialists. SkyActiv expertise. Japanese reliability. DIP, Dubai. Book your Mazda service.'
   }
 ];
 

@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { GeminiLiveState, LiveStatus } from './useGeminiLive';
 import { WHATSAPP_URL } from './contactPrefill';
+import { BOOKING_URL } from '@/lib/constants';
 
 interface VoiceLivePanelProps {
   state: GeminiLiveState;
@@ -206,11 +207,9 @@ export default function VoiceLivePanel({
     }
   }, [state.status, onStartListening, onStopListening]);
 
-  // Navigate to contact
   const handleBookAppointment = useCallback(() => {
-    router.push('/contact');
-    onClose();
-  }, [router, onClose]);
+    window.open(BOOKING_URL, '_blank', 'noopener,noreferrer');
+  }, []);
 
   const isListening = state.status === 'listening';
   const isThinking = state.status === 'thinking';

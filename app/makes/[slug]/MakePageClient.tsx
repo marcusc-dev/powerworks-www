@@ -32,6 +32,7 @@ import {
 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BookingButton from '@/components/BookingButton';
 import { VehicleMake } from '@/lib/vehicle-makes-data';
 import { SERVICES_DATA, ServiceIconName } from '@/lib/services-data';
 
@@ -214,7 +215,7 @@ export default function MakePageClient({ make }: MakePageClientProps) {
                 transition={{ duration: 0.5, delay: 0.1 }}
                 className="text-xl text-gray-600 mb-6"
               >
-                Expert {make.name} servicing and repairs in Al Quoz, Dubai. Factory-trained techniques, dealer-level diagnostics, honest pricing.
+                Expert {make.name} servicing and repairs in Dubai Investment Park. Factory-trained techniques, dealer-level diagnostics, honest pricing.
               </motion.p>
 
               {/* Popular Models */}
@@ -335,7 +336,7 @@ export default function MakePageClient({ make }: MakePageClientProps) {
             </div>
             <div className="flex items-center gap-2">
               <MapPin className="text-power-blue" size={20} />
-              <span>Al Quoz, Dubai</span>
+              <span>Dubai Investment Park, Dubai</span>
             </div>
           </div>
         </div>
@@ -673,13 +674,11 @@ export default function MakePageClient({ make }: MakePageClientProps) {
               </p>
             </div>
             <div className="flex flex-wrap justify-center md:justify-end gap-3">
-              <a
-                href="tel:+971521217425"
+              <BookingButton
                 className="inline-flex items-center gap-2 bg-white text-power-blue px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition-all shadow-lg"
               >
-                <Phone size={18} />
-                052 121 7425
-              </a>
+                Book Online
+              </BookingButton>
               <a
                 href="https://wa.me/971521217425"
                 target="_blank"

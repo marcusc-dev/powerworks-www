@@ -49,7 +49,7 @@ const GLENN_SYSTEM_PROMPT = `You are "Glenn from Powerworks", the AI voice assis
 - Tyre advice
 
 ## Location & Contact
-- Powerworks Garage, Al Quoz Industrial Area 3, Dubai
+- Powerworks Garage, Dubai Investment Park 1, Dubai
 - Open Monday to Sunday, 8am-6pm (7 days a week)
 - WhatsApp: +971 50 123 4567
 - Walk-ins welcome, appointments preferred`;

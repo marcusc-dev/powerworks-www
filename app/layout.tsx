@@ -18,7 +18,7 @@ const jost = Jost({
 export const metadata: Metadata = {
   title: 'Powerworks Garage | British-Owned Car Repair Specialists in Dubai',
   description: 'British-owned car repair and service centre in Dubai. 20+ years experience, honest diagnostics, transparent pricing. Specialists in European and Japanese vehicles.',
-  keywords: 'car repair dubai, car service dubai, british garage dubai, land rover service dubai, bmw repair dubai, mercedes service dubai, auto repair al quoz',
+  keywords: 'car repair dubai, car service dubai, car garage DIP, car repair Dubai Investment Park, british garage dubai, land rover service dubai, bmw repair dubai, mercedes service dubai, auto repair DIP',
   icons: {
     icon: [
       { url: '/Icons/favicon.ico' },
@@ -55,7 +55,7 @@ const jsonLd = {
   email: 'info@powerworksgarage.ae',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'Al Quoz Industrial Area 3',
+    streetAddress: 'Dubai Investment Park 1',
     addressLocality: 'Dubai',
     addressRegion: 'Dubai',
     postalCode: '',
@@ -63,8 +63,8 @@ const jsonLd = {
   },
   geo: {
     '@type': 'GeoCoordinates',
-    latitude: 25.1065,
-    longitude: 55.2274,
+    latitude: 24.9861876,
+    longitude: 55.1508571,
   },
   openingHoursSpecification: [
     {
@@ -105,15 +105,22 @@ const jsonLd = {
   foundingDate: '2015',
   areaServed: [
     { '@type': 'City', name: 'Dubai' },
-    { '@type': 'Place', name: 'Al Quoz' },
+    { '@type': 'Place', name: 'Dubai Investment Park' },
+    { '@type': 'Place', name: 'DIP 1' },
+    { '@type': 'Place', name: 'DIP 2' },
     { '@type': 'Place', name: 'Business Bay' },
     { '@type': 'Place', name: 'Downtown Dubai' },
     { '@type': 'Place', name: 'JLT' },
     { '@type': 'Place', name: 'Dubai Marina' },
     { '@type': 'Place', name: 'Jumeirah' },
-    { '@type': 'Place', name: 'Dubai Investment Park' },
+    { '@type': 'Place', name: 'Al Quoz' },
+    { '@type': 'Place', name: 'JVC' },
   ],
   knowsAbout: [
+    'car repair DIP',
+    'car service Dubai Investment Park',
+    'garage DIP Dubai',
+    'mechanic Dubai Investment Park',
     'BMW repair Dubai',
     'Mercedes service Dubai',
     'Land Rover maintenance',
@@ -121,9 +128,11 @@ const jsonLd = {
     'Porsche service Dubai',
     'European car diagnostics',
     'AC repair Dubai',
+    'AC repair DIP',
     'Car battery replacement Dubai',
     'Brake service Dubai',
     'Transmission repair',
+    'oil change DIP',
   ],
   hasOfferCatalog: {
     '@type': 'OfferCatalog',

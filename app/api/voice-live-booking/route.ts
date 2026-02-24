@@ -185,7 +185,7 @@ async function sendCustomerConfirmation(booking: BookingRequest): Promise<boolea
 
       <div class="contact-info">
         <p><strong>Phone:</strong> <a href="tel:+971521217425">052 121 7425</a></p>
-        <p><strong>Location:</strong> Al Quoz Industrial Area 3, Dubai</p>
+        <p><strong>Location:</strong> Dubai Investment Park 1, Dubai</p>
         <p><strong>Hours:</strong> Monday - Sunday, 8AM - 6PM</p>
       </div>
     </div>

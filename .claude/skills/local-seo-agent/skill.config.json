@@ -1,0 +1,17 @@
+{
+  "name": "Powerworks Local SEO Agent",
+  "version": "1.0.0",
+  "description": "Local SEO optimisation agent for Powerworks Garage (Dubai). Audits site, generates service+location pages, schema, GMB content, and internal linking plans.",
+  "inputs": [
+    "inputs/business.json",
+    "inputs/locations.dubai.json",
+    "inputs/services.autorepair.json",
+    "inputs/competitors.json"
+  ],
+  "outputs_dir": "outputs",
+  "style": {
+    "tone": "confident, honest, technical, British-owned workshop voice",
+    "reading_level": "clear and practical",
+    "format": "SEO structured headings, bullets, tables, FAQs"
+  }
+}

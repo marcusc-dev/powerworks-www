@@ -36,13 +36,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const title = `${service.shortTitle} for ${vehicleMake.name} Dubai | Powerworks Garage`;
-  const description = `Expert ${service.shortTitle.toLowerCase()} for ${vehicleMake.name} in Dubai. From ${service.priceFrom}. Specialist technicians, dealer-level diagnostics, genuine parts. ${vehicleMake.popularModels.slice(0, 3).join(', ')} serviced. Same-day service in Al Quoz.`;
+  const description = `Expert ${service.shortTitle.toLowerCase()} for ${vehicleMake.name} in Dubai. From ${service.priceFrom}. Specialist technicians, dealer-level diagnostics, genuine parts. ${vehicleMake.popularModels.slice(0, 3).join(', ')} serviced. Same-day service in DIP.`;
   const pageUrl = `/car-servicing-dubai/${slug}/${make}`;
 
   return {
     title,
     description,
-    keywords: `${service.shortTitle.toLowerCase()} ${vehicleMake.name.toLowerCase()}, ${vehicleMake.name.toLowerCase()} ${service.shortTitle.toLowerCase()} dubai, ${vehicleMake.popularModels.slice(0, 3).map(m => `${vehicleMake.shortName} ${m} ${service.shortTitle.toLowerCase()}`).join(', ')}, ${service.shortTitle.toLowerCase()} al quoz`,
+    keywords: `${service.shortTitle.toLowerCase()} ${vehicleMake.name.toLowerCase()}, ${vehicleMake.name.toLowerCase()} ${service.shortTitle.toLowerCase()} dubai, ${vehicleMake.popularModels.slice(0, 3).map(m => `${vehicleMake.shortName} ${m} ${service.shortTitle.toLowerCase()}`).join(', ')}, ${service.shortTitle.toLowerCase()} dip dubai`,
     alternates: {
       canonical: pageUrl,
     },
@@ -84,7 +84,7 @@ function generateServiceSchema(service: { title: string; shortTitle: string; des
       name: 'Powerworks Garage',
       address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Al Quoz Industrial Area 3',
+        streetAddress: 'Dubai Investment Park 1',
         addressLocality: 'Dubai',
         addressCountry: 'AE',
       },

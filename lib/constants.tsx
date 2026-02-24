@@ -18,6 +18,9 @@ import {
 import { ServiceItem, Testimonial, NavItem, BrandItem, BlogPost, FleetFeature } from './types';
 import { NEW_BLOG_POSTS } from './blog-posts';
 
+export const BOOKING_URL = 'https://book.powerworksgarage.com/booking-form-dip?utm_source=website&utm_medium=booking&utm_campaign=service_booking';
+export const EXISTING_CUSTOMER_URL = 'https://book.powerworksgarage.com/6-month-service-booking-dip?utm_source=website&utm_medium=booking&utm_campaign=6_month_service';
+
 // Images - using local assets from public folder
 export const IMAGES = {
   logo: "/full_logo.png",

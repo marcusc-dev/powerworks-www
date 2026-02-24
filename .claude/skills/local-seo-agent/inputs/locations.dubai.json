@@ -1,0 +1,27 @@
+{
+  "city": "Dubai",
+  "neighbourhoods": [
+    "Al Quoz",
+    "Dubai Marina",
+    "Jumeirah",
+    "JLT (Jumeirah Lakes Towers)",
+    "Downtown Dubai",
+    "Business Bay",
+    "Al Barsha",
+    "Umm Suqeim",
+    "JVC (Jumeirah Village Circle)",
+    "JVT (Jumeirah Village Triangle)",
+    "Palm Jumeirah",
+    "Al Safa",
+    "The Greens",
+    "The Springs",
+    "Meadows",
+    "Jumeirah Park",
+    "Motor City",
+    "Arabian Ranches"
+  ],
+  "service_area_notes": [
+    "Emphasise pickup/dropoff where relevant",
+    "Mention Dubai heat effects on AC, cooling, batteries"
+  ]
+}

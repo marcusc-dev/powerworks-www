@@ -53,7 +53,7 @@ export const SERVICES_DATA: ServiceData[] = [
     iconName: 'CarFront',
     serviceImage: '/Icons/general-service.png',
     heroImage: '/header-gp.jpg',
-    overview: `Keep your vehicle running at peak performance with our comprehensive car service packages. At Powerworks Garage, we follow British workshop standards to deliver thorough, transparent servicing for all makes and models. Whether you drive a family SUV or a European sports car, our certified technicians use genuine and OEM-equivalent parts to maintain your manufacturer warranty.`,
+    overview: `Keep your vehicle running at peak performance with our comprehensive car service packages. At Powerworks Garage in Dubai Investment Park (DIP), we follow British workshop standards to deliver thorough, transparent servicing for all makes and models. Whether you drive a family SUV or a European sports car, our certified technicians use genuine and OEM-equivalent parts to maintain your manufacturer warranty.`,
     included: [
       'Engine oil and filter change',
       'Multi-point vehicle inspection (50+ checks)',
@@ -67,7 +67,7 @@ export const SERVICES_DATA: ServiceData[] = [
       'Digital service report'
     ],
     process: [
-      { step: 1, title: 'Book Online or Call', description: 'Schedule your service at a time that suits you. We offer free pickup from Dubai Marina, JVC, and Al Quoz areas.' },
+      { step: 1, title: 'Book Online or Call', description: 'Schedule your service at a time that suits you. We offer free pickup from Dubai Marina, JVC, and DIP areas.' },
       { step: 2, title: 'Vehicle Inspection', description: 'Our technicians perform a comprehensive multi-point inspection, documenting everything with photos.' },
       { step: 3, title: 'Transparent Quote', description: 'We contact you with a detailed breakdown of recommended work. No surprises, no hidden fees.' },
       { step: 4, title: 'Expert Service', description: 'Using quality parts and proper procedures, we complete the work to British workshop standards.' },
@@ -81,8 +81,8 @@ export const SERVICES_DATA: ServiceData[] = [
       { question: 'How long does a full service take?', answer: 'A minor service typically takes 2-3 hours. A major service may take 4-6 hours depending on your vehicle. We offer a comfortable waiting lounge or free pickup/dropoff service.' }
     ],
     relatedServices: ['oil-change-dubai', 'brake-service-dubai', 'ac-repair-dubai'],
-    metaTitle: 'Car Service Dubai | Full Service from AED 349 | Powerworks Garage',
-    metaDescription: 'Professional car service in Dubai. British-standard servicing for all makes & models. 50+ point inspection, genuine parts, warranty preserved. Book online today.',
+    metaTitle: 'Car Service DIP Dubai | Full Service from AED 349 | Powerworks Garage',
+    metaDescription: 'Professional car service in Dubai Investment Park (DIP). British-standard servicing for all makes & models. 50+ point inspection, genuine parts, warranty preserved. Book today.',
     reviewTags: ['car-service', 'general-service', 'annual-service']
   },
   {
@@ -93,7 +93,7 @@ export const SERVICES_DATA: ServiceData[] = [
     iconName: 'ThermometerSnowflake',
     serviceImage: '/Icons/ac-service.png',
     heroImage: '/header-tools.jpg',
-    overview: `Don't suffer through Dubai's scorching summers with a weak AC system. Powerworks Garage specializes in diagnosing and repairing all car air conditioning problems. From simple regas services to complex compressor replacements, our technicians use professional-grade equipment and quality refrigerants to restore your AC to full cooling power.`,
+    overview: `Don't suffer through Dubai's scorching summers with a weak AC system. Powerworks Garage in Dubai Investment Park specializes in diagnosing and repairing all car air conditioning problems. From simple regas services to complex compressor replacements, our DIP-based technicians use professional-grade equipment and quality refrigerants to restore your AC to full cooling power.`,
     included: [
       'Full AC system diagnostic',
       'Refrigerant pressure test',
@@ -121,8 +121,8 @@ export const SERVICES_DATA: ServiceData[] = [
       { question: 'Can you fix AC for all car brands?', answer: 'Yes, we service AC systems for all makes including those using the newer R1234yf refrigerant found in many 2017+ European vehicles.' }
     ],
     relatedServices: ['car-service-dubai', 'electrical-diagnostics-dubai', 'engine-repair-dubai'],
-    metaTitle: 'Car AC Repair Dubai | AC Regas from AED 199 | Powerworks Garage',
-    metaDescription: 'Car AC not cooling? Expert AC repair & regas in Dubai. Professional diagnostics, leak detection, compressor repair. All makes serviced. Same-day service available.',
+    metaTitle: 'AC Repair DIP Dubai | Car AC Regas from AED 199 | Powerworks Garage',
+    metaDescription: 'Car AC not cooling? Expert AC repair & regas in Dubai Investment Park. Professional diagnostics, leak detection, compressor repair. All makes serviced. Same-day service.',
     reviewTags: ['ac', 'ac-service', 'ac-repair']
   },
   {
@@ -133,7 +133,7 @@ export const SERVICES_DATA: ServiceData[] = [
     iconName: 'Droplet',
     serviceImage: '/Icons/oil-and-fluids.png',
     heroImage: '/header-parts.jpg',
-    overview: `Regular oil changes are the single most important thing you can do to extend your engine's life - especially in Dubai's extreme heat. At Powerworks Garage, we use premium fully synthetic oils from trusted brands like Castrol, Mobil 1, and Liqui Moly, matched to your vehicle's exact specifications. Every oil change includes a complimentary vehicle health check.`,
+    overview: `Regular oil changes are the single most important thing you can do to extend your engine's life - especially in Dubai's extreme heat. At Powerworks Garage in Dubai Investment Park, we use premium fully synthetic oils from trusted brands like Castrol, Mobil 1, and Liqui Moly, matched to your vehicle's exact specifications. Every oil change includes a complimentary vehicle health check.`,
     included: [
       'Drain old engine oil completely',
       'Replace oil filter with OEM-quality filter',
@@ -161,8 +161,8 @@ export const SERVICES_DATA: ServiceData[] = [
       { question: 'Do you offer oil change packages?', answer: 'Yes, we offer discounted multi-service packages. Ask about our annual maintenance plans that include multiple oil changes at reduced rates.' }
     ],
     relatedServices: ['car-service-dubai', 'engine-repair-dubai', 'brake-service-dubai'],
-    metaTitle: 'Oil Change Dubai | Premium Oil Change from AED 199 | Powerworks Garage',
-    metaDescription: 'Professional oil change in Dubai using Castrol, Mobil 1 & Liqui Moly oils. All makes & models. 45-minute service with free health check. Book online today.',
+    metaTitle: 'Oil Change DIP Dubai | Premium Oil Change from AED 199 | Powerworks Garage',
+    metaDescription: 'Professional oil change in Dubai Investment Park using Castrol, Mobil 1 & Liqui Moly oils. All makes & models. 45-minute service with free health check. Book today.',
     reviewTags: ['oil', 'oil-change']
   },
   {
@@ -173,7 +173,7 @@ export const SERVICES_DATA: ServiceData[] = [
     iconName: 'Zap',
     serviceImage: '/Icons/electrical.png',
     heroImage: '/header-tools.jpg',
-    overview: `Modern vehicles contain dozens of electronic control units, sensors, and complex wiring systems. When warning lights appear or electrical components fail, you need expert diagnosis - not guesswork. Powerworks Garage uses dealer-level diagnostic equipment to accurately identify electrical faults, saving you money on unnecessary part replacements.`,
+    overview: `Modern vehicles contain dozens of electronic control units, sensors, and complex wiring systems. When warning lights appear or electrical components fail, you need expert diagnosis - not guesswork. Powerworks Garage in Dubai Investment Park uses dealer-level diagnostic equipment to accurately identify electrical faults, saving you money on unnecessary part replacements.`,
     included: [
       'Full OBD-II diagnostic scan',
       'Manufacturer-specific fault code reading',
@@ -201,8 +201,8 @@ export const SERVICES_DATA: ServiceData[] = [
       { question: 'How accurate is your diagnosis?', answer: 'Our dealer-level equipment combined with experienced technicians means highly accurate diagnosis. We don\'t guess or recommend replacing parts until we\'ve confirmed the fault.' }
     ],
     relatedServices: ['battery-replacement-dubai', 'car-service-dubai', 'engine-repair-dubai'],
-    metaTitle: 'Car Electrical Diagnostics Dubai | From AED 150 | Powerworks Garage',
-    metaDescription: 'Expert car electrical diagnostics in Dubai. Dealer-level equipment for all brands. Check engine light, battery drain, sensor faults diagnosed accurately.',
+    metaTitle: 'Car Electrical Diagnostics DIP Dubai | From AED 150 | Powerworks Garage',
+    metaDescription: 'Expert car electrical diagnostics in Dubai Investment Park. Dealer-level equipment for all brands. Check engine light, battery drain, sensor faults diagnosed accurately.',
     reviewTags: ['diagnostics', 'electrical', 'check-engine-light']
   },
   {
@@ -213,7 +213,7 @@ export const SERVICES_DATA: ServiceData[] = [
     iconName: 'Disc',
     serviceImage: '/Icons/brakes.png',
     heroImage: '/header-parts.jpg',
-    overview: `Your brakes are your vehicle's most critical safety system. Powerworks Garage provides comprehensive brake services from routine pad replacements to complete system overhauls. We use quality brake components from trusted brands like Brembo, ATE, and Textar, ensuring your stopping power meets or exceeds original specifications.`,
+    overview: `Your brakes are your vehicle's most critical safety system. Powerworks Garage in DIP provides comprehensive brake services from routine pad replacements to complete system overhauls. We use quality brake components from trusted brands like Brembo, ATE, and Textar, ensuring your stopping power meets or exceeds original specifications.`,
     included: [
       'Brake pad thickness measurement',
       'Rotor/disc inspection and measurement',
@@ -241,8 +241,8 @@ export const SERVICES_DATA: ServiceData[] = [
       { question: 'How long do brake pads last in Dubai?', answer: 'Typically 30,000-50,000 km depending on driving style and vehicle weight. Stop-start traffic wears brakes faster than highway driving.' }
     ],
     relatedServices: ['car-service-dubai', 'suspension-repair-dubai', 'tyre-replacement-dubai'],
-    metaTitle: 'Brake Service Dubai | Brake Pads & Rotors from AED 299 | Powerworks Garage',
-    metaDescription: 'Professional brake repair in Dubai. Quality Brembo, ATE, Textar parts. Brake pads, rotors, fluid flush, caliper service. All makes. Free inspection with service.',
+    metaTitle: 'Brake Service DIP Dubai | Brake Pads & Rotors from AED 299 | Powerworks',
+    metaDescription: 'Professional brake repair in Dubai Investment Park. Quality Brembo, ATE, Textar parts. Brake pads, rotors, fluid flush, caliper service. All makes. Free inspection.',
     reviewTags: ['brakes', 'brake']
   },
   {
@@ -253,7 +253,7 @@ export const SERVICES_DATA: ServiceData[] = [
     iconName: 'Activity',
     serviceImage: '/Icons/suspension.png',
     heroImage: '/header-tools.jpg',
-    overview: `Dubai's speed bumps, construction zones, and hot climate take a toll on suspension systems. Powerworks Garage diagnoses and repairs all suspension components including shocks, struts, springs, bushings, and control arms. Whether you're experiencing a rough ride, uneven tyre wear, or handling issues, our technicians will restore your vehicle's comfort and safety.`,
+    overview: `Dubai's speed bumps, construction zones, and hot climate take a toll on suspension systems. Powerworks Garage in Dubai Investment Park diagnoses and repairs all suspension components including shocks, struts, springs, bushings, and control arms. Whether you're experiencing a rough ride, uneven tyre wear, or handling issues, our DIP technicians will restore your vehicle's comfort and safety.`,
     included: [
       'Complete suspension inspection',
       'Shock absorber test',
@@ -281,8 +281,8 @@ export const SERVICES_DATA: ServiceData[] = [
       { question: 'Do you fit lowering springs?', answer: 'Yes, we can fit performance suspension upgrades including lowering springs, coilovers, and upgraded anti-roll bars. We advise on appropriate setups for Dubai road conditions.' }
     ],
     relatedServices: ['brake-service-dubai', 'tyre-replacement-dubai', 'car-service-dubai'],
-    metaTitle: 'Suspension Repair Dubai | Shocks & Struts from AED 399 | Powerworks Garage',
-    metaDescription: 'Expert suspension repair in Dubai. Shocks, struts, springs, bushings for all makes. Restore ride comfort and handling. Free inspection available.',
+    metaTitle: 'Suspension Repair DIP Dubai | Shocks & Struts from AED 399 | Powerworks',
+    metaDescription: 'Expert suspension repair in Dubai Investment Park. Shocks, struts, springs, bushings for all makes. Restore ride comfort and handling. Free inspection available.',
     reviewTags: ['suspension']
   },
   {
@@ -293,7 +293,7 @@ export const SERVICES_DATA: ServiceData[] = [
     iconName: 'Cog',
     serviceImage: '/Icons/transmission.png',
     heroImage: '/header-parts.jpg',
-    overview: `Transmission problems can be expensive if left unchecked. Powerworks Garage provides expert diagnosis and repair for automatic, manual, CVT, and dual-clutch transmissions. From simple fluid changes to complex rebuilds, our technicians have the expertise to keep your gearbox shifting smoothly. Early intervention often prevents costly replacements.`,
+    overview: `Transmission problems can be expensive if left unchecked. Powerworks Garage in Dubai Investment Park provides expert diagnosis and repair for automatic, manual, CVT, and dual-clutch transmissions. From simple fluid changes to complex rebuilds, our technicians have the expertise to keep your gearbox shifting smoothly. Early intervention often prevents costly replacements.`,
     included: [
       'Transmission diagnostic scan',
       'Fluid level and condition check',
@@ -321,8 +321,8 @@ export const SERVICES_DATA: ServiceData[] = [
       { question: 'Do you rebuild transmissions?', answer: 'Yes, we can rebuild automatic transmissions. Often this is more cost-effective than replacement, especially for older vehicles with otherwise good condition.' }
     ],
     relatedServices: ['car-service-dubai', 'engine-repair-dubai', 'electrical-diagnostics-dubai'],
-    metaTitle: 'Transmission Repair Dubai | Gearbox Service from AED 499 | Powerworks Garage',
-    metaDescription: 'Expert transmission repair in Dubai. Automatic, manual, CVT, DSG serviced. Fluid changes, rebuilds, diagnostics. All makes. Honest advice, fair pricing.',
+    metaTitle: 'Transmission Repair DIP Dubai | Gearbox Service from AED 499 | Powerworks',
+    metaDescription: 'Expert transmission repair in Dubai Investment Park. Automatic, manual, CVT, DSG serviced. Fluid changes, rebuilds, diagnostics. All makes. Honest advice, fair pricing.',
     reviewTags: ['transmission', 'gearbox']
   },
   {
@@ -333,7 +333,7 @@ export const SERVICES_DATA: ServiceData[] = [
     iconName: 'Wrench',
     serviceImage: '/Icons/engine.png',
     heroImage: '/header-parts.jpg',
-    overview: `From minor repairs to complete rebuilds, Powerworks Garage has the expertise to handle all engine work. Our technicians diagnose problems accurately using dealer-level equipment, then provide honest recommendations. We service petrol and diesel engines of all sizes, using quality parts to restore performance and reliability.`,
+    overview: `From minor repairs to complete rebuilds, Powerworks Garage in Dubai Investment Park has the expertise to handle all engine work. Our technicians diagnose problems accurately using dealer-level equipment, then provide honest recommendations. We service petrol and diesel engines of all sizes, using quality parts to restore performance and reliability.`,
     included: [
       'Comprehensive engine diagnostic',
       'Compression and leak-down testing',
@@ -361,8 +361,8 @@ export const SERVICES_DATA: ServiceData[] = [
       { question: 'Can you repair turbocharged engines?', answer: 'Yes, we service all turbocharged vehicles including turbo replacements, wastegate repairs, and boost leak diagnosis.' }
     ],
     relatedServices: ['car-service-dubai', 'oil-change-dubai', 'electrical-diagnostics-dubai'],
-    metaTitle: 'Engine Repair Dubai | Engine Diagnostics from AED 299 | Powerworks Garage',
-    metaDescription: 'Expert engine repair in Dubai. Diagnostics, rebuilds, timing belts, turbo repairs. Petrol & diesel. All makes serviced. Honest diagnosis, quality repairs.',
+    metaTitle: 'Engine Repair DIP Dubai | Engine Diagnostics from AED 299 | Powerworks',
+    metaDescription: 'Expert engine repair in Dubai Investment Park. Diagnostics, rebuilds, timing belts, turbo repairs. Petrol & diesel. All makes serviced. Honest diagnosis, quality repairs.',
     reviewTags: ['engine', 'engine-repair']
   },
   {
@@ -373,7 +373,7 @@ export const SERVICES_DATA: ServiceData[] = [
     iconName: 'Battery',
     serviceImage: '/Icons/battery.png',
     heroImage: '/header-tools.jpg',
-    overview: `Dubai's extreme heat is brutal on car batteries - they often fail within 2-3 years here. Powerworks Garage stocks premium batteries from Varta, Bosch, and AC Delco sized for your vehicle. All batteries come with warranty, and we include free fitting, electrical system check, and environmentally responsible disposal of your old battery.`,
+    overview: `Dubai's extreme heat is brutal on car batteries - they often fail within 2-3 years here. Powerworks Garage in Dubai Investment Park stocks premium batteries from Varta, Bosch, and AC Delco sized for your vehicle. All batteries come with warranty, and we include free fitting, electrical system check, and environmentally responsible disposal of your old battery.`,
     included: [
       'Battery capacity testing',
       'Charging system check',
@@ -401,8 +401,8 @@ export const SERVICES_DATA: ServiceData[] = [
       { question: 'Will I lose my radio code and settings?', answer: 'We use a memory saver device during battery replacement to preserve all your car\'s settings, seat positions, and radio presets.' }
     ],
     relatedServices: ['electrical-diagnostics-dubai', 'car-service-dubai', 'ac-repair-dubai'],
-    metaTitle: 'Car Battery Replacement Dubai | Batteries from AED 299 | Powerworks Garage',
-    metaDescription: 'Quality car batteries in Dubai. Varta, Bosch, AC Delco. Free fitting, system check, warranty included. Mobile fitting available. Call now.',
+    metaTitle: 'Car Battery Replacement DIP Dubai | from AED 299 | Powerworks Garage',
+    metaDescription: 'Quality car batteries in Dubai Investment Park. Varta, Bosch, AC Delco. Free fitting, system check, warranty included. Mobile fitting available. Call now.',
     reviewTags: ['battery']
   },
   {
@@ -413,7 +413,7 @@ export const SERVICES_DATA: ServiceData[] = [
     iconName: 'CircleDot',
     serviceImage: '/Icons/tyres.png',
     heroImage: '/header-parts.jpg',
-    overview: `Quality tyres are essential for safety in Dubai's high-speed road environment. Powerworks Garage supplies and fits tyres from leading brands including Michelin, Continental, Pirelli, Bridgestone, and budget-friendly options. Every tyre fitting includes precision balancing, valve replacement, and a complimentary alignment check.`,
+    overview: `Quality tyres are essential for safety in Dubai's high-speed road environment. Powerworks Garage in DIP supplies and fits tyres from leading brands including Michelin, Continental, Pirelli, Bridgestone, and budget-friendly options. Every tyre fitting includes precision balancing, valve replacement, and a complimentary alignment check.`,
     included: [
       'Tyre condition assessment',
       'Tread depth measurement',
@@ -441,8 +441,8 @@ export const SERVICES_DATA: ServiceData[] = [
       { question: 'Do you offer wheel alignment?', answer: 'We provide a complimentary alignment check with tyre purchase. Full alignment service is available if adjustment is needed.' }
     ],
     relatedServices: ['suspension-repair-dubai', 'brake-service-dubai', 'car-service-dubai'],
-    metaTitle: 'Tyre Replacement Dubai | Premium Tyres from AED 250 | Powerworks Garage',
-    metaDescription: 'Quality tyres in Dubai. Michelin, Continental, Pirelli, Bridgestone. Professional fitting, balancing, alignment check included. All sizes in stock.',
+    metaTitle: 'Tyre Replacement DIP Dubai | Premium Tyres from AED 250 | Powerworks',
+    metaDescription: 'Quality tyres in Dubai Investment Park. Michelin, Continental, Pirelli, Bridgestone. Professional fitting, balancing, alignment check included. All sizes in stock.',
     reviewTags: ['tyres', 'tyre']
   },
   {
@@ -453,7 +453,7 @@ export const SERVICES_DATA: ServiceData[] = [
     iconName: 'ClipboardCheck',
     serviceImage: '/Icons/inspection.png',
     heroImage: '/header-gp.jpg',
-    overview: `Buying a used car in Dubai? Don't take risks. Our comprehensive pre-purchase inspection covers over 150 checkpoints including mechanical, electrical, and structural items. We provide an unbiased, detailed report to help you negotiate confidently or walk away from a bad deal. This inspection has saved our customers thousands of dirhams.`,
+    overview: `Buying a used car in Dubai? Don't take risks. Our comprehensive pre-purchase inspection at our Dubai Investment Park workshop covers over 150 checkpoints including mechanical, electrical, and structural items. We provide an unbiased, detailed report to help you negotiate confidently or walk away from a bad deal. This inspection has saved our customers thousands of dirhams.`,
     included: [
       'Engine health assessment',
       'Transmission function test',
@@ -477,14 +477,13 @@ export const SERVICES_DATA: ServiceData[] = [
     ],
     priceFrom: 'AED 349',
     faqs: [
-      { question: 'Can you inspect a car at the seller\'s location?', answer: 'Yes, we offer mobile pre-purchase inspections throughout Dubai. There\'s a small additional fee for locations outside our usual service area.' },
       { question: 'What does the inspection cover?', answer: 'We check engine, transmission, suspension, brakes, electrical systems, AC, body condition, paint depth, underbody for accident damage, and perform a full diagnostic scan.' },
       { question: 'How long does the inspection take?', answer: 'A thorough pre-purchase inspection takes approximately 90 minutes. We don\'t rush - finding problems before you buy is the whole point.' },
       { question: 'Will you tell me if the car has been in an accident?', answer: 'We check for signs of previous repairs including paint thickness variations, panel gaps, underbody damage, and structural issues. We\'ll report any findings.' }
     ],
     relatedServices: ['car-service-dubai', 'electrical-diagnostics-dubai', 'engine-repair-dubai'],
-    metaTitle: 'Pre-Purchase Car Inspection Dubai | from AED 349 | Powerworks Garage',
-    metaDescription: 'Used car inspection in Dubai. 150+ point check, diagnostic scan, road test, detailed report. Mobile inspections available. Buy with confidence.',
+    metaTitle: 'Pre-Purchase Car Inspection DIP Dubai | from AED 349 | Powerworks Garage',
+    metaDescription: 'Used car inspection in Dubai Investment Park. 150+ point check, diagnostic scan, road test, detailed report. Mobile inspections available. Buy with confidence.',
     reviewTags: ['pre-purchase-inspection', 'inspection', 'pre-purchase']
   },
   {
@@ -495,7 +494,7 @@ export const SERVICES_DATA: ServiceData[] = [
     iconName: 'Truck',
     serviceImage: '/Icons/recovery.png',
     heroImage: '/header-fleet.jpg',
-    overview: `Stranded in Dubai? Our recovery service operates across the emirate, providing professional vehicle transport when you need it most. Whether you've had a breakdown, accident, or flat battery, we'll get you and your car to safety. Our flatbed trucks handle everything from compact cars to luxury vehicles with care.`,
+    overview: `Stranded in Dubai? Our recovery service operates across the emirate from our base in Dubai Investment Park, providing professional vehicle transport when you need it most. Whether you've had a breakdown, accident, or flat battery, we'll get you and your car to safety. Our flatbed trucks handle everything from compact cars to luxury vehicles with care.`,
     included: [
       '24/7 availability',
       'Modern flatbed trucks',
@@ -523,8 +522,8 @@ export const SERVICES_DATA: ServiceData[] = [
       { question: 'What if I just need a jump start?', answer: 'We offer jump start service if your battery is the only issue. If the battery is dead and needs replacement, we can fit a new one roadside in many cases.' }
     ],
     relatedServices: ['battery-replacement-dubai', 'electrical-diagnostics-dubai', 'engine-repair-dubai'],
-    metaTitle: 'Car Recovery Dubai | 24/7 Breakdown Service from AED 200 | Powerworks',
-    metaDescription: 'Professional car recovery in Dubai. 24/7 flatbed service, breakdown assistance, jump starts. Quick response, careful handling. All vehicles welcome.',
+    metaTitle: 'Car Recovery DIP Dubai | 24/7 Breakdown Service from AED 200 | Powerworks',
+    metaDescription: 'Professional car recovery in Dubai Investment Park & across Dubai. 24/7 flatbed service, breakdown assistance, jump starts. Quick response, careful handling.',
     reviewTags: ['recovery', 'breakdown-recovery', 'emergency-repair']
   },
   {
@@ -535,7 +534,7 @@ export const SERVICES_DATA: ServiceData[] = [
     iconName: 'Settings',
     serviceImage: '/Icons/fleet-services.png',
     heroImage: '/header-fleet.jpg',
-    overview: `Keep your business moving with Powerworks Fleet Services. We provide comprehensive maintenance programs for company fleets of all sizes - from small business vehicles to large commercial operations. Enjoy priority scheduling, dedicated account management, competitive pricing, and detailed maintenance reporting to minimize downtime and control costs.`,
+    overview: `Keep your business moving with Powerworks Fleet Services based in Dubai Investment Park. We provide comprehensive maintenance programs for company fleets of all sizes - from small business vehicles to large commercial operations. Conveniently located in DIP for easy fleet access, enjoy priority scheduling, dedicated account management, competitive pricing, and detailed maintenance reporting to minimize downtime and control costs.`,
     included: [
       'Dedicated account manager',
       'Priority scheduling',
@@ -563,8 +562,8 @@ export const SERVICES_DATA: ServiceData[] = [
       { question: 'How do you handle urgent breakdowns?', answer: 'Fleet clients have access to our priority support line. We mobilize recovery and expedite repairs to get your vehicle back in service quickly.' }
     ],
     relatedServices: ['car-service-dubai', 'oil-change-dubai', 'tyre-replacement-dubai'],
-    metaTitle: 'Fleet Maintenance Dubai | Business Vehicle Service | Powerworks Garage',
-    metaDescription: 'Fleet maintenance programs in Dubai. Priority service, free pickup/delivery, dedicated account management. Keep your business vehicles running reliably.',
+    metaTitle: 'Fleet Maintenance DIP Dubai | Business Vehicle Service | Powerworks Garage',
+    metaDescription: 'Fleet maintenance programs in Dubai Investment Park. Priority service, free pickup/delivery, dedicated account management. Keep your business vehicles running.',
     reviewTags: ['fleet']
   },
   {
@@ -575,7 +574,7 @@ export const SERVICES_DATA: ServiceData[] = [
     iconName: 'Gauge',
     serviceImage: '/Icons/timing.png',
     heroImage: '/header-parts.jpg',
-    overview: `A failed timing belt can destroy your engine in seconds. Powerworks Garage provides expert timing belt and chain replacement services following manufacturer intervals. We replace all related components including tensioners, idlers, and water pump to ensure reliability. Don't gamble with this critical maintenance item.`,
+    overview: `A failed timing belt can destroy your engine in seconds. Powerworks Garage in Dubai Investment Park provides expert timing belt and chain replacement services following manufacturer intervals. We replace all related components including tensioners, idlers, and water pump to ensure reliability. Don't gamble with this critical maintenance item.`,
     included: [
       'Timing belt/chain inspection',
       'Tensioner assessment',
@@ -603,8 +602,8 @@ export const SERVICES_DATA: ServiceData[] = [
       { question: 'Does my car have a timing belt or chain?', answer: 'We can tell you which system your vehicle uses. Chains typically last longer but still require inspection. Belts need replacement at set intervals.' }
     ],
     relatedServices: ['engine-repair-dubai', 'car-service-dubai', 'oil-change-dubai'],
-    metaTitle: 'Timing Belt Replacement Dubai | from AED 1,200 | Powerworks Garage',
-    metaDescription: 'Timing belt replacement in Dubai. Complete kit including tensioners, water pump. All makes serviced. Protect your engine - book today.',
+    metaTitle: 'Timing Belt Replacement DIP Dubai | from AED 1,200 | Powerworks Garage',
+    metaDescription: 'Timing belt replacement in Dubai Investment Park. Complete kit including tensioners, water pump. All makes serviced. Protect your engine - book today.',
     reviewTags: ['timing-belt', 'timing']
   },
   {
@@ -615,7 +614,7 @@ export const SERVICES_DATA: ServiceData[] = [
     iconName: 'Shield',
     serviceImage: '/Icons/inspect.png',
     heroImage: '/header-gp.jpg',
-    overview: `Whether you want a general health check or need to prepare for RTA testing, Powerworks Garage provides thorough vehicle inspections. Our multi-point inspection covers all major systems, identifying current issues and potential problems before they become expensive repairs. Get peace of mind about your vehicle's condition.`,
+    overview: `Whether you want a general health check or need to prepare for RTA testing, Powerworks Garage in Dubai Investment Park provides thorough vehicle inspections. Our multi-point inspection covers all major systems, identifying current issues and potential problems before they become expensive repairs. Get peace of mind about your vehicle's condition.`,
     included: [
       'Engine condition check',
       'Transmission assessment',
@@ -645,8 +644,8 @@ export const SERVICES_DATA: ServiceData[] = [
       { question: 'Do you inspect classic cars?', answer: 'Yes, we can inspect classic and vintage vehicles. Our experienced technicians understand older vehicle systems and common issues.' }
     ],
     relatedServices: ['car-service-dubai', 'pre-purchase-inspection-dubai', 'brake-service-dubai'],
-    metaTitle: 'Vehicle Inspection Dubai | Car Health Check from AED 199 | Powerworks',
-    metaDescription: 'Comprehensive car inspection in Dubai. Multi-point check, diagnostic scan, road test, detailed report. RTA prep available. Book your inspection today.',
+    metaTitle: 'Vehicle Inspection DIP Dubai | Car Health Check from AED 199 | Powerworks',
+    metaDescription: 'Comprehensive car inspection in Dubai Investment Park. Multi-point check, diagnostic scan, road test, detailed report. RTA prep available. Book your inspection today.',
     reviewTags: ['inspection']
   }
 ];

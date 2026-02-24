@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { NAV_ITEMS, SERVICES } from '@/lib/constants';
 import PowerworksLogoAnimated from './PowerworksLogoAnimated';
+import BookingButton from './BookingButton';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -214,13 +215,12 @@ const Navbar: React.FC = () => {
               <MessageCircle size={16} />
               WhatsApp
             </a>
-            <Link
-              href="/contact"
+            <BookingButton
               className="bg-power-red text-white px-5 py-2.5 rounded-full font-bold text-sm hover:bg-red-700 transition-all shadow-md flex items-center gap-2 hover:scale-105"
             >
               <Phone size={16} />
               Book Now
-            </Link>
+            </BookingButton>
           </div>
 
           {/* Mobile menu button */}
@@ -328,14 +328,12 @@ const Navbar: React.FC = () => {
               <MessageCircle size={18} />
               WhatsApp Quote
             </a>
-            <Link
-              href="/contact"
-              onClick={() => setIsOpen(false)}
+            <BookingButton
               className="flex items-center justify-center gap-2 w-full bg-power-red text-white px-6 py-3.5 rounded-xl font-bold"
             >
               <Phone size={18} />
               Book Appointment
-            </Link>
+            </BookingButton>
           </div>
         </div>
       </motion.div>

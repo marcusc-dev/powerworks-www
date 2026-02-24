@@ -59,7 +59,7 @@ export const BATCH_2_POSTS: BlogPost[] = [
 
 <p>A successful jump start doesn't mean your battery is fine. If your battery needed a jump, get it <strong>tested within a day or two</strong>. At Powerworks, battery testing is free and takes 5 minutes — we'll tell you honestly whether it can be recharged or needs replacing.</p>
 
-<p>Stuck with a dead battery? Message me on WhatsApp — if you're nearby in Al Quoz, we might be able to help you out directly.</p>
+<p>Stuck with a dead battery? Message me on WhatsApp — if you're nearby in DIP, we might be able to help you out directly.</p>
     `,
     faqs: [
       {

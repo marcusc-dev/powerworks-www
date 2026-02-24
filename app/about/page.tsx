@@ -4,6 +4,7 @@ import Footer from '@/components/Footer';
 import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import AboutOwner from '@/components/AboutOwner';
 import { Award, Users, Wrench, Heart, Shield, Clock } from 'lucide-react';
+import BookingButton from '@/components/BookingButton';
 
 export const metadata: Metadata = {
   title: 'About Us | Meet Glenn Power | Powerworks Garage Dubai',
@@ -136,12 +137,11 @@ export default function AboutPage() {
             Book your first service and see why customers trust us with their vehicles.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a
-              href="/contact"
+            <BookingButton
               className="inline-flex items-center gap-2 bg-white text-power-blue px-8 py-4 rounded-xl font-bold hover:bg-gray-100 transition-all shadow-lg"
             >
               Book Now
-            </a>
+            </BookingButton>
             <a
               href="https://wa.me/971521217425"
               target="_blank"

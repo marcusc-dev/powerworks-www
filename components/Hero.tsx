@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Star } from 'lucide-react';
-import { HERO_SLIDES } from '@/lib/constants';
+import { HERO_SLIDES, EXISTING_CUSTOMER_URL } from '@/lib/constants';
 import BackgroundPaths from './BackgroundPaths';
+import BookingButton from './BookingButton';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Headlines - each as a complete message
@@ -112,22 +113,28 @@ const Hero: React.FC = () => {
           </h1>
 
           <p className="text-base md:text-xl text-gray-200 mb-6 md:mb-8 leading-relaxed max-w-lg">
-            Your trusted British-owned garage in Dubai. From routine service to complex engine work, we treat every car as if it were our own.
+            Your trusted British-owned garage in Dubai Investment Park. From routine service to complex engine work, we treat every car as if it were our own.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-3">
             <a
               href="#contact"
-              className="bg-power-red text-white px-8 py-3.5 rounded-lg font-bold text-lg hover:bg-red-700 transition-all shadow-lg hover:shadow-red-900/50 flex justify-center items-center"
+              className="bg-power-red text-white px-6 py-3 rounded-lg font-bold text-base hover:bg-red-700 transition-all shadow-lg hover:shadow-red-900/50 flex justify-center items-center"
             >
               Get a Quote
             </a>
             <a
               href="#services"
-              className="bg-white/10 text-white border border-white/30 backdrop-blur-sm px-8 py-3.5 rounded-lg font-bold text-lg hover:bg-white hover:text-power-blue transition-all flex justify-center items-center"
+              className="bg-white/10 text-white border border-white/30 backdrop-blur-sm px-6 py-3 rounded-lg font-bold text-base hover:bg-white hover:text-power-blue transition-all flex justify-center items-center"
             >
               View Services
             </a>
+            <BookingButton
+              bookingUrl={EXISTING_CUSTOMER_URL}
+              className="bg-white/10 text-white border border-white/30 backdrop-blur-sm px-6 py-3 rounded-lg font-bold text-base hover:bg-white hover:text-power-blue transition-all flex justify-center items-center"
+            >
+              Existing Customer?
+            </BookingButton>
           </div>
 
         </div>
