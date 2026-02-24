@@ -28,6 +28,14 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'lottie.host',
       },
+      {
+        protocol: 'https',
+        hostname: 'files.powerworksgarage.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'powerworks.b-cdn.net',
+      },
     ],
   },
   async redirects() {
