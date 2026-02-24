@@ -12,6 +12,14 @@ interface UploadFile {
   copied?: boolean;
 }
 
+interface ExistingFile {
+  name: string;
+  size: number;
+  url: string;
+  lastModified: string;
+  copied?: boolean;
+}
+
 export default function UploadPage() {
   const [authenticated, setAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
@@ -19,8 +27,27 @@ export default function UploadPage() {
   const [authLoading, setAuthLoading] = useState(false);
   const [folder, setFolder] = useState('');
   const [files, setFiles] = useState<UploadFile[]>([]);
+  const [existingFiles, setExistingFiles] = useState<ExistingFile[]>([]);
+  const [loadingFiles, setLoadingFiles] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [dragActive, setDragActive] = useState(false);
+
+  // ── Fetch existing files from Bunny ───────────────────
+  const fetchExistingFiles = useCallback(async (folderName: string, pw: string) => {
+    setLoadingFiles(true);
+    try {
+      const res = await fetch('/api/upload/files', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pw, folder: folderName }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setExistingFiles(data.files || []);
+      }
+    } catch { /* silently fail — existing files are non-critical */ }
+    finally { setLoadingFiles(false); }
+  }, []);
 
   // ── Auth ──────────────────────────────────────────────
   const handleAuth = async (e: React.FormEvent) => {
@@ -45,6 +72,7 @@ export default function UploadPage() {
       setFolder(data.folder);
       setAuthenticated(true);
       sessionStorage.setItem('upload_pw', password);
+      fetchExistingFiles(data.folder, password);
     } catch {
       setAuthError('Connection error. Try again.');
     } finally {
@@ -142,8 +170,12 @@ export default function UploadPage() {
       for (const uf of newUploadFiles) {
         await uploadFile(uf);
       }
+
+      // Refresh the existing files list
+      const pw = sessionStorage.getItem('upload_pw') || '';
+      if (pw && folder) fetchExistingFiles(folder, pw);
     },
-    [uploadFile]
+    [uploadFile, folder, fetchExistingFiles]
   );
 
   // ── Drag and drop ────────────────────────────────────
@@ -171,6 +203,18 @@ export default function UploadPage() {
     }, 2000);
   };
 
+  const copyExistingUrl = (name: string, url: string) => {
+    navigator.clipboard.writeText(url);
+    setExistingFiles((prev) =>
+      prev.map((f) => (f.name === name ? { ...f, copied: true } : f))
+    );
+    setTimeout(() => {
+      setExistingFiles((prev) =>
+        prev.map((f) => (f.name === name ? { ...f, copied: false } : f))
+      );
+    }, 2000);
+  };
+
   // ── Helpers ──────────────────────────────────────────
   const formatSize = (bytes: number) => {
     if (bytes < 1024) return `${bytes} B`;
@@ -182,6 +226,11 @@ export default function UploadPage() {
 
   const isImage = (file: File) => file.type.startsWith('image/');
   const isVideo = (file: File) => file.type.startsWith('video/');
+
+  const IMAGE_EXTS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp', '.avif'];
+  const VIDEO_EXTS = ['.mp4', '.mov', '.avi', '.webm', '.mkv', '.m4v'];
+  const isImageName = (name: string) => IMAGE_EXTS.some((e) => name.toLowerCase().endsWith(e));
+  const isVideoName = (name: string) => VIDEO_EXTS.some((e) => name.toLowerCase().endsWith(e));
 
   const completedFiles = files.filter((f) => f.status === 'complete');
 
@@ -476,8 +525,81 @@ export default function UploadPage() {
           </div>
         )}
 
+        {/* Existing files in folder */}
+        {loadingFiles && (
+          <p className="text-center text-gray-400 text-sm py-4">
+            Loading files...
+          </p>
+        )}
+
+        {!loadingFiles && existingFiles.length > 0 && (
+          <div className="pt-2">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+                In /{folder}/
+              </h2>
+              <span className="text-xs text-gray-400">
+                {existingFiles.length} file{existingFiles.length !== 1 ? 's' : ''}
+              </span>
+            </div>
+            <div className="space-y-2">
+              {existingFiles.map((ef) => (
+                <div
+                  key={ef.name}
+                  className="bg-white rounded-xl p-3 shadow-sm border border-gray-100"
+                >
+                  <div className="flex items-center gap-3">
+                    {/* Thumbnail / icon */}
+                    <div className="w-11 h-11 rounded-lg bg-gray-100 flex-shrink-0 overflow-hidden flex items-center justify-center">
+                      {isImageName(ef.name) ? (
+                        <img
+                          src={ef.url}
+                          alt=""
+                          className="w-full h-full object-cover"
+                        />
+                      ) : isVideoName(ef.name) ? (
+                        <div className="w-full h-full bg-gray-800 flex items-center justify-center">
+                          <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                      ) : (
+                        <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                        </svg>
+                      )}
+                    </div>
+
+                    {/* Info */}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 truncate">
+                        {ef.name}
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        {formatSize(ef.size)}
+                      </p>
+                    </div>
+
+                    {/* Copy button */}
+                    <button
+                      onClick={() => copyExistingUrl(ef.name, ef.url)}
+                      className={`flex-shrink-0 text-xs px-3 py-1.5 rounded-lg font-medium transition-all active:scale-95 ${
+                        ef.copied
+                          ? 'bg-green-500 text-white'
+                          : 'bg-[#1e3a8a] text-white hover:bg-blue-800'
+                      }`}
+                    >
+                      {ef.copied ? 'Copied!' : 'Copy'}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Empty state hint */}
-        {files.length === 0 && (
+        {files.length === 0 && existingFiles.length === 0 && !loadingFiles && (
           <p className="text-center text-gray-300 text-sm pt-4">
             Files will be uploaded to{' '}
             <span className="font-mono text-gray-400">/{folder}/</span>
