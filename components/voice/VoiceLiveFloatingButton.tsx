@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef } from 'react';
-import { Mic, Volume2 } from 'lucide-react';
+import { MessageCircle, X } from 'lucide-react';
 import { useGeminiLive } from './useGeminiLive';
 import VoiceLivePanel from './VoiceLivePanel';
 
@@ -10,8 +10,6 @@ export default function VoiceLiveFloatingButton() {
     state,
     openPanel,
     closePanel,
-    startListening,
-    stopListening,
     sendTextMessage,
     resetConversation,
     clearError,
@@ -20,19 +18,16 @@ export default function VoiceLiveFloatingButton() {
 
   // Track if we've already sent the transcript for this conversation
   const transcriptSentRef = useRef(false);
-  const previousMessagesLengthRef = useRef(0);
 
   // Reset transcript sent flag when conversation is reset
   useEffect(() => {
     if (state.messages.length === 0) {
       transcriptSentRef.current = false;
-      previousMessagesLengthRef.current = 0;
     }
   }, [state.messages.length]);
 
   // Auto-send transcript when panel closes (if there are messages)
   const handleCloseWithTranscript = useCallback(async () => {
-    // Send transcript if there are messages and we haven't sent already
     if (state.messages.length > 0 && !transcriptSentRef.current) {
       transcriptSentRef.current = true;
 
@@ -40,15 +35,14 @@ export default function VoiceLiveFloatingButton() {
         .map(msg => `${msg.role === 'user' ? 'Customer' : 'Glenn'}: ${msg.content}`)
         .join('\n\n');
 
-      // Fire and forget - don't block the close
       fetch('/api/voice-live-booking', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          customer_name: 'Voice Conversation',
+          customer_name: 'Chat Conversation',
           customer_phone: 'See transcript',
-          service_type: 'Voice Inquiry',
-          issue_summary: 'Customer had a voice conversation with Glenn. See full transcript below.',
+          service_type: 'Chat Inquiry',
+          issue_summary: 'Customer had a chat conversation with Glenn. See full transcript below.',
           page_context: pathname,
           conversation_transcript: transcript,
         }),
@@ -84,37 +78,29 @@ export default function VoiceLiveFloatingButton() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [handleClickOutside]);
 
-  // Determine button appearance based on status
-  const isActive = state.status === 'listening' || state.status === 'speaking';
-  const isConnecting = state.status === 'connecting';
-
   return (
     <>
-      {/* Floating button */}
+      {/* Floating chat button */}
       <button
         data-voice-assistant="button"
         onClick={() => (state.isOpen ? handleCloseWithTranscript() : openPanel())}
         className={`fixed bottom-6 right-4 sm:right-6 w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 z-[9998] focus:outline-none focus:ring-4 focus:ring-power-red/30 ${
-          state.isOpen || isActive
+          state.isOpen
             ? 'bg-power-red text-white scale-110'
             : 'bg-white text-power-red hover:scale-110 hover:shadow-xl'
-        } ${isConnecting ? 'animate-pulse' : ''}`}
-        aria-label={state.isOpen ? 'Close voice assistant' : 'Open voice assistant'}
+        }`}
+        aria-label={state.isOpen ? 'Close chat' : 'Chat with Glenn'}
         aria-expanded={state.isOpen}
         aria-haspopup="dialog"
       >
-        {isActive ? (
-          <Volume2 className="w-6 h-6 animate-pulse" />
+        {state.isOpen ? (
+          <X className="w-6 h-6" />
         ) : (
-          <Mic className="w-6 h-6" />
+          <MessageCircle className="w-6 h-6" />
         )}
-        {/* Pulse ring when active */}
-        {isActive && (
-          <span className="absolute inset-0 rounded-full bg-power-red/30 animate-ping" />
-        )}
-        {/* Badge showing "Live" status */}
-        {state.isOpen && (state.status === 'connected' || state.status === 'listening' || state.status === 'speaking') && (
-          <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white" />
+        {/* Unread dot when there are new messages and panel is closed */}
+        {!state.isOpen && state.messages.length > 0 && (
+          <span className="absolute -top-1 -right-1 w-3 h-3 bg-power-red rounded-full border-2 border-white" />
         )}
       </button>
 
@@ -125,8 +111,6 @@ export default function VoiceLiveFloatingButton() {
             state={state}
             pathname={pathname}
             onClose={handleCloseWithTranscript}
-            onStartListening={startListening}
-            onStopListening={stopListening}
             onSendText={sendTextMessage}
             onReset={resetConversation}
             onClearError={clearError}

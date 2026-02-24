@@ -2,8 +2,7 @@
 
 import dynamic from 'next/dynamic';
 
-// Use the new Gemini Live API version for real-time streaming voice
-// This provides: built-in VAD (no more cutoff issues), native TTS, lower latency
+// Text chat using Gemini Live API WebSocket for real-time streaming responses
 const VoiceLiveFloatingButton = dynamic(
   () => import('./VoiceLiveFloatingButton'),
   {

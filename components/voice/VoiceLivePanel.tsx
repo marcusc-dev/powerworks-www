@@ -1,20 +1,14 @@
 'use client';
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
 import {
   X,
-  Mic,
-  MicOff,
   Send,
   AlertTriangle,
   Loader2,
   Calendar,
   MessageCircle,
   RotateCcw,
-  Volume2,
-  Wifi,
-  WifiOff,
   Mail,
   Check,
 } from 'lucide-react';
@@ -22,12 +16,10 @@ import { GeminiLiveState, LiveStatus } from './useGeminiLive';
 import { WHATSAPP_URL } from './contactPrefill';
 import { BOOKING_URL } from '@/lib/constants';
 
-interface VoiceLivePanelProps {
+interface ChatPanelProps {
   state: GeminiLiveState;
   pathname: string;
   onClose: () => void;
-  onStartListening: () => void;
-  onStopListening: () => void;
   onSendText: (text: string) => void;
   onReset: () => void;
   onClearError: () => void;
@@ -98,17 +90,15 @@ function getContextualGreeting(pathname: string): { title: string; subtitle: str
 
   return {
     title: "Hi, I'm Glenn!",
-    subtitle: "Tap the mic button and tell me about your car issue. I'll help you figure out what's wrong.",
+    subtitle: "Ask me anything about your car — I'll help you figure out what's wrong and get it sorted.",
   };
 }
 
 const STATUS_LABELS: Record<LiveStatus, string> = {
-  disconnected: 'Tap mic to connect',
+  disconnected: 'Connecting...',
   connecting: 'Connecting...',
-  connected: 'Ready to listen',
-  listening: 'Listening...',
-  thinking: 'Glenn is thinking...',
-  speaking: 'Glenn is speaking...',
+  connected: 'Online',
+  thinking: 'Glenn is typing...',
   error: 'Something went wrong',
 };
 
@@ -116,14 +106,11 @@ export default function VoiceLivePanel({
   state,
   pathname,
   onClose,
-  onStartListening,
-  onStopListening,
   onSendText,
   onReset,
   onClearError,
-}: VoiceLivePanelProps) {
+}: ChatPanelProps) {
   const greeting = getContextualGreeting(pathname);
-  const router = useRouter();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -145,10 +132,10 @@ export default function VoiceLivePanel({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          customer_name: 'Voice Conversation',
+          customer_name: 'Chat Conversation',
           customer_phone: 'See transcript',
-          service_type: 'Voice Inquiry',
-          issue_summary: 'Customer had a voice conversation with Glenn. See full transcript below.',
+          service_type: 'Chat Inquiry',
+          issue_summary: 'Customer had a chat conversation with Glenn. See full transcript below.',
           page_context: pathname,
           conversation_transcript: transcript,
         }),
@@ -156,7 +143,6 @@ export default function VoiceLivePanel({
 
       if (response.ok) {
         setTranscriptSent(true);
-        // Reset after 5 seconds
         setTimeout(() => setTranscriptSent(false), 5000);
       }
     } catch (error) {
@@ -171,11 +157,8 @@ export default function VoiceLivePanel({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [state.messages, state.currentTranscript]);
 
-  // Focus trap and escape handling
+  // Escape to close
   useEffect(() => {
-    const panel = panelRef.current;
-    if (!panel) return;
-
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
@@ -186,11 +169,18 @@ export default function VoiceLivePanel({
     return () => document.removeEventListener('keydown', handleEscape);
   }, [onClose]);
 
+  // Focus input when panel opens
+  useEffect(() => {
+    if (state.status === 'connected') {
+      inputRef.current?.focus();
+    }
+  }, [state.status]);
+
   // Handle text submission
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
-      if (textInput.trim() && (state.status === 'connected' || state.status === 'disconnected')) {
+      if (textInput.trim() && state.status !== 'thinking') {
         onSendText(textInput.trim());
         setTextInput('');
       }
@@ -198,76 +188,29 @@ export default function VoiceLivePanel({
     [textInput, state.status, onSendText]
   );
 
-  // Handle mic button click
-  const handleMicClick = useCallback(() => {
-    if (state.status === 'listening') {
-      onStopListening();
-    } else if (state.status === 'connected' || state.status === 'disconnected') {
-      onStartListening();
-    }
-  }, [state.status, onStartListening, onStopListening]);
-
-  const handleBookAppointment = useCallback(() => {
-    window.open(BOOKING_URL, '_blank', 'noopener,noreferrer');
-  }, []);
-
-  const isListening = state.status === 'listening';
   const isThinking = state.status === 'thinking';
-  const isSpeaking = state.status === 'speaking';
-  const isConnecting = state.status === 'connecting';
-  const isConnected = state.status === 'connected';
-  const isProcessing = isThinking || isSpeaking || isConnecting;
-  const canInteract = isConnected || state.status === 'disconnected';
-
-  // Connection indicator
-  const ConnectionIndicator = () => {
-    if (state.status === 'connecting') {
-      return (
-        <div className="flex items-center gap-1 text-amber-500">
-          <Loader2 className="w-3 h-3 animate-spin" />
-          <span className="text-xs">Connecting</span>
-        </div>
-      );
-    }
-    if (isConnected || isListening || isSpeaking || isThinking) {
-      return (
-        <div className="flex items-center gap-1 text-green-500">
-          <Wifi className="w-3 h-3" />
-          <span className="text-xs">Live</span>
-        </div>
-      );
-    }
-    return (
-      <div className="flex items-center gap-1 text-gray-400">
-        <WifiOff className="w-3 h-3" />
-        <span className="text-xs">Offline</span>
-      </div>
-    );
-  };
+  const isConnecting = state.status === 'connecting' || state.status === 'disconnected';
+  const canType = state.status === 'connected' || state.status === 'thinking';
 
   return (
     <div
       ref={panelRef}
       role="dialog"
       aria-modal="true"
-      aria-labelledby="voice-assistant-title"
+      aria-labelledby="chat-assistant-title"
       className="fixed bottom-24 right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-96 max-h-[70vh] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden z-[9999] motion-safe:animate-in motion-safe:slide-in-from-bottom-4 motion-safe:fade-in motion-safe:duration-300"
     >
       {/* Header */}
       <div className="bg-gradient-to-r from-power-dark to-gray-800 px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-power-red rounded-full flex items-center justify-center">
-            <Volume2 className="w-5 h-5 text-white" />
+            <MessageCircle className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 id="voice-assistant-title" className="text-white font-bold text-sm">
+            <h2 id="chat-assistant-title" className="text-white font-bold text-sm">
               Ask Glenn
             </h2>
-            <div className="flex items-center gap-2">
-              <p className="text-gray-400 text-xs">Powerworks Garage</p>
-              <span className="text-gray-600">•</span>
-              <ConnectionIndicator />
-            </div>
+            <p className="text-gray-400 text-xs">Powerworks Garage</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -282,7 +225,7 @@ export default function VoiceLivePanel({
           <button
             onClick={onClose}
             className="p-2 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-white/10"
-            aria-label="Close voice assistant"
+            aria-label="Close chat"
           >
             <X className="w-5 h-5" />
           </button>
@@ -300,7 +243,7 @@ export default function VoiceLivePanel({
         {state.messages.length === 0 && !state.currentTranscript && (
           <div className="text-center py-8">
             <div className="w-16 h-16 bg-power-red/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Volume2 className="w-8 h-8 text-power-red" />
+              <MessageCircle className="w-8 h-8 text-power-red" />
             </div>
             <h3 className="text-gray-900 font-semibold mb-2">{greeting.title}</h3>
             <p className="text-gray-500 text-sm max-w-[250px] mx-auto">
@@ -327,20 +270,12 @@ export default function VoiceLivePanel({
           </div>
         ))}
 
-        {/* Current transcript (either user speaking or AI responding) */}
+        {/* Streaming response */}
         {state.currentTranscript && (
-          <div className={`flex ${isListening ? 'justify-end' : 'justify-start'}`}>
-            <div
-              className={`max-w-[85%] px-4 py-3 rounded-2xl text-sm ${
-                isListening
-                  ? 'bg-power-red/50 text-white rounded-br-md italic'
-                  : 'bg-gray-100 text-gray-900 rounded-bl-md'
-              }`}
-            >
+          <div className="flex justify-start">
+            <div className="max-w-[85%] px-4 py-3 rounded-2xl text-sm bg-gray-100 text-gray-900 rounded-bl-md">
               {state.currentTranscript}
-              {(isListening || isThinking) && (
-                <span className="inline-block w-2 h-4 bg-current ml-1 animate-pulse" />
-              )}
+              <span className="inline-block w-2 h-4 bg-gray-400 ml-1 animate-pulse" />
             </div>
           </div>
         )}
@@ -350,17 +285,7 @@ export default function VoiceLivePanel({
           <div className="flex justify-start">
             <div className="bg-gray-100 text-gray-600 px-4 py-3 rounded-2xl rounded-bl-md text-sm flex items-center gap-2">
               <Loader2 className="w-4 h-4 animate-spin" />
-              Glenn is thinking...
-            </div>
-          </div>
-        )}
-
-        {/* Speaking indicator */}
-        {isSpeaking && (
-          <div className="flex justify-start">
-            <div className="bg-gray-100 text-gray-600 px-4 py-3 rounded-2xl rounded-bl-md text-sm flex items-center gap-2">
-              <Volume2 className="w-4 h-4 animate-pulse" />
-              Glenn is speaking...
+              Glenn is typing...
             </div>
           </div>
         )}
@@ -385,65 +310,21 @@ export default function VoiceLivePanel({
         </div>
       )}
 
-      {/* Status bar */}
-      <div className="px-4 py-2 bg-gray-50 border-t border-gray-100">
-        <p className="text-xs text-gray-500 text-center" aria-live="polite">
-          {state.status === 'error'
-            ? 'Tap the mic to try again or type below'
-            : state.status === 'connected' && state.messages.length > 0
-              ? 'Tap the mic to continue...'
-              : STATUS_LABELS[state.status]}
-        </p>
-      </div>
-
-      {/* Voice/Text Input */}
-      <div className="p-4 border-t border-gray-100 bg-white">
-        {/* Mic button */}
-        <div className="flex justify-center mb-4">
-          <button
-            onClick={handleMicClick}
-            disabled={isProcessing}
-            aria-label={isListening ? 'Stop listening' : 'Start listening'}
-            className={`relative w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-power-red/30 disabled:opacity-50 disabled:cursor-not-allowed ${
-              isListening
-                ? 'bg-power-red text-white'
-                : canInteract && state.messages.length > 0
-                  ? 'bg-power-blue text-white hover:bg-blue-700'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
-          >
-            {isListening && (
-              <span className="absolute inset-0 rounded-full animate-ping bg-power-red/30" />
-            )}
-            {canInteract && state.messages.length > 0 && !isListening && (
-              <span className="absolute inset-0 rounded-full animate-ping bg-power-blue/30 motion-reduce:animate-none" />
-            )}
-            {isConnecting && (
-              <Loader2 className="w-7 h-7 animate-spin relative z-10" />
-            )}
-            {!isConnecting && isListening && (
-              <MicOff className="w-7 h-7 relative z-10" />
-            )}
-            {!isConnecting && !isListening && (
-              <Mic className="w-7 h-7 relative z-10" />
-            )}
-          </button>
-        </div>
-
-        {/* Text input fallback */}
+      {/* Text Input */}
+      <div className="p-3 border-t border-gray-100 bg-white">
         <form onSubmit={handleSubmit} className="flex gap-2">
           <input
             ref={inputRef}
             type="text"
             value={textInput}
             onChange={(e) => setTextInput(e.target.value)}
-            placeholder="Or type your message..."
-            disabled={isProcessing}
+            placeholder={isConnecting ? 'Connecting...' : 'Type your message...'}
+            disabled={isConnecting}
             className="flex-1 bg-gray-100 border-0 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-power-blue disabled:opacity-50"
           />
           <button
             type="submit"
-            disabled={isProcessing || !textInput.trim()}
+            disabled={!canType || !textInput.trim()}
             aria-label="Send message"
             className="p-2.5 bg-power-blue text-white rounded-xl hover:bg-blue-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-power-blue focus:ring-offset-2"
           >
@@ -453,13 +334,13 @@ export default function VoiceLivePanel({
       </div>
 
       {/* CTA Footer */}
-      <div className="p-4 bg-gray-50 border-t border-gray-100 space-y-2">
-        {/* Send Transcript Button - Only show when there are messages */}
+      <div className="p-3 bg-gray-50 border-t border-gray-100 space-y-2">
+        {/* Send Transcript Button */}
         {state.messages.length > 0 && (
           <button
             onClick={handleSendTranscript}
             disabled={isSendingTranscript || transcriptSent}
-            className={`w-full py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+            className={`w-full py-2.5 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
               transcriptSent
                 ? 'bg-green-600 text-white focus:ring-green-600'
                 : 'bg-power-red text-white hover:bg-red-700 focus:ring-power-red'
@@ -484,8 +365,8 @@ export default function VoiceLivePanel({
           </button>
         )}
         <button
-          onClick={handleBookAppointment}
-          className="w-full bg-power-dark text-white py-3 rounded-xl font-bold text-sm hover:bg-gray-800 transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-power-dark focus:ring-offset-2"
+          onClick={() => window.open(BOOKING_URL, '_blank', 'noopener,noreferrer')}
+          className="w-full bg-power-dark text-white py-2.5 rounded-xl font-bold text-sm hover:bg-gray-800 transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-power-dark focus:ring-offset-2"
         >
           <Calendar className="w-4 h-4" />
           Book Appointment
@@ -494,7 +375,7 @@ export default function VoiceLivePanel({
           href={WHATSAPP_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full bg-[#25D366] text-white py-3 rounded-xl font-bold text-sm hover:bg-[#128C7E] transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2"
+          className="w-full bg-[#25D366] text-white py-2.5 rounded-xl font-bold text-sm hover:bg-[#128C7E] transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2"
         >
           <MessageCircle className="w-4 h-4" />
           WhatsApp Quote
