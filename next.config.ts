@@ -45,6 +45,11 @@ const nextConfig: NextConfig = {
         destination: '/fleet-service-dubai',
         permanent: true,
       },
+      {
+        source: '/book',
+        destination: '/',
+        permanent: true,
+      },
     ];
   },
   async headers() {
