@@ -174,7 +174,7 @@ export default async function ArticlePage({ params }: PageProps) {
                   {/* Back Link */}
                   <Link
                     href="/ask-glenn"
-                    className="inline-flex items-center gap-2 text-white/80 hover:text-white mt-8 mb-4 text-sm font-medium transition-colors"
+                    className="inline-flex items-center gap-2 text-white/80 hover:text-white mt-24 mb-4 text-sm font-medium transition-colors"
                   >
                     <ArrowLeft className="w-4 h-4" />
                     Back to Ask Glenn
