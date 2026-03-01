@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 
 interface UploadFile {
   id: string;
@@ -20,21 +20,47 @@ interface ExistingFile {
   copied?: boolean;
 }
 
+interface FolderEntry {
+  name: string;
+  lastModified: string;
+}
+
 export default function UploadPage() {
   const [authenticated, setAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
-  const [folder, setFolder] = useState('');
+  const [uploadFolder, setUploadFolder] = useState(''); // current month — where uploads go
+  const [activeFolder, setActiveFolder] = useState(''); // folder being viewed
+  const [folders, setFolders] = useState<FolderEntry[]>([]);
   const [files, setFiles] = useState<UploadFile[]>([]);
   const [existingFiles, setExistingFiles] = useState<ExistingFile[]>([]);
   const [loadingFiles, setLoadingFiles] = useState(false);
+  const [loadingFolders, setLoadingFolders] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [dragActive, setDragActive] = useState(false);
 
-  // ── Fetch existing files from Bunny ───────────────────
+  // ── Fetch all folders ────────────────────────────────
+  const fetchFolders = useCallback(async (pw: string) => {
+    setLoadingFolders(true);
+    try {
+      const res = await fetch('/api/upload/folders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pw }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setFolders(data.folders || []);
+      }
+    } catch { /* non-critical */ }
+    finally { setLoadingFolders(false); }
+  }, []);
+
+  // ── Fetch existing files from a folder ───────────────
   const fetchExistingFiles = useCallback(async (folderName: string, pw: string) => {
     setLoadingFiles(true);
+    setExistingFiles([]);
     try {
       const res = await fetch('/api/upload/files', {
         method: 'POST',
@@ -45,9 +71,16 @@ export default function UploadPage() {
         const data = await res.json();
         setExistingFiles(data.files || []);
       }
-    } catch { /* silently fail — existing files are non-critical */ }
+    } catch { /* non-critical */ }
     finally { setLoadingFiles(false); }
   }, []);
+
+  // ── Switch folder ──────────────────────────────────
+  const switchFolder = useCallback((folderName: string) => {
+    setActiveFolder(folderName);
+    const pw = sessionStorage.getItem('upload_pw') || '';
+    fetchExistingFiles(folderName, pw);
+  }, [fetchExistingFiles]);
 
   // ── Auth ──────────────────────────────────────────────
   const handleAuth = async (e: React.FormEvent) => {
@@ -69,16 +102,45 @@ export default function UploadPage() {
       }
 
       const data = await res.json();
-      setFolder(data.folder);
+      setUploadFolder(data.folder);
+      setActiveFolder(data.folder);
       setAuthenticated(true);
       sessionStorage.setItem('upload_pw', password);
       fetchExistingFiles(data.folder, password);
+      fetchFolders(password);
     } catch {
       setAuthError('Connection error. Try again.');
     } finally {
       setAuthLoading(false);
     }
   };
+
+  // Check for saved session on mount
+  useEffect(() => {
+    const savedPw = sessionStorage.getItem('upload_pw');
+    if (savedPw) {
+      fetch('/api/upload/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: savedPw }),
+      })
+        .then((res) => {
+          if (res.ok) return res.json();
+          throw new Error('Invalid');
+        })
+        .then((data) => {
+          setUploadFolder(data.folder);
+          setActiveFolder(data.folder);
+          setAuthenticated(true);
+          setPassword(savedPw);
+          fetchExistingFiles(data.folder, savedPw);
+          fetchFolders(savedPw);
+        })
+        .catch(() => {
+          sessionStorage.removeItem('upload_pw');
+        });
+    }
+  }, [fetchExistingFiles, fetchFolders]);
 
   // ── Upload single file via XHR (for progress tracking) ──
   const uploadFile = useCallback((uf: UploadFile) => {
@@ -157,6 +219,11 @@ export default function UploadPage() {
   // ── Handle new file selections ────────────────────────
   const handleFiles = useCallback(
     async (newFiles: FileList | File[]) => {
+      // Switch to upload folder if not already viewing it
+      if (activeFolder !== uploadFolder) {
+        setActiveFolder(uploadFolder);
+      }
+
       const fileArray = Array.from(newFiles);
       const newUploadFiles: UploadFile[] = fileArray.map((file) => ({
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
@@ -173,9 +240,9 @@ export default function UploadPage() {
 
       // Refresh the existing files list
       const pw = sessionStorage.getItem('upload_pw') || '';
-      if (pw && folder) fetchExistingFiles(folder, pw);
+      if (pw && uploadFolder) fetchExistingFiles(uploadFolder, pw);
     },
-    [uploadFile, folder, fetchExistingFiles]
+    [uploadFile, uploadFolder, activeFolder, fetchExistingFiles]
   );
 
   // ── Drag and drop ────────────────────────────────────
@@ -254,7 +321,7 @@ export default function UploadPage() {
               className="h-14 mx-auto mb-6"
             />
             <p className="text-white/50 text-sm tracking-wide uppercase">
-              Staff File Upload
+              Staff File Portal
             </p>
           </div>
 
@@ -291,7 +358,7 @@ export default function UploadPage() {
   }
 
   // ═══════════════════════════════════════════════════════
-  // UPLOAD INTERFACE
+  // UPLOAD + BROWSE INTERFACE
   // ═══════════════════════════════════════════════════════
   return (
     <div className="min-h-screen bg-gray-50 pb-8">
@@ -300,73 +367,114 @@ export default function UploadPage() {
         <div className="flex items-center gap-3">
           <img src="/logo_dark.png" alt="Powerworks" className="h-8" />
           <span className="text-white/20">|</span>
-          <span className="text-sm font-medium text-white/80">Upload</span>
+          <span className="text-sm font-medium text-white/80">Files</span>
         </div>
         <span className="text-xs bg-[#1e3a8a]/60 text-blue-200 px-2.5 py-1 rounded-full font-mono tracking-wide">
-          /{folder}/
+          /{activeFolder}/
         </span>
       </div>
 
       <div className="max-w-lg mx-auto px-4 pt-5 space-y-4">
-        {/* Drop zone */}
-        <div
-          onClick={() => fileInputRef.current?.click()}
-          onDrop={handleDrop}
-          onDragOver={(e) => {
-            e.preventDefault();
-            setDragActive(true);
-          }}
-          onDragLeave={() => setDragActive(false)}
-          className={`
-            border-2 border-dashed rounded-2xl py-10 px-6 text-center cursor-pointer transition-all
-            ${
-              dragActive
-                ? 'border-[#1e3a8a] bg-blue-50 scale-[1.01]'
-                : 'border-gray-300 hover:border-[#1e3a8a] hover:bg-white active:scale-[0.99]'
-            }
-          `}
-        >
-          {/* Upload icon */}
-          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-[#1e3a8a]/10 flex items-center justify-center">
-            <svg
-              className="w-8 h-8 text-[#1e3a8a]"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
-              />
-            </svg>
+        {/* Folder browser */}
+        {folders.length > 0 && (
+          <div>
+            <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">
+              Folders
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {folders.map((f) => (
+                <button
+                  key={f.name}
+                  onClick={() => switchFolder(f.name)}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all active:scale-95 ${
+                    activeFolder === f.name
+                      ? 'bg-[#1e3a8a] text-white'
+                      : 'bg-white text-gray-600 border border-gray-200 hover:border-[#1e3a8a] hover:text-[#1e3a8a]'
+                  } ${f.name === uploadFolder ? 'ring-1 ring-green-400/50' : ''}`}
+                >
+                  {f.name}
+                  {f.name === uploadFolder && (
+                    <span className="ml-1 text-[10px] opacity-60">new</span>
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
-          <p className="text-gray-700 font-semibold text-base">
-            Tap to select files
-          </p>
-          <p className="text-gray-400 text-sm mt-1">or drag and drop</p>
-          <p className="text-gray-300 text-xs mt-3">
-            Photos, videos, documents
-          </p>
+        )}
+        {loadingFolders && (
+          <p className="text-center text-gray-400 text-sm py-2">Loading folders...</p>
+        )}
 
-          <input
-            ref={fileInputRef}
-            type="file"
-            multiple
-            accept="image/*,video/*,.pdf,.doc,.docx"
-            onChange={(e) => {
-              if (e.target.files?.length) {
-                handleFiles(e.target.files);
-                e.target.value = '';
-              }
+        {/* Upload drop zone — only show when viewing the upload folder */}
+        {activeFolder === uploadFolder && (
+          <div
+            onClick={() => fileInputRef.current?.click()}
+            onDrop={handleDrop}
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDragActive(true);
             }}
-            className="hidden"
-          />
-        </div>
+            onDragLeave={() => setDragActive(false)}
+            className={`
+              border-2 border-dashed rounded-2xl py-10 px-6 text-center cursor-pointer transition-all
+              ${
+                dragActive
+                  ? 'border-[#1e3a8a] bg-blue-50 scale-[1.01]'
+                  : 'border-gray-300 hover:border-[#1e3a8a] hover:bg-white active:scale-[0.99]'
+              }
+            `}
+          >
+            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-[#1e3a8a]/10 flex items-center justify-center">
+              <svg
+                className="w-8 h-8 text-[#1e3a8a]"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
+                />
+              </svg>
+            </div>
+            <p className="text-gray-700 font-semibold text-base">
+              Tap to select files
+            </p>
+            <p className="text-gray-400 text-sm mt-1">or drag and drop</p>
+            <p className="text-gray-300 text-xs mt-3">
+              Photos, videos, documents &rarr; /{uploadFolder}/
+            </p>
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              accept="image/*,video/*,.pdf,.doc,.docx"
+              onChange={(e) => {
+                if (e.target.files?.length) {
+                  handleFiles(e.target.files);
+                  e.target.value = '';
+                }
+              }}
+              className="hidden"
+            />
+          </div>
+        )}
+
+        {/* Upload to current month hint when browsing old folder */}
+        {activeFolder !== uploadFolder && (
+          <button
+            onClick={() => switchFolder(uploadFolder)}
+            className="w-full py-3 text-sm font-medium text-[#1e3a8a] bg-blue-50 rounded-xl hover:bg-blue-100 active:scale-[0.99] transition-all"
+          >
+            Switch to /{uploadFolder}/ to upload new files
+          </button>
+        )}
 
         {/* Copy All button */}
-        {completedFiles.length > 1 && (
+        {completedFiles.length > 1 && activeFolder === uploadFolder && (
           <button
             onClick={copyAllUrls}
             className="w-full py-2.5 text-sm font-medium text-[#1e3a8a] bg-blue-50 rounded-xl hover:bg-blue-100 active:scale-[0.99] transition-all"
@@ -375,8 +483,8 @@ export default function UploadPage() {
           </button>
         )}
 
-        {/* File list */}
-        {files.length > 0 && (
+        {/* Recently uploaded files */}
+        {files.length > 0 && activeFolder === uploadFolder && (
           <div className="space-y-3">
             {files.map((f) => (
               <div
@@ -525,7 +633,7 @@ export default function UploadPage() {
           </div>
         )}
 
-        {/* Existing files in folder */}
+        {/* Existing files in active folder */}
         {loadingFiles && (
           <p className="text-center text-gray-400 text-sm py-4">
             Loading files...
@@ -536,7 +644,7 @@ export default function UploadPage() {
           <div className="pt-2">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
-                In /{folder}/
+                In /{activeFolder}/
               </h2>
               <span className="text-xs text-gray-400">
                 {existingFiles.length} file{existingFiles.length !== 1 ? 's' : ''}
@@ -598,11 +706,13 @@ export default function UploadPage() {
           </div>
         )}
 
-        {/* Empty state hint */}
-        {files.length === 0 && existingFiles.length === 0 && !loadingFiles && (
+        {/* Empty state */}
+        {!loadingFiles && existingFiles.length === 0 && files.length === 0 && (
           <p className="text-center text-gray-300 text-sm pt-4">
-            Files will be uploaded to{' '}
-            <span className="font-mono text-gray-400">/{folder}/</span>
+            {activeFolder === uploadFolder
+              ? <>No files yet. Upload to <span className="font-mono text-gray-400">/{uploadFolder}/</span></>
+              : <>No files in <span className="font-mono text-gray-400">/{activeFolder}/</span></>
+            }
           </p>
         )}
       </div>
