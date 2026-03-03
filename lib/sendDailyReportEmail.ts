@@ -1,4 +1,3 @@
-import * as tls from 'tls';
 import type { DailyReport } from './dailyReport';
 
 const RECIPIENTS = [
@@ -113,133 +112,45 @@ function renderReportHtml(report: DailyReport): string {
 }
 
 /**
- * Read all data from the socket until we get a complete SMTP response
- * (a line starting with a 3-digit code followed by a space).
- */
-function smtpRead(socket: tls.TLSSocket): Promise<string> {
-  return new Promise((resolve, reject) => {
-    let buffer = '';
-    const onData = (data: Buffer) => {
-      buffer += data.toString();
-      // SMTP responses end with "XXX " (code + space) on the final line
-      const lines = buffer.split('\r\n');
-      for (const line of lines) {
-        if (/^\d{3} /.test(line)) {
-          socket.removeListener('data', onData);
-          socket.removeListener('error', onError);
-          resolve(buffer);
-          return;
-        }
-      }
-    };
-    const onError = (err: Error) => {
-      socket.removeListener('data', onData);
-      reject(err);
-    };
-    socket.on('data', onData);
-    socket.on('error', onError);
-  });
-}
-
-/**
- * Send a command and read the response.
- */
-async function smtpCommand(
-  socket: tls.TLSSocket,
-  command: string
-): Promise<string> {
-  socket.write(command + '\r\n');
-  return smtpRead(socket);
-}
-
-/**
- * Send the daily report email via Brevo SMTP (bypasses API IP restrictions).
+ * Send the daily report email via Brevo REST API.
  */
 export async function sendDailyReportEmail(
   report: DailyReport,
   date: Date
 ): Promise<{ success: boolean; id?: string; error?: string }> {
-  const smtpLogin = process.env.BREVO_SMTP_LOGIN;
-  const smtpPassword = process.env.BREVO_SMTP_PASSWORD;
-  if (!smtpLogin || !smtpPassword) {
-    throw new Error('Missing BREVO_SMTP_LOGIN or BREVO_SMTP_PASSWORD env vars');
+  const apiKey = process.env.BREVO_API_KEY;
+  if (!apiKey) {
+    throw new Error('Missing BREVO_API_KEY env var');
   }
 
   const dateStr = date.toISOString().slice(0, 10);
-  const from = 'noreply@powerworksgaragedubai.com';
-  const fromName = 'Powerworks Reports';
   const subject = `Powerworks Garage \u2013 Daily Performance Report (${dateStr})`;
   const html = renderReportHtml(report);
 
-  const toAddresses = RECIPIENTS.map((r) => r.email);
-  const toHeader = RECIPIENTS.map((r) => `"${r.name}" <${r.email}>`).join(', ');
+  const body = {
+    sender: { name: 'Powerworks Reports', email: 'noreply@powerworksgaragedubai.com' },
+    to: RECIPIENTS.map((r) => ({ email: r.email, name: r.name })),
+    subject,
+    htmlContent: html,
+  };
 
-  // Build MIME message
-  const boundary = `----=_Part_${Date.now()}`;
-  const message = [
-    `From: "${fromName}" <${from}>`,
-    `To: ${toHeader}`,
-    `Subject: ${subject}`,
-    `MIME-Version: 1.0`,
-    `Content-Type: multipart/alternative; boundary="${boundary}"`,
-    ``,
-    `--${boundary}`,
-    `Content-Type: text/html; charset=UTF-8`,
-    `Content-Transfer-Encoding: 7bit`,
-    ``,
-    html,
-    ``,
-    `--${boundary}--`,
-  ].join('\r\n');
-
-  // AUTH PLAIN = base64("\0username\0password") in a single command
-  const authPlain = Buffer.from(
-    `\0${smtpLogin}\0${smtpPassword}`
-  ).toString('base64');
-
-  return new Promise((resolve) => {
-    const socket = tls.connect(465, 'smtp-relay.brevo.com', {}, async () => {
-      try {
-        // Read greeting
-        await smtpRead(socket);
-        // EHLO
-        await smtpCommand(socket, 'EHLO powerworksgarage.com');
-        // AUTH PLAIN (single-step, avoids multi-step challenge/response)
-        const authReply = await smtpCommand(socket, `AUTH PLAIN ${authPlain}`);
-        if (!authReply.includes('235')) {
-          socket.end();
-          resolve({ success: false, error: `SMTP auth failed: ${authReply.trim()}` });
-          return;
-        }
-        // MAIL FROM
-        await smtpCommand(socket, `MAIL FROM:<${from}>`);
-        // RCPT TO for each recipient
-        for (const addr of toAddresses) {
-          await smtpCommand(socket, `RCPT TO:<${addr}>`);
-        }
-        // DATA
-        await smtpCommand(socket, 'DATA');
-        // Send message body, then "." on its own line to end
-        socket.write(message + '\r\n.\r\n');
-        const sendReply = await smtpRead(socket);
-        // QUIT
-        socket.write('QUIT\r\n');
-        socket.end();
-
-        const match = sendReply.match(/queued as (.+)/i);
-        const messageId = match?.[1]?.trim();
-        console.log('Daily report email sent via SMTP:', messageId ?? sendReply.trim());
-        resolve({ success: true, id: messageId });
-      } catch (err) {
-        socket.end();
-        const errMsg = err instanceof Error ? err.message : 'SMTP error';
-        console.error('SMTP send error:', errMsg);
-        resolve({ success: false, error: errMsg });
-      }
-    });
-
-    socket.on('error', (err) => {
-      resolve({ success: false, error: err.message });
-    });
+  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      'api-key': apiKey,
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify(body),
   });
+
+  if (!res.ok) {
+    const text = await res.text();
+    console.error('Brevo API error:', res.status, text);
+    return { success: false, error: `Brevo API ${res.status}: ${text}` };
+  }
+
+  const data = await res.json();
+  console.log('Daily report email sent via Brevo API:', data.messageId);
+  return { success: true, id: data.messageId };
 }
