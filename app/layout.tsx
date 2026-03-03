@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans, Jost } from 'next/font/google';
 import './globals.css';
 import { VoiceAssistantProvider } from '@/components/voice';
+import { Analytics } from '@vercel/analytics/next';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -281,6 +282,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         {children}
         {/* Voice Assistant - Floating Button on Every Page */}
         <VoiceAssistantProvider />
+        <Analytics />
       </body>
     </html>
   );
