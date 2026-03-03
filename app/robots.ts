@@ -35,8 +35,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
         disallow: ['/api/', '/admin/', '/_next/'],
       },
-    ],
-    // Block aggressive SEO crawlers that add no value but consume ISR reads
+      // Block aggressive SEO crawlers that add no value but consume ISR reads
       { userAgent: 'AhrefsBot', disallow: '/' },
       { userAgent: 'SemrushBot', disallow: '/' },
       { userAgent: 'MJ12bot', disallow: '/' },
