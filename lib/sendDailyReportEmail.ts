@@ -9,10 +9,10 @@ function renderReportHtml(report: DailyReport): string {
   const topPagesRows = report.topPages
     .map(
       (p, i) =>
-        `<tr style="border-bottom:1px solid #eee;">
-          <td style="padding:8px 12px;color:#666;">${i + 1}</td>
-          <td style="padding:8px 12px;font-family:monospace;font-size:13px;">${p.path}</td>
-          <td style="padding:8px 12px;text-align:right;font-weight:600;">${p.pageViews.toLocaleString()}</td>
+        `<tr>
+          <td style="padding:10px 16px;color:#999;font-size:13px;">${i + 1}</td>
+          <td style="padding:10px 16px;font-size:13px;color:#333;">${p.path}</td>
+          <td style="padding:10px 16px;text-align:right;font-weight:600;color:#111;">${p.pageViews.toLocaleString()}</td>
         </tr>`
     )
     .join('');
@@ -23,87 +23,72 @@ function renderReportHtml(report: DailyReport): string {
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
-<body style="margin:0;padding:0;background:#f4f4f7;font-family:Arial,Helvetica,sans-serif;color:#333;">
-  <div style="max-width:640px;margin:0 auto;background:#ffffff;">
+<body style="margin:0;padding:0;background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#333;">
+  <div style="max-width:600px;margin:24px auto;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
 
     <!-- Header -->
-    <div style="background:#1a1a2e;padding:28px 24px;text-align:center;">
-      <img src="https://powerworksgarage.com/full_logo.png" alt="Powerworks Garage" width="160" style="max-width:160px;" />
-      <h1 style="color:#ffffff;font-size:20px;margin:16px 0 4px;font-weight:700;">Daily Performance Report</h1>
-      <p style="color:#aaa;font-size:14px;margin:0;">${report.date}</p>
+    <div style="padding:32px 32px 24px;border-bottom:1px solid #eee;">
+      <img src="https://powerworksgarage.com/full_logo.png" alt="Powerworks Garage" width="140" style="max-width:140px;display:block;" />
+      <h1 style="color:#111;font-size:18px;margin:20px 0 4px;font-weight:600;letter-spacing:-0.3px;">Daily Performance Report</h1>
+      <p style="color:#999;font-size:13px;margin:0;">${report.date}</p>
     </div>
 
-    <!-- Search (GSC) -->
-    <div style="padding:24px;">
-      <h2 style="font-size:16px;color:#1a1a2e;border-bottom:2px solid #e63946;padding-bottom:8px;margin-top:0;">
-        Google Search
-      </h2>
+    <!-- Metrics Grid -->
+    <div style="padding:24px 32px;">
       <table style="width:100%;border-collapse:collapse;">
         <tr>
-          <td style="padding:12px 0;">
-            <span style="font-size:28px;font-weight:700;color:#1a1a2e;">${report.gsc.impressions.toLocaleString()}</span>
-            <br/><span style="font-size:13px;color:#888;">Search Impressions</span>
+          <td style="padding:16px;background:#fafafa;border-radius:6px;width:50%;">
+            <span style="font-size:13px;color:#888;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;">Active Users</span>
+            <br/><span style="font-size:32px;font-weight:700;color:#111;line-height:1.4;">${report.totalUsers.toLocaleString()}</span>
           </td>
-          <td style="padding:12px 0;text-align:right;">
-            <span style="font-size:28px;font-weight:700;color:#1a1a2e;">${report.gsc.clicks.toLocaleString()}</span>
-            <br/><span style="font-size:13px;color:#888;">Search Clicks</span>
+          <td style="width:12px;"></td>
+          <td style="padding:16px;background:#fafafa;border-radius:6px;width:50%;">
+            <span style="font-size:13px;color:#888;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;">Search Clicks</span>
+            <br/><span style="font-size:32px;font-weight:700;color:#111;line-height:1.4;">${report.gsc.clicks.toLocaleString()}</span>
+          </td>
+        </tr>
+        <tr><td colspan="3" style="height:12px;"></td></tr>
+        <tr>
+          <td style="padding:16px;background:#fafafa;border-radius:6px;">
+            <span style="font-size:13px;color:#888;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;">Impressions</span>
+            <br/><span style="font-size:32px;font-weight:700;color:#111;line-height:1.4;">${report.gsc.impressions.toLocaleString()}</span>
+          </td>
+          <td style="width:12px;"></td>
+          <td style="padding:16px;background:#fafafa;border-radius:6px;">
+            <span style="font-size:13px;color:#888;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;">Form Submissions</span>
+            <br/><span style="font-size:32px;font-weight:700;color:#111;line-height:1.4;">${report.formSubmits}</span>
+          </td>
+        </tr>
+        <tr><td colspan="3" style="height:12px;"></td></tr>
+        <tr>
+          <td colspan="3" style="padding:16px;background:#fafafa;border-radius:6px;">
+            <span style="font-size:13px;color:#888;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;">Booking Exit Clicks</span>
+            <br/><span style="font-size:32px;font-weight:700;color:#111;line-height:1.4;">${report.bookingExitClicks}</span>
           </td>
         </tr>
       </table>
     </div>
 
-    <!-- Traffic (GA4) -->
-    <div style="padding:0 24px 24px;">
-      <h2 style="font-size:16px;color:#1a1a2e;border-bottom:2px solid #e63946;padding-bottom:8px;margin-top:0;">
-        Website Traffic (GA4)
-      </h2>
-      <p style="margin:12px 0;">
-        <span style="font-size:28px;font-weight:700;color:#1a1a2e;">${report.totalUsers.toLocaleString()}</span>
-        <br/><span style="font-size:13px;color:#888;">Active Users</span>
-      </p>
-    </div>
-
-    <!-- Top 10 Pages -->
-    <div style="padding:0 24px 24px;">
-      <h2 style="font-size:16px;color:#1a1a2e;border-bottom:2px solid #e63946;padding-bottom:8px;margin-top:0;">
-        Top 10 Pages by Views
-      </h2>
-      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+    <!-- Top Pages -->
+    <div style="padding:0 32px 32px;">
+      <h2 style="font-size:14px;color:#888;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;margin:0 0 12px;">Top Pages</h2>
+      <table style="width:100%;border-collapse:collapse;font-size:14px;background:#fafafa;border-radius:6px;overflow:hidden;">
         <thead>
-          <tr style="background:#f9f9f9;">
-            <th style="padding:8px 12px;text-align:left;color:#888;font-weight:600;">#</th>
-            <th style="padding:8px 12px;text-align:left;color:#888;font-weight:600;">Page</th>
-            <th style="padding:8px 12px;text-align:right;color:#888;font-weight:600;">Views</th>
+          <tr>
+            <th style="padding:10px 16px;text-align:left;color:#aaa;font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;">#</th>
+            <th style="padding:10px 16px;text-align:left;color:#aaa;font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;">Page</th>
+            <th style="padding:10px 16px;text-align:right;color:#aaa;font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;">Views</th>
           </tr>
         </thead>
         <tbody>
-          ${topPagesRows || '<tr><td colspan="3" style="padding:12px;color:#888;">No page data available</td></tr>'}
+          ${topPagesRows || '<tr><td colspan="3" style="padding:16px;color:#999;text-align:center;">No page data available</td></tr>'}
         </tbody>
       </table>
     </div>
 
-    <!-- Conversions -->
-    <div style="padding:0 24px 32px;">
-      <h2 style="font-size:16px;color:#1a1a2e;border-bottom:2px solid #e63946;padding-bottom:8px;margin-top:0;">
-        Conversions
-      </h2>
-      <table style="width:100%;border-collapse:collapse;">
-        <tr>
-          <td style="padding:12px 0;">
-            <span style="font-size:28px;font-weight:700;color:#27ae60;">${report.formSubmits}</span>
-            <br/><span style="font-size:13px;color:#888;">Form Submissions</span>
-          </td>
-          <td style="padding:12px 0;text-align:right;">
-            <span style="font-size:28px;font-weight:700;color:#2980b9;">${report.bookingExitClicks}</span>
-            <br/><span style="font-size:13px;color:#888;">Booking Exit Clicks</span>
-          </td>
-        </tr>
-      </table>
-    </div>
-
     <!-- Footer -->
-    <div style="background:#f9f9f9;padding:16px 24px;text-align:center;font-size:12px;color:#999;border-top:1px solid #eee;">
-      Automated daily report from powerworksgarage.com
+    <div style="padding:20px 32px;text-align:center;font-size:12px;color:#bbb;border-top:1px solid #f0f0f0;">
+      powerworksgarage.com
     </div>
 
   </div>
