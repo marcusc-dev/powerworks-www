@@ -283,7 +283,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         {/* End Google Tag Manager (noscript) */}
         {children}
         <Analytics />
-        {/* Voice Assistant - Floating Button on Every Page */}
+        {/* Chat Assistant - Floating Button on Every Page */}
         <VoiceAssistantProvider />
       </body>
     </html>
