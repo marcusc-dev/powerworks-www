@@ -128,7 +128,7 @@ export async function sendDailyReportEmail(
   const html = renderReportHtml(report);
 
   const body = {
-    sender: { name: 'Powerworks Reports', email: 'noreply@powerworksgaragedubai.com' },
+    sender: { name: 'Powerworks Reports', email: 'marcus@powerworksgarage.com' },
     to: RECIPIENTS.map((r) => ({ email: r.email, name: r.name })),
     subject,
     htmlContent: html,
