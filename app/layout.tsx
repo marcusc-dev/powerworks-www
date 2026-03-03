@@ -4,6 +4,8 @@ import './globals.css';
 import { VoiceAssistantProvider } from '@/components/voice';
 import { Analytics } from '@vercel/analytics/next';
 
+export const revalidate = 43200; // 12 hours — reduces ISR reads on Vercel
+
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
   variable: '--font-sans',
@@ -280,9 +282,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </noscript>
         {/* End Google Tag Manager (noscript) */}
         {children}
-        {/* Voice Assistant - Floating Button on Every Page */}
-        <VoiceAssistantProvider />
         <Analytics />
+        {/* Chat Assistant - Floating Button on Every Page */}
+        <VoiceAssistantProvider />
       </body>
     </html>
   );
