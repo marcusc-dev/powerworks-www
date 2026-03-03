@@ -1,3 +1,4 @@
+import * as tls from 'tls';
 import type { DailyReport } from './dailyReport';
 
 const RECIPIENTS = [
@@ -111,42 +112,110 @@ function renderReportHtml(report: DailyReport): string {
 </html>`;
 }
 
+/**
+ * Send a command to the SMTP server and wait for a response.
+ */
+function smtpCommand(
+  socket: tls.TLSSocket,
+  command: string | null
+): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const onData = (data: Buffer) => {
+      socket.removeListener('data', onData);
+      resolve(data.toString());
+    };
+    socket.on('data', onData);
+    socket.on('error', reject);
+    if (command) socket.write(command + '\r\n');
+  });
+}
+
+/**
+ * Send the daily report email via Brevo SMTP (bypasses API IP restrictions).
+ */
 export async function sendDailyReportEmail(
   report: DailyReport,
   date: Date
 ): Promise<{ success: boolean; id?: string; error?: string }> {
-  const apiKey = process.env.BREVO_API_KEY;
-  if (!apiKey) {
-    throw new Error('Missing BREVO_API_KEY env var');
+  const smtpLogin = process.env.BREVO_SMTP_LOGIN;
+  const smtpPassword = process.env.BREVO_SMTP_PASSWORD;
+  if (!smtpLogin || !smtpPassword) {
+    throw new Error('Missing BREVO_SMTP_LOGIN or BREVO_SMTP_PASSWORD env vars');
   }
 
   const dateStr = date.toISOString().slice(0, 10);
+  const from = 'noreply@powerworksgaragedubai.com';
+  const fromName = 'Powerworks Reports';
+  const subject = `Powerworks Garage \u2013 Daily Performance Report (${dateStr})`;
+  const html = renderReportHtml(report);
 
-  const response = await fetch('https://api.brevo.com/v3/smtp/email', {
-    method: 'POST',
-    headers: {
-      'accept': 'application/json',
-      'api-key': apiKey,
-      'content-type': 'application/json',
-    },
-    body: JSON.stringify({
-      sender: {
-        name: 'Powerworks Reports',
-        email: 'noreply@powerworksgaragedubai.com',
-      },
-      to: RECIPIENTS,
-      subject: `Powerworks Garage \u2013 Daily Performance Report (${dateStr})`,
-      htmlContent: renderReportHtml(report),
-    }),
+  const toAddresses = RECIPIENTS.map((r) => r.email);
+  const toHeader = RECIPIENTS.map((r) => `"${r.name}" <${r.email}>`).join(', ');
+
+  // Build MIME message
+  const boundary = `----=_Part_${Date.now()}`;
+  const message = [
+    `From: "${fromName}" <${from}>`,
+    `To: ${toHeader}`,
+    `Subject: ${subject}`,
+    `MIME-Version: 1.0`,
+    `Content-Type: multipart/alternative; boundary="${boundary}"`,
+    ``,
+    `--${boundary}`,
+    `Content-Type: text/html; charset=UTF-8`,
+    `Content-Transfer-Encoding: 7bit`,
+    ``,
+    html,
+    ``,
+    `--${boundary}--`,
+  ].join('\r\n');
+
+  return new Promise((resolve) => {
+    const socket = tls.connect(465, 'smtp-relay.brevo.com', {}, async () => {
+      try {
+        // Read greeting
+        await smtpCommand(socket, null);
+        // EHLO
+        await smtpCommand(socket, 'EHLO powerworksgarage.com');
+        // AUTH LOGIN
+        await smtpCommand(socket, 'AUTH LOGIN');
+        await smtpCommand(socket, Buffer.from(smtpLogin).toString('base64'));
+        const authReply = await smtpCommand(
+          socket,
+          Buffer.from(smtpPassword).toString('base64')
+        );
+        if (!authReply.startsWith('235')) {
+          socket.end();
+          resolve({ success: false, error: `SMTP auth failed: ${authReply.trim()}` });
+          return;
+        }
+        // MAIL FROM
+        await smtpCommand(socket, `MAIL FROM:<${from}>`);
+        // RCPT TO for each recipient
+        for (const addr of toAddresses) {
+          await smtpCommand(socket, `RCPT TO:<${addr}>`);
+        }
+        // DATA
+        await smtpCommand(socket, 'DATA');
+        const sendReply = await smtpCommand(socket, message + '\r\n.');
+        // QUIT
+        socket.write('QUIT\r\n');
+        socket.end();
+
+        const match = sendReply.match(/queued as (.+)/i);
+        const messageId = match?.[1]?.trim();
+        console.log('Daily report email sent via SMTP:', messageId ?? sendReply.trim());
+        resolve({ success: true, id: messageId });
+      } catch (err) {
+        socket.end();
+        const errMsg = err instanceof Error ? err.message : 'SMTP error';
+        console.error('SMTP send error:', errMsg);
+        resolve({ success: false, error: errMsg });
+      }
+    });
+
+    socket.on('error', (err) => {
+      resolve({ success: false, error: err.message });
+    });
   });
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    console.error('Failed to send daily report email:', errorData);
-    return { success: false, error: errorData.message ?? `HTTP ${response.status}` };
-  }
-
-  const data = await response.json();
-  console.log('Daily report email sent:', data.messageId);
-  return { success: true, id: data.messageId };
 }
