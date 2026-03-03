@@ -1,0 +1,152 @@
+import type { DailyReport } from './dailyReport';
+
+const RECIPIENTS = [
+  { email: 'marcus@powerworksgarage.com', name: 'Marcus' },
+  { email: 'glenn@powerworksgarage.com', name: 'Glenn' },
+];
+
+function renderReportHtml(report: DailyReport): string {
+  const topPagesRows = report.topPages
+    .map(
+      (p, i) =>
+        `<tr style="border-bottom:1px solid #eee;">
+          <td style="padding:8px 12px;color:#666;">${i + 1}</td>
+          <td style="padding:8px 12px;font-family:monospace;font-size:13px;">${p.path}</td>
+          <td style="padding:8px 12px;text-align:right;font-weight:600;">${p.pageViews.toLocaleString()}</td>
+        </tr>`
+    )
+    .join('');
+
+  return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body style="margin:0;padding:0;background:#f4f4f7;font-family:Arial,Helvetica,sans-serif;color:#333;">
+  <div style="max-width:640px;margin:0 auto;background:#ffffff;">
+
+    <!-- Header -->
+    <div style="background:#1a1a2e;padding:28px 24px;text-align:center;">
+      <img src="https://powerworksgarage.com/full_logo.png" alt="Powerworks Garage" width="160" style="max-width:160px;" />
+      <h1 style="color:#ffffff;font-size:20px;margin:16px 0 4px;font-weight:700;">Daily Performance Report</h1>
+      <p style="color:#aaa;font-size:14px;margin:0;">${report.date}</p>
+    </div>
+
+    <!-- Search (GSC) -->
+    <div style="padding:24px;">
+      <h2 style="font-size:16px;color:#1a1a2e;border-bottom:2px solid #e63946;padding-bottom:8px;margin-top:0;">
+        Google Search
+      </h2>
+      <table style="width:100%;border-collapse:collapse;">
+        <tr>
+          <td style="padding:12px 0;">
+            <span style="font-size:28px;font-weight:700;color:#1a1a2e;">${report.gsc.impressions.toLocaleString()}</span>
+            <br/><span style="font-size:13px;color:#888;">Search Impressions</span>
+          </td>
+          <td style="padding:12px 0;text-align:right;">
+            <span style="font-size:28px;font-weight:700;color:#1a1a2e;">${report.gsc.clicks.toLocaleString()}</span>
+            <br/><span style="font-size:13px;color:#888;">Search Clicks</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Traffic (GA4) -->
+    <div style="padding:0 24px 24px;">
+      <h2 style="font-size:16px;color:#1a1a2e;border-bottom:2px solid #e63946;padding-bottom:8px;margin-top:0;">
+        Website Traffic (GA4)
+      </h2>
+      <p style="margin:12px 0;">
+        <span style="font-size:28px;font-weight:700;color:#1a1a2e;">${report.totalUsers.toLocaleString()}</span>
+        <br/><span style="font-size:13px;color:#888;">Active Users</span>
+      </p>
+    </div>
+
+    <!-- Top 10 Pages -->
+    <div style="padding:0 24px 24px;">
+      <h2 style="font-size:16px;color:#1a1a2e;border-bottom:2px solid #e63946;padding-bottom:8px;margin-top:0;">
+        Top 10 Pages by Views
+      </h2>
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        <thead>
+          <tr style="background:#f9f9f9;">
+            <th style="padding:8px 12px;text-align:left;color:#888;font-weight:600;">#</th>
+            <th style="padding:8px 12px;text-align:left;color:#888;font-weight:600;">Page</th>
+            <th style="padding:8px 12px;text-align:right;color:#888;font-weight:600;">Views</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${topPagesRows || '<tr><td colspan="3" style="padding:12px;color:#888;">No page data available</td></tr>'}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Conversions -->
+    <div style="padding:0 24px 32px;">
+      <h2 style="font-size:16px;color:#1a1a2e;border-bottom:2px solid #e63946;padding-bottom:8px;margin-top:0;">
+        Conversions
+      </h2>
+      <table style="width:100%;border-collapse:collapse;">
+        <tr>
+          <td style="padding:12px 0;">
+            <span style="font-size:28px;font-weight:700;color:#27ae60;">${report.formSubmits}</span>
+            <br/><span style="font-size:13px;color:#888;">Form Submissions</span>
+          </td>
+          <td style="padding:12px 0;text-align:right;">
+            <span style="font-size:28px;font-weight:700;color:#2980b9;">${report.bookingExitClicks}</span>
+            <br/><span style="font-size:13px;color:#888;">Booking Exit Clicks</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Footer -->
+    <div style="background:#f9f9f9;padding:16px 24px;text-align:center;font-size:12px;color:#999;border-top:1px solid #eee;">
+      Automated daily report from powerworksgarage.com
+    </div>
+
+  </div>
+</body>
+</html>`;
+}
+
+export async function sendDailyReportEmail(
+  report: DailyReport,
+  date: Date
+): Promise<{ success: boolean; id?: string; error?: string }> {
+  const apiKey = process.env.BREVO_API_KEY;
+  if (!apiKey) {
+    throw new Error('Missing BREVO_API_KEY env var');
+  }
+
+  const dateStr = date.toISOString().slice(0, 10);
+
+  const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      'accept': 'application/json',
+      'api-key': apiKey,
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      sender: {
+        name: 'Powerworks Reports',
+        email: 'noreply@powerworksgaragedubai.com',
+      },
+      to: RECIPIENTS,
+      subject: `Powerworks Garage \u2013 Daily Performance Report (${dateStr})`,
+      htmlContent: renderReportHtml(report),
+    }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    console.error('Failed to send daily report email:', errorData);
+    return { success: false, error: errorData.message ?? `HTTP ${response.status}` };
+  }
+
+  const data = await response.json();
+  console.log('Daily report email sent:', data.messageId);
+  return { success: true, id: data.messageId };
+}
