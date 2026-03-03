@@ -113,21 +113,43 @@ function renderReportHtml(report: DailyReport): string {
 }
 
 /**
- * Send a command to the SMTP server and wait for a response.
+ * Read all data from the socket until we get a complete SMTP response
+ * (a line starting with a 3-digit code followed by a space).
  */
-function smtpCommand(
-  socket: tls.TLSSocket,
-  command: string | null
-): Promise<string> {
+function smtpRead(socket: tls.TLSSocket): Promise<string> {
   return new Promise((resolve, reject) => {
+    let buffer = '';
     const onData = (data: Buffer) => {
+      buffer += data.toString();
+      // SMTP responses end with "XXX " (code + space) on the final line
+      const lines = buffer.split('\r\n');
+      for (const line of lines) {
+        if (/^\d{3} /.test(line)) {
+          socket.removeListener('data', onData);
+          socket.removeListener('error', onError);
+          resolve(buffer);
+          return;
+        }
+      }
+    };
+    const onError = (err: Error) => {
       socket.removeListener('data', onData);
-      resolve(data.toString());
+      reject(err);
     };
     socket.on('data', onData);
-    socket.on('error', reject);
-    if (command) socket.write(command + '\r\n');
+    socket.on('error', onError);
   });
+}
+
+/**
+ * Send a command and read the response.
+ */
+async function smtpCommand(
+  socket: tls.TLSSocket,
+  command: string
+): Promise<string> {
+  socket.write(command + '\r\n');
+  return smtpRead(socket);
 }
 
 /**
@@ -170,21 +192,21 @@ export async function sendDailyReportEmail(
     `--${boundary}--`,
   ].join('\r\n');
 
+  // AUTH PLAIN = base64("\0username\0password") in a single command
+  const authPlain = Buffer.from(
+    `\0${smtpLogin}\0${smtpPassword}`
+  ).toString('base64');
+
   return new Promise((resolve) => {
     const socket = tls.connect(465, 'smtp-relay.brevo.com', {}, async () => {
       try {
         // Read greeting
-        await smtpCommand(socket, null);
+        await smtpRead(socket);
         // EHLO
         await smtpCommand(socket, 'EHLO powerworksgarage.com');
-        // AUTH LOGIN
-        await smtpCommand(socket, 'AUTH LOGIN');
-        await smtpCommand(socket, Buffer.from(smtpLogin).toString('base64'));
-        const authReply = await smtpCommand(
-          socket,
-          Buffer.from(smtpPassword).toString('base64')
-        );
-        if (!authReply.startsWith('235')) {
+        // AUTH PLAIN (single-step, avoids multi-step challenge/response)
+        const authReply = await smtpCommand(socket, `AUTH PLAIN ${authPlain}`);
+        if (!authReply.includes('235')) {
           socket.end();
           resolve({ success: false, error: `SMTP auth failed: ${authReply.trim()}` });
           return;
@@ -197,7 +219,9 @@ export async function sendDailyReportEmail(
         }
         // DATA
         await smtpCommand(socket, 'DATA');
-        const sendReply = await smtpCommand(socket, message + '\r\n.');
+        // Send message body, then "." on its own line to end
+        socket.write(message + '\r\n.\r\n');
+        const sendReply = await smtpRead(socket);
         // QUIT
         socket.write('QUIT\r\n');
         socket.end();
