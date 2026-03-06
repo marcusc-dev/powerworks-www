@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Image from 'next/image';
 import {
   ShieldCheck,
   Lock,
@@ -55,7 +54,6 @@ export default function PaymentClient() {
 
   const hasValidParams = isValidInvoice && isValidAmount;
 
-  // Push GTM data on load
   useEffect(() => {
     if (hasValidParams) {
       window.dataLayer = window.dataLayer || [];
@@ -93,7 +91,6 @@ export default function PaymentClient() {
         throw new Error(data.error || 'Something went wrong.');
       }
 
-      // Redirect to Stripe Checkout
       window.location.href = data.url;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unable to start payment. Please try again.');
@@ -104,8 +101,8 @@ export default function PaymentClient() {
   // ─── Invalid / missing parameters ───
   if (!hasValidParams) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <div className="w-full max-w-md text-center">
+      <section className="pt-32 pb-20 md:pt-40 md:pb-28">
+        <div className="max-w-md mx-auto px-4 text-center">
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-5">
               <AlertCircle className="w-8 h-8 text-amber-600" />
@@ -123,19 +120,21 @@ export default function PaymentClient() {
             </p>
             <HelpBlock />
           </div>
-          <PoweredByFooter />
         </div>
-      </div>
+      </section>
     );
   }
 
   // ─── Valid payment form ───
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 py-8">
-      <div className="w-full max-w-md">
-        {/* Logo */}
-        <div className="flex justify-center mb-6">
-          <Image src="/full_logo.png" alt="Powerworks Garage" width={200} height={60} priority />
+    <section className="pt-32 pb-20 md:pt-40 md:pb-28">
+      <div className="max-w-md mx-auto px-4">
+        {/* Page heading */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 font-heading mb-2">
+            {PAYMENT_CONFIG.copy.paymentPageTitle}
+          </h1>
+          <p className="text-gray-500">{PAYMENT_CONFIG.copy.paymentPageSubtitle}</p>
         </div>
 
         {/* Payment Card */}
@@ -158,7 +157,6 @@ export default function PaymentClient() {
 
           {/* Form Body */}
           <div className="p-6 space-y-5">
-            {/* Optional name/email fields */}
             {!nameParam && (
               <div>
                 <label htmlFor="pay-name" className="block text-sm font-semibold text-gray-700 mb-2">
@@ -194,7 +192,6 @@ export default function PaymentClient() {
               </div>
             )}
 
-            {/* Pre-filled info display */}
             {(nameParam || emailParam) && (
               <div className="bg-gray-50 rounded-xl p-4 space-y-2">
                 {nameParam && (
@@ -212,7 +209,6 @@ export default function PaymentClient() {
               </div>
             )}
 
-            {/* Description if provided */}
             {descriptionParam && (
               <div className="flex items-start gap-2 text-sm text-gray-500 bg-gray-50 rounded-xl p-4">
                 <FileText className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
@@ -220,7 +216,6 @@ export default function PaymentClient() {
               </div>
             )}
 
-            {/* Error */}
             {error && (
               <div className="flex items-center gap-2 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
                 <AlertCircle className="w-5 h-5 flex-shrink-0" />
@@ -228,7 +223,6 @@ export default function PaymentClient() {
               </div>
             )}
 
-            {/* Pay Button */}
             <button
               onClick={handlePay}
               disabled={isLoading}
@@ -247,7 +241,6 @@ export default function PaymentClient() {
               )}
             </button>
 
-            {/* Security reassurance */}
             <div className="flex items-center justify-center gap-4 text-xs text-gray-400">
               <span className="flex items-center gap-1">
                 <Lock className="w-3.5 h-3.5" /> SSL Encrypted
@@ -263,10 +256,8 @@ export default function PaymentClient() {
             <HelpBlock />
           </div>
         </div>
-
-        <PoweredByFooter />
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -293,13 +284,5 @@ function HelpBlock() {
         </a>
       </div>
     </div>
-  );
-}
-
-function PoweredByFooter() {
-  return (
-    <p className="text-center text-xs text-gray-400 mt-6">
-      Powerworks Garage &middot; Dubai Investment Park 1
-    </p>
   );
 }
