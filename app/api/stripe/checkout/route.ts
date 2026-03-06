@@ -8,7 +8,7 @@ const INVOICE_PATTERN = /^[A-Za-z0-9\-_]{1,50}$/;
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { invoice, amount, currency, email, name, description, source } = body;
+    const { invoice, amount, currency, email, name, description, source, marketingOptIn } = body;
 
     // Validate invoice
     if (!invoice || typeof invoice !== 'string' || !INVOICE_PATTERN.test(invoice)) {
@@ -70,6 +70,8 @@ export async function POST(request: NextRequest) {
       metadata: {
         invoice,
         source: source || 'direct',
+        marketing_opt_in: marketingOptIn ? 'true' : 'false',
+        ...(name ? { customer_name: name } : {}),
       },
       payment_intent_data: {
         metadata: {

@@ -49,6 +49,7 @@ export default function PaymentClient() {
   const [amount, setAmount] = useState(amountParam);
   const [email, setEmail] = useState(emailParam);
   const [name, setName] = useState(nameParam);
+  const [marketingOptIn, setMarketingOptIn] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -101,6 +102,7 @@ export default function PaymentClient() {
           name: name || undefined,
           description: descriptionParam || undefined,
           source: sourceParam || undefined,
+          marketingOptIn,
         }),
       });
 
@@ -224,6 +226,19 @@ export default function PaymentClient() {
                 <p className="text-xs text-gray-400 mt-1.5">For your payment receipt</p>
               </div>
             )}
+
+            {/* Marketing opt-in */}
+            <label className="flex items-start gap-3 cursor-pointer group">
+              <input
+                type="checkbox"
+                checked={marketingOptIn}
+                onChange={(e) => setMarketingOptIn(e.target.checked)}
+                className="mt-0.5 w-4 h-4 rounded border-gray-300 text-power-blue focus:ring-power-blue cursor-pointer"
+              />
+              <span className="text-xs text-gray-500 leading-relaxed">
+                Allow us to send you updates about your vehicle and occasional special offers and news from Powerworks Garage. You can unsubscribe at any time.
+              </span>
+            </label>
 
             {/* Pre-filled customer info display */}
             {(nameParam || emailParam) && (

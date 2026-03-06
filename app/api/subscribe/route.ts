@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const BREVO_LIST_ID = 2;
 
 export async function POST(request: NextRequest) {
   try {
-    const { email } = await request.json();
+    const { email, name, source } = await request.json();
 
     if (!email || typeof email !== 'string' || !EMAIL_REGEX.test(email)) {
       return NextResponse.json(
@@ -15,23 +16,37 @@ export async function POST(request: NextRequest) {
 
     const normalizedEmail = email.toLowerCase().trim();
 
-    // ─── Integration point ───
-    // Connect your mailing list provider here:
-    //
-    // Brevo (already have API key in env):
-    //   await fetch('https://api.brevo.com/v3/contacts', {
-    //     method: 'POST',
-    //     headers: { 'api-key': process.env.BREVO_API_KEY!, 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({ email: normalizedEmail, listIds: [YOUR_LIST_ID] }),
-    //   });
-    //
-    // Mailchimp:
-    //   await fetch(`https://usX.api.mailchimp.com/3.0/lists/{list_id}/members`, { ... });
-    //
-    // ConvertKit:
-    //   await fetch('https://api.convertkit.com/v3/forms/{form_id}/subscribe', { ... });
+    const apiKey = process.env.BREVO_API_KEY;
+    if (!apiKey) {
+      console.warn('[Subscribe] BREVO_API_KEY not set');
+      return NextResponse.json({ success: true });
+    }
 
-    console.log(`[Mailing List] New signup: ${normalizedEmail}`);
+    const res = await fetch('https://api.brevo.com/v3/contacts', {
+      method: 'POST',
+      headers: {
+        'api-key': apiKey,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: normalizedEmail,
+        listIds: [BREVO_LIST_ID],
+        updateEnabled: true,
+        attributes: {
+          ...(name ? { FIRSTNAME: name.split(' ')[0], LASTNAME: name.split(' ').slice(1).join(' ') } : {}),
+          SOURCE: source || 'website',
+        },
+      }),
+    });
+
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      if (!data?.message?.includes('already exist')) {
+        console.error(`[Subscribe] Brevo error: ${data?.message || res.statusText}`);
+      }
+    } else {
+      console.log(`[Subscribe] Added ${normalizedEmail} to Brevo list ${BREVO_LIST_ID}`);
+    }
 
     return NextResponse.json({ success: true });
   } catch (err) {
