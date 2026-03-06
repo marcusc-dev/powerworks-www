@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import ContactForm from '@/components/ContactForm';
 import BreadcrumbSchema from '@/components/BreadcrumbSchema';
-import { Phone, Mail, MapPin, Clock, Instagram, Facebook, MessageCircle } from 'lucide-react';
+import { Phone, MapPin, Clock, Instagram, Facebook, MessageCircle } from 'lucide-react';
 
 // Wrapper component to handle Suspense for useSearchParams
 function ContactFormWrapper() {
@@ -52,7 +52,7 @@ function ContactFormSkeleton() {
 }
 
 export const metadata: Metadata = {
-  title: 'Contact Us | Book Your Service | Powerworks Garage Dubai',
+  title: 'Contact Us | Ask Us a Question | Powerworks Garage Dubai',
   description: 'Contact Powerworks Garage in Dubai Investment Park. Book your car service, get a quote, or ask a question. Call 052 121 7425 or WhatsApp us.',
   alternates: {
     canonical: '/contact',
@@ -150,16 +150,6 @@ export default function ContactPage() {
                   </div>
                 </a>
 
-                <a href="mailto:help@powerworksgarage.com" className="flex items-center gap-4 group">
-                  <div className="w-14 h-14 bg-gray-100 rounded-xl flex items-center justify-center text-power-blue group-hover:bg-power-blue group-hover:text-white transition-all">
-                    <Mail size={24} />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 uppercase font-bold tracking-wider">Email</p>
-                    <p className="text-lg font-bold text-gray-900 group-hover:text-power-blue transition-colors">help@powerworksgarage.com</p>
-                  </div>
-                </a>
-
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 bg-gray-100 rounded-xl flex items-center justify-center text-amber-500">
                     <Clock size={24} />
@@ -195,7 +185,7 @@ export default function ContactPage() {
 
             {/* Contact Form */}
             <div className="lg:col-span-3">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Book Your Service</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Ask Us a Question</h2>
               <p className="text-gray-500 mb-8">Fill out the form and we&apos;ll get back to you within 2 hours.</p>
               <div className="bg-gray-50 rounded-2xl p-8 md:p-10">
                 <ContactFormWrapper />

@@ -251,7 +251,7 @@ export default function DubaiInvestmentParkPage() {
                     <div>
                       <p className="font-bold text-gray-900">Contact</p>
                       <p className="text-gray-600">Phone: <a href="tel:+971521217425" className="text-power-blue font-semibold">052 121 7425</a></p>
-                      <p className="text-gray-600">Email: <a href="mailto:help@powerworksgarage.com" className="text-power-blue font-semibold">help@powerworksgarage.com</a></p>
+                      <p className="text-gray-600">WhatsApp: <a href="https://wa.me/971521217425" className="text-power-blue font-semibold">Quick Quote</a></p>
                     </div>
                   </div>
                 </div>
@@ -285,7 +285,7 @@ export default function DubaiInvestmentParkPage() {
         <section className="py-16 bg-power-blue">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
-              Book Your Service at DIP
+              Get in Touch at DIP
             </h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
               Located in Dubai Investment Park 1. Call, WhatsApp, or book online. Free pickup available for DIP residents.
