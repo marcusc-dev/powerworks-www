@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Phone, Mail, MapPin, Clock, Instagram, Facebook, MessageCircle, Send, CheckCircle } from 'lucide-react';
+import { Phone, MapPin, Clock, Instagram, Facebook, MessageCircle, Send, CheckCircle } from 'lucide-react';
 import { BRANDS } from '@/lib/constants';
 
 const Footer: React.FC = () => {
@@ -67,16 +67,6 @@ const Footer: React.FC = () => {
                   </div>
                 </a>
 
-                <a href="mailto:help@powerworksgarage.com" className="flex items-center gap-4 group">
-                  <div className="w-12 h-12 bg-gray-800 rounded-xl flex items-center justify-center text-power-blue group-hover:bg-power-blue group-hover:text-white transition-all">
-                    <Mail size={20} />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 uppercase font-bold tracking-wider">Email</p>
-                    <p className="text-lg font-semibold text-white group-hover:text-power-blue transition-colors">help@powerworksgarage.com</p>
-                  </div>
-                </a>
-
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-gray-800 rounded-xl flex items-center justify-center text-amber-500">
                     <Clock size={20} />
@@ -112,7 +102,7 @@ const Footer: React.FC = () => {
             {/* Contact Form Column */}
             <div className="lg:col-span-3">
               <div className="bg-white rounded-2xl p-8 shadow-2xl">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Book Your Service</h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Ask Us a Question</h3>
                 <p className="text-gray-500 mb-6">Fill out the form and we&apos;ll get back to you within 2 hours.</p>
 
                 {submitted ? (
