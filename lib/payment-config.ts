@@ -20,7 +20,7 @@ export const PAYMENT_CONFIG = {
 
   // Review links
   reviews: {
-    google: 'https://g.page/r/CQh8FQECX4WBEAE/review',
+    google: 'https://g.page/r/CaXX8WWhIsOLEBM/review',
     trustpilot: 'https://www.trustpilot.com/evaluate/powerworksgarage.com',
   },
 
