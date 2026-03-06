@@ -45,6 +45,7 @@ function renderReportHtml(report: DailyReport): string {
           <td style="padding:16px;background:#fafafa;border-radius:6px;width:50%;">
             <span style="font-size:13px;color:#888;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;">Search Clicks</span>
             <br/><span style="font-size:32px;font-weight:700;color:#111;line-height:1.4;">${report.gsc.clicks.toLocaleString()}</span>
+            <br/><span style="font-size:11px;color:#bbb;">${report.gscDate}</span>
           </td>
         </tr>
         <tr><td colspan="3" style="height:12px;"></td></tr>
@@ -52,6 +53,7 @@ function renderReportHtml(report: DailyReport): string {
           <td style="padding:16px;background:#fafafa;border-radius:6px;">
             <span style="font-size:13px;color:#888;text-transform:uppercase;letter-spacing:0.5px;font-weight:500;">Impressions</span>
             <br/><span style="font-size:32px;font-weight:700;color:#111;line-height:1.4;">${report.gsc.impressions.toLocaleString()}</span>
+            <br/><span style="font-size:11px;color:#bbb;">${report.gscDate}</span>
           </td>
           <td style="width:12px;"></td>
           <td style="padding:16px;background:#fafafa;border-radius:6px;">

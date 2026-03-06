@@ -3,6 +3,7 @@ import { fetchGscMetrics, type GscMetrics } from './googleSearchConsole';
 
 export interface DailyReport {
   date: string; // YYYY-MM-DD
+  gscDate: string; // YYYY-MM-DD (2 days behind due to GSC lag)
   gsc: GscMetrics;
   totalUsers: number;
   topPages: { path: string; pageViews: number }[];
@@ -32,19 +33,32 @@ export function getYesterday(): Date {
 }
 
 /**
+ * Return the date N days before a given date.
+ */
+function daysAgo(from: Date, n: number): Date {
+  const d = new Date(from);
+  d.setUTCDate(d.getUTCDate() - n);
+  return d;
+}
+
+/**
  * Generate the full daily analytics report.
  * @param date - optional Date object; defaults to yesterday (Dubai timezone).
+ *
+ * GA4 data is available for yesterday, but GSC data has a 2–3 day lag,
+ * so we query GSC for 2 days before the report date.
  */
 export async function generateDailyAnalyticsReport(
   date?: Date
 ): Promise<DailyReport> {
   const reportDate = date ?? getYesterday();
   const dateStr = formatDate(reportDate);
+  const gscDateStr = formatDate(daysAgo(reportDate, 2));
 
   // Fetch all data concurrently
   const [gsc, totalUsers, topPages, formSubmits, bookingExitClicks] =
     await Promise.all([
-      fetchGscMetrics(dateStr),
+      fetchGscMetrics(gscDateStr),
       fetchDailyUsers(dateStr),
       fetchTopPages(dateStr, 10),
       fetchEventCount(dateStr, 'form_submit'),
@@ -53,6 +67,7 @@ export async function generateDailyAnalyticsReport(
 
   return {
     date: dateStr,
+    gscDate: gscDateStr,
     gsc,
     totalUsers,
     topPages,
