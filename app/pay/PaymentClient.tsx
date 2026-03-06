@@ -120,7 +120,7 @@ export default function PaymentClient() {
   }
 
   return (
-    <section className="pt-24 pb-16 md:pt-40 md:pb-28">
+    <section className="pt-36 pb-16 md:pt-40 md:pb-28">
       <div className="max-w-md mx-auto px-4">
         {/* Page heading */}
         <div className="text-center mb-6 md:mb-8">
