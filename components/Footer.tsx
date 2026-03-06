@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Phone, MapPin, Clock, Instagram, Facebook, MessageCircle, Send, CheckCircle } from 'lucide-react';
 import { BRANDS } from '@/lib/constants';
+import NewsletterSignup from '@/components/NewsletterSignup';
 
 const Footer: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -96,6 +97,11 @@ const Footer: React.FC = () => {
                 <a href="https://www.facebook.com/powerworksdxb/?locale=en_GB" target="_blank" rel="noreferrer" className="w-11 h-11 rounded-xl bg-gray-800 flex items-center justify-center hover:bg-[#1877F2] transition-all hover:scale-110">
                   <Facebook size={18} />
                 </a>
+              </div>
+
+              {/* Newsletter Signup */}
+              <div className="mt-8">
+                <NewsletterSignup source="footer" variant="dark" />
               </div>
             </div>
 
