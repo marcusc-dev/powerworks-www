@@ -120,11 +120,11 @@ export default function PaymentClient() {
   }
 
   return (
-    <section className="pt-32 pb-20 md:pt-40 md:pb-28">
+    <section className="pt-24 pb-16 md:pt-40 md:pb-28">
       <div className="max-w-md mx-auto px-4">
         {/* Page heading */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 font-heading mb-2">
+        <div className="text-center mb-6 md:mb-8">
+          <h1 className="text-2xl md:text-4xl font-bold text-gray-900 font-heading mb-1.5">
             {PAYMENT_CONFIG.copy.paymentPageTitle}
           </h1>
           <p className="text-gray-500">{PAYMENT_CONFIG.copy.paymentPageSubtitle}</p>
@@ -151,7 +151,7 @@ export default function PaymentClient() {
           )}
 
           {/* Form Body */}
-          <div className="p-6 space-y-5">
+          <div className="p-5 md:p-6 space-y-4 md:space-y-5">
             {/* Invoice field — editable when not prefilled */}
             {!isPrefilled && (
               <>
