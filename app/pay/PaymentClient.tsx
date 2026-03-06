@@ -13,6 +13,7 @@ import {
   FileText,
   User,
   Mail,
+  Receipt,
 } from 'lucide-react';
 import { PAYMENT_CONFIG } from '@/lib/payment-config';
 
@@ -32,7 +33,7 @@ function formatAmount(amount: number, currency: string): string {
 export default function PaymentClient() {
   const searchParams = useSearchParams();
 
-  const invoice = searchParams.get('invoice') || '';
+  const invoiceParam = searchParams.get('invoice') || '';
   const amountParam = searchParams.get('amount') || '';
   const emailParam = searchParams.get('email') || '';
   const nameParam = searchParams.get('name') || '';
@@ -40,22 +41,28 @@ export default function PaymentClient() {
   const descriptionParam = searchParams.get('description') || '';
   const sourceParam = searchParams.get('source') || '';
 
+  // Editable state — prefilled from URL params when available
+  const [invoice, setInvoice] = useState(invoiceParam);
+  const [amount, setAmount] = useState(amountParam);
   const [email, setEmail] = useState(emailParam);
   const [name, setName] = useState(nameParam);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const parsedAmount = parseFloat(amountParam);
+  // Whether invoice + amount came from URL (prefilled = read-only display)
+  const isPrefilled = !!(invoiceParam && amountParam);
+
+  const parsedAmount = parseFloat(amount);
   const isValidInvoice = INVOICE_PATTERN.test(invoice);
   const isValidAmount =
     !isNaN(parsedAmount) &&
     parsedAmount >= PAYMENT_CONFIG.minimumAmount &&
     parsedAmount <= PAYMENT_CONFIG.maximumAmount;
 
-  const hasValidParams = isValidInvoice && isValidAmount;
+  const canPay = isValidInvoice && isValidAmount;
 
   useEffect(() => {
-    if (hasValidParams) {
+    if (canPay && isPrefilled) {
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
         event: 'payment_page_view',
@@ -64,9 +71,18 @@ export default function PaymentClient() {
         source: sourceParam || 'direct',
       });
     }
-  }, [hasValidParams, invoice, parsedAmount, sourceParam]);
+  }, [canPay, isPrefilled, invoice, parsedAmount, sourceParam]);
 
   async function handlePay() {
+    if (!isValidInvoice) {
+      setError('Please enter a valid invoice reference (e.g. PW-10428).');
+      return;
+    }
+    if (!isValidAmount) {
+      setError('Please enter a valid amount.');
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
 
@@ -98,34 +114,6 @@ export default function PaymentClient() {
     }
   }
 
-  // ─── Invalid / missing parameters ───
-  if (!hasValidParams) {
-    return (
-      <section className="pt-32 pb-20 md:pt-40 md:pb-28">
-        <div className="max-w-md mx-auto px-4 text-center">
-          <div className="bg-white rounded-2xl shadow-xl p-8">
-            <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-5">
-              <AlertCircle className="w-8 h-8 text-amber-600" />
-            </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-3">Invalid Payment Link</h1>
-            <p className="text-gray-500 mb-2">
-              {!invoice && !amountParam
-                ? 'This payment link is missing required details.'
-                : !isValidInvoice
-                  ? 'The invoice reference is invalid.'
-                  : 'The payment amount is invalid.'}
-            </p>
-            <p className="text-gray-400 text-sm mb-8">
-              If you received this link from Powerworks Garage, please contact us and we&apos;ll send you a corrected one.
-            </p>
-            <HelpBlock />
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  // ─── Valid payment form ───
   return (
     <section className="pt-32 pb-20 md:pt-40 md:pb-28">
       <div className="max-w-md mx-auto px-4">
@@ -139,24 +127,65 @@ export default function PaymentClient() {
 
         {/* Payment Card */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          {/* Header */}
-          <div className="bg-power-dark px-6 py-5">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-400 text-xs uppercase font-bold tracking-wider mb-1">Invoice</p>
-                <p className="text-white text-lg font-bold font-heading">{invoice}</p>
-              </div>
-              <div className="text-right">
-                <p className="text-gray-400 text-xs uppercase font-bold tracking-wider mb-1">Amount Due</p>
-                <p className="text-white text-2xl font-bold font-heading">
-                  {formatAmount(parsedAmount, currencyParam)}
-                </p>
+          {/* Header — shown only when prefilled */}
+          {isPrefilled && (
+            <div className="bg-power-dark px-6 py-5">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-gray-400 text-xs uppercase font-bold tracking-wider mb-1">Invoice</p>
+                  <p className="text-white text-lg font-bold font-heading">{invoice}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-gray-400 text-xs uppercase font-bold tracking-wider mb-1">Amount Due</p>
+                  <p className="text-white text-2xl font-bold font-heading">
+                    {formatAmount(parsedAmount, currencyParam)}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Form Body */}
           <div className="p-6 space-y-5">
+            {/* Invoice field — editable when not prefilled */}
+            {!isPrefilled && (
+              <>
+                <div>
+                  <label htmlFor="pay-invoice" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <Receipt className="w-4 h-4 inline mr-1.5 -mt-0.5" />
+                    Invoice Reference *
+                  </label>
+                  <input
+                    type="text"
+                    id="pay-invoice"
+                    value={invoice}
+                    onChange={(e) => setInvoice(e.target.value)}
+                    className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-power-blue focus:border-transparent transition-all"
+                    placeholder="PW-10428"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="pay-amount" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <CreditCard className="w-4 h-4 inline mr-1.5 -mt-0.5" />
+                    Amount (AED) *
+                  </label>
+                  <input
+                    type="number"
+                    id="pay-amount"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    min={PAYMENT_CONFIG.minimumAmount}
+                    max={PAYMENT_CONFIG.maximumAmount}
+                    step="0.01"
+                    className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-power-blue focus:border-transparent transition-all"
+                    placeholder="1450.00"
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Name field */}
             {!nameParam && (
               <div>
                 <label htmlFor="pay-name" className="block text-sm font-semibold text-gray-700 mb-2">
@@ -174,6 +203,7 @@ export default function PaymentClient() {
               </div>
             )}
 
+            {/* Email field */}
             {!emailParam && (
               <div>
                 <label htmlFor="pay-email" className="block text-sm font-semibold text-gray-700 mb-2">
@@ -192,6 +222,7 @@ export default function PaymentClient() {
               </div>
             )}
 
+            {/* Pre-filled customer info display */}
             {(nameParam || emailParam) && (
               <div className="bg-gray-50 rounded-xl p-4 space-y-2">
                 {nameParam && (
@@ -209,6 +240,7 @@ export default function PaymentClient() {
               </div>
             )}
 
+            {/* Description if provided */}
             {descriptionParam && (
               <div className="flex items-start gap-2 text-sm text-gray-500 bg-gray-50 rounded-xl p-4">
                 <FileText className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
@@ -216,6 +248,7 @@ export default function PaymentClient() {
               </div>
             )}
 
+            {/* Error */}
             {error && (
               <div className="flex items-center gap-2 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
                 <AlertCircle className="w-5 h-5 flex-shrink-0" />
@@ -223,6 +256,7 @@ export default function PaymentClient() {
               </div>
             )}
 
+            {/* Pay Button */}
             <button
               onClick={handlePay}
               disabled={isLoading}
@@ -236,11 +270,12 @@ export default function PaymentClient() {
               ) : (
                 <>
                   <CreditCard className="w-5 h-5" />
-                  Pay {formatAmount(parsedAmount, currencyParam)}
+                  {canPay ? `Pay ${formatAmount(parsedAmount, currencyParam)}` : 'Pay Now'}
                 </>
               )}
             </button>
 
+            {/* Security reassurance */}
             <div className="flex items-center justify-center gap-4 text-xs text-gray-400">
               <span className="flex items-center gap-1">
                 <Lock className="w-3.5 h-3.5" /> SSL Encrypted
